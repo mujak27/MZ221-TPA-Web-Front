@@ -1,7 +1,8 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { Navigate, NavLink, useParams } from "react-router-dom";
-import { mutationActivate, mutationSendActivation, queryActivation, queryLogin } from "../../lib/graphql/query";
+import { mutationSendActivation } from "../../lib/graphql/mutations";
+import { queryActivation, queryLogin } from "../../lib/graphql/queries";
 import { User } from "../../types/User";
 import { strings } from "../../utils/strings";
 // import '../styles/LoginRegister.css'

@@ -1,7 +1,8 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { Navigate, NavLink, useParams } from "react-router-dom";
-import { mutationActivate, queryActivation, queryLogin } from "../../lib/graphql/query";
+import { mutationActivate } from "../../lib/graphql/mutations";
+import { queryActivation, queryLogin } from "../../lib/graphql/queries";
 import { User } from "../../types/User";
 import { strings } from "../../utils/strings";
 // import '../styles/LoginRegister.css'
@@ -34,9 +35,6 @@ export const Activation:React.FC<props> = () => {
           id : userId
         }
       })
-      // activate({variables:{
-      //   "id" : userId
-      // }})
       setProcessing(true);
     }catch(e){
       alert(e);
@@ -56,6 +54,8 @@ export const Activation:React.FC<props> = () => {
       <>checking activation link...</>
     )
   }
+
+  console.info(activationData);
 
   if(!activationData){
     return (

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { NotActive } from '../components/Activation/NotActive';
-import { queryUser } from '../lib/graphql/query';
+import { queryUser } from '../lib/graphql/queries';
 
 import { darkTheme, lightTheme, typeTheme } from '../theme/theme';
 import { User } from '../types/User';
@@ -66,7 +66,10 @@ export const ContextProvider : React.FC<props> = ({children}) => {
     }
   }
 
-  if(!sessionKey){
+  console.info(userData)
+
+  
+  if(!sessionKey || !user){
     return (
       <Navigate to={'/login'} />
     )

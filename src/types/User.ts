@@ -18,3 +18,10 @@ export type User = {
 export type Activation = {
 	
 }
+
+export enum connectStatus{
+  Connected = "Connected",
+  SentByUser1 = "SentByUser1",
+  SentByUser2 = "SentByUser2",
+  NotConnected = "NotConnected",
+}
