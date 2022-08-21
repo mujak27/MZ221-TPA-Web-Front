@@ -16,7 +16,6 @@ export const Activation:React.FC<props> = () => {
 
 
   const activationId = useParams().activationId;
-  console.info(activationId);
 
   const {data : activationData, loading: loadingActivation, called: calledActivation} = useQuery(queryActivation, {
     variables: {
@@ -28,7 +27,6 @@ export const Activation:React.FC<props> = () => {
   
 
   const onActivate = (userId : string)=>{
-    console.info(userId);
     try{
       activate({
         variables: {
@@ -55,15 +53,12 @@ export const Activation:React.FC<props> = () => {
     )
   }
 
-  console.info(activationData);
 
   if(!activationData){
     return (
       <>invalid activation link</>
     )
   }
-
-  console.info(activationData);
 
   const user = activationData.Activation.User as User;
 

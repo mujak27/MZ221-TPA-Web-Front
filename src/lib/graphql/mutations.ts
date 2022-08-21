@@ -12,6 +12,72 @@ mutation mutationSendActivation($id:ID!){
 }
 `
 
+
+// experience
+
+export const mutationAddExperience = gql`
+  mutation mutationAddExperience($input :InputExperience!){
+    AddExperience(input: $input){
+      ID
+      Position
+    }
+  }
+`
+
+export const mutationUpdateExperience=gql`
+  mutation mutationUpdateExperience($id: ID!, $input : InputExperience!){
+    UpdateExperience(id: $id, input : $input){
+      Position
+    }
+  }
+`
+
+export const mutationRemoveExperience = gql`
+  mutation mutationRemoveExperience($id :ID!){
+    RemoveExperience(id: $id)
+}
+`
+
+// education
+
+export const mutationAddEducation = gql`
+  mutation mutationAddEducation($input :InputEducation!){
+    AddEducation(input: $input){
+      ID
+      School
+      Field
+      StartedAt
+      EndedAt
+    }
+  }
+`
+export const mutationUpdateEducation = gql`
+  mutation mutationUpdateEducation($id: ID!, $input : InputEducation!){
+    UpdateEducation(id: $id, input : $input){
+      School
+      Field
+    }
+  }
+`
+
+export const mutationRemoveEducation = gql`
+  mutation mutationRemoveEducation($id :ID!){
+    RemoveEducation(id: $id)
+}
+`
+
+
+// visit
+
+
+export const mutationVisit = gql`
+  mutation mutationVisit($id: ID!){
+    Visit(id : $id)
+  }
+`
+
+//  follow
+
 export const mutationFollow = gql`
 mutation mutationFollow($id1: ID!, $id2: ID!){
   Follow(id1: $id1, id2: $id2)
@@ -23,6 +89,9 @@ mutation mutationUnFollow($id1: ID!, $id2: ID!){
   UnFollow(id1: $id1, id2: $id2)
 }
 `
+
+// connect
+
 export const mutationSendConnectRequest = gql`
   mutation mutationSendConnectRequest($id1 : ID!, $id2 : ID!){
     SendConnectRequest(id1: $id1, id2: $id2)
@@ -47,3 +116,22 @@ export const mutationUnConnect = gql`
   }
 `
 
+
+
+// post
+
+export const mutationCreatePost = gql`
+  mutation mutationCreatePost($input : InputPost!){
+    CreatePost(input: $input){
+      Text
+    }
+}
+`
+
+// message
+
+export const mutationSendMessage = gql`
+  mutation mutationSendMessage($input : InputMessage!){
+    SendMessage(input : $input)
+  }
+`

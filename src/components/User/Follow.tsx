@@ -46,16 +46,13 @@ export const Follow:React.FC<props> = ({userId}) => {
   }
 
   useEffect(()=>{
-    console.info("process done");
     isFollowRefetch();
   }, [followLoading, unFollowLoading])
 
-  
-  if(myUser.ID == userId) return (<Navigate to={"/myProfile"} />)
 
   if(isFollowLoading) return (<>fetching user data...</>)
 
-  const isFollow = isFollowData.IsFollow as boolean
+  const isFollow = isFollowData as boolean
 
   return (
     <button

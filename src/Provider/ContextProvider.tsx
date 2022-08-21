@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { NotActive } from '../components/Activation/NotActive';
@@ -16,6 +16,7 @@ type props = {
 
 type typeContextProvider = {
   user : User,
+  userRefetch : (variables?: Partial<{input: any;}> | undefined) => Promise<ApolloQueryResult<any>>
   sessionKey : String,
   currTheme : typeTheme,
   setCurrTheme : React.Dispatch<React.SetStateAction<typeTheme>>,
@@ -24,6 +25,7 @@ type typeContextProvider = {
 }
 let context = createContext<typeContextProvider>({
   user : '' as unknown as User,
+  userRefetch : '' as unknown as (variables?: Partial<{input: any;}> | undefined) => Promise<ApolloQueryResult<any>>,
   sessionKey : localStorage.getItem(strings.sessionKey) as string,
   currTheme : lightTheme,
   setCurrTheme : '' as unknown as React.Dispatch<React.SetStateAction<typeTheme>>,
@@ -40,7 +42,7 @@ export const ContextProvider : React.FC<props> = ({children}) => {
   const sessionKey = localStorage.getItem(strings.sessionKey) as string;
 
   const userId = sessionKey ? parseJwt(sessionKey).userId : "" ;
-  const {called, loading, data : userData} = useQuery(queryUser, {
+  const {called, loading, data : userData, refetch : userRefetch} = useQuery(queryUser, {
     variables: {
       input: userId
     }
@@ -66,7 +68,6 @@ export const ContextProvider : React.FC<props> = ({children}) => {
     }
   }
 
-  console.info(userData)
 
   
   if(!sessionKey || !user){
@@ -84,6 +85,7 @@ export const ContextProvider : React.FC<props> = ({children}) => {
   return (
       <context.Provider value={{
         user, 
+        userRefetch,
         sessionKey, 
         currTheme, 
         setCurrTheme, 

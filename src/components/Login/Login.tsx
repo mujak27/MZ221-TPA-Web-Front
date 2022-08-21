@@ -32,9 +32,7 @@ export const Login:React.FC<props> = () => {
 
   if(called){
     if(!loading) {
-      console.info(loginData);
       if(loginData){
-        console.info(loginData);
         localStorage.setItem(strings.sessionKey, loginData.login.token);
         alert('success')
       }else{

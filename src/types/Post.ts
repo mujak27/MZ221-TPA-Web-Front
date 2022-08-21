@@ -1,4 +1,4 @@
-type Post = {
+export type Post = {
   Text : string
   Sender: {
     ID : string

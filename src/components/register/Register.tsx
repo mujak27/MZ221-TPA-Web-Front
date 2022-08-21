@@ -39,9 +39,7 @@ export const Register:React.FC<props> = () => {
 
   if(called){
     if(!loading) {
-      console.info(registerData);
       if(registerData){
-        console.info(registerData);
         localStorage.setItem(strings.sessionKey, registerData.register.token);
         alert('success')
       }else{

@@ -11,15 +11,17 @@ import Profile from '../User/Profile';
 import { SearchBar } from '../User/SearchBar';
 
 type props={
-
+  connectedUser : User
+  onOpenBox : (user: User) => void
 };
 
-export const Home:React.FC<props> = () => {
+export const ChatItem:React.FC<props> = ({connectedUser, onOpenBox}) => {
+
+
 
   return (
     <div>
-      <CreatePost />
-      <Posts></Posts>
+      <button onClick={()=>onOpenBox(connectedUser)}>{connectedUser.FirstName} {connectedUser.MidName} {connectedUser.LastName}</button>
     </div>
   )
 }

@@ -14,11 +14,52 @@ export const queryRegister = gql`
 `
 
 export const queryUser = gql`
-  query queryUser($input: ID!){
-    user(id: $input){
+query queryUser($input: ID!){
+  user(id: $input){
+    ID
+    Email
+    FirstName
+    LastName
+    MidName
+    IsActive
+    ProfilePhoto
+    BackgroundPhoto
+    Headline
+    Pronoun
+    ProfileLink
+    About
+    Location
+    Visits{
+      Email
+    }
+    Follows{
+      Email
+    }
+    Educations{
+      ID
+      School
+      Field
+      StartedAt
+      EndedAt
+    }
+    Experiences{
+      ID
+      Position
+      Desc
+      Company
+      StartedAt
+      EndedAt
+      IsActive
+    }
+  }
+}
+`
+
+export const querySearch = gql`query querySearch($Keyword:String!, $Limit : Int!, $Offset : Int!){
+  Search(Keyword:$Keyword, Limit: $Limit, Offset:$Offset){
+    Users{
       ID
       Email
-      Password
       FirstName
       LastName
       MidName
@@ -31,7 +72,27 @@ export const queryUser = gql`
       About
       Location
     }
+    Posts{
+      Text
+      Sender{
+      ID
+      Email
+      FirstName
+      LastName
+      MidName
+      IsActive
+      ProfilePhoto
+      BackgroundPhoto
+      Headline
+      Pronoun
+      ProfileLink
+      About
+      Location
+      }
+    }
   }
+}
+
 `
 
 export const queryUsersByName = gql`
@@ -65,7 +126,6 @@ export const queryActivation = gql`
         MidName
         LastName
         IsActive
-        
       }
     }
   }
@@ -83,6 +143,19 @@ export const queryIsConnect = gql`
   }
 `
 
+export const queryConnectedUsers=gql`
+  query queryConnectedUsers{
+    ConnectedUsers{
+      ID
+      Email
+      FirstName
+      MidName
+      LastName
+    }
+  }
+`
+
+
 export const queryPosts = gql`
   query queryPosts($Limit : Int!, $Offset : Int!){
     Posts(Limit: $Limit, Offset:$Offset){
@@ -93,6 +166,26 @@ export const queryPosts = gql`
           MidName
           LastName
           ProfilePhoto
+      }
+    }
+  }
+`
+
+export const queryMessages = gql`
+  query queryMessages($id1:ID!, $id2:ID!){
+    Messages(id1: $id1, id2 :$id2){
+      Text
+      User1{
+        ID
+        FirstName
+        MidName
+        LastName
+      }
+      User2{
+        ID
+        FirstName
+        MidName
+        LastName
       }
     }
   }

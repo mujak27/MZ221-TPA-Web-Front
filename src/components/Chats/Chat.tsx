@@ -9,17 +9,33 @@ import { CreatePost } from '../posts/CreatePost';
 import { Posts } from '../posts/Posts';
 import Profile from '../User/Profile';
 import { SearchBar } from '../User/SearchBar';
+import { ChatBox } from './Box';
+import { ChatList } from './List';
 
 type props={
 
 };
 
-export const Home:React.FC<props> = () => {
+export const Chat:React.FC<props> = () => {
+
+  const [showList, setShowList] = useState(false)
+  const [showBox, setShowBox] = useState(false)
+  const [boxUser, setBoxUser] = useState<User>()
+
+  const onOpenBox = (user : User)=>{
+    setShowBox(true)
+    setBoxUser(user)
+  }
 
   return (
     <div>
-      <CreatePost />
-      <Posts></Posts>
+      <button onClick={()=>{setShowList(!showList)}}>chat</button>
+      {
+        showList && (<ChatList onOpenBox={onOpenBox} />)
+      }
+      {
+        showBox && (<ChatBox user={boxUser as User}/>)
+      }
     </div>
   )
 }

@@ -72,8 +72,6 @@ export const Connect:React.FC<props> = ({userId}) => {
     isConnectRefetch();
   }, [sendConnectRequestLoading, acceptConnectRequestLoading, deleteConnectRequestLoading , unConnectLoading])
 
-  
-  if(myUser.ID == userId) return (<Navigate to={"/myProfile"} />)
 
   if(isConnectLoading) return (<>fetching user data...</>)
 

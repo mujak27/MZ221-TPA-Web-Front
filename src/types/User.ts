@@ -13,6 +13,28 @@ export type User = {
 	ProfileLink     : string
 	About           : string
 	Location        : string
+	Visits          : User[] 
+	Follows					: User[]
+	Educations			: Education[]
+	Experiences			: Experience[]
+}
+
+export type Education = {
+	ID        : string 
+	School    : string 
+	Field     : string 
+	StartedAt : string 
+	EndedAt   : string 
+}
+
+export type Experience = {
+	ID        : string
+	Position  : string
+	Desc      : string
+	Company   : string
+	StartedAt : string
+	EndedAt   : string
+	IsActive  : boolean
 }
 
 export type Activation = {
