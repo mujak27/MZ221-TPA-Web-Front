@@ -9,7 +9,7 @@ import { Education, Experience, User } from '../../../types/User';
 import { Navbar } from '../../Nav/Navbar';
 import { Posts } from '../../posts/Posts';
 import { EducationItem } from './Item';
-import Profile from '../Profile';
+import Profile from '../Profile/Profile';
 import { SearchBar } from '../SearchBar';
 
 type props={

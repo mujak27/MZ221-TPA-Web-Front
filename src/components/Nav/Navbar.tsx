@@ -3,6 +3,7 @@ import { Navigate, NavLink } from 'react-router-dom';
 import { useContextProvider } from '../../Provider/ContextProvider';
 import { Search } from '../../types/Search';
 import { User } from '../../types/User';
+import { strings } from '../../utils/strings';
 import { SearchBar } from '../User/SearchBar';
 import { SearchResultPopup } from '../User/SearchResultPopup';
 
@@ -16,12 +17,25 @@ type props={
 
 
 export const Navbar:React.FC<props> = ({search, setSearch, showPopup, onSearchHandle}) => {
+
   const {user} = useContextProvider();
+  const [logout, setLogout] = useState(false)
+
+  const onLogout = ()=>{
+    localStorage.removeItem(strings.sessionKey);
+    setLogout(true)
+  }
+
+  if(logout){
+    return <Navigate to={"login"} />
+  }
+
   return (
     <div>
       <NavLink to={"/profile/" + user.ID}>
         <>welcome, {user.FirstName} {user.LastName}</>
       </NavLink>
+      <button onClick={onLogout}>logout</button>
       <SearchBar onSearchHandle={onSearchHandle} />
       {
         showPopup ? (<SearchResultPopup search={search} />) : null

@@ -8,6 +8,8 @@ import { Register } from './components/register/Register';
 import { Activation } from './components/Activation/Activation';
 import { ContextProvider } from './Provider/ContextProvider';
 import { Home } from './components/Home/Home';
+import { Forget } from './components/Forget/Forget';
+import { Reset } from './components/Reset/Reset';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -17,6 +19,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activation/:activationId" element={<Activation />} />
+        <Route path="/forget" element={<Forget />} />
+        <Route path="/reset/:resetId" element={<Reset />} />
         <Route path="*" element={<>
           <ContextProvider>
             <App />

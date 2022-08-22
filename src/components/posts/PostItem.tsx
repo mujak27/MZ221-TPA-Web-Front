@@ -5,8 +5,9 @@ import { queryPosts, queryUsersByName } from '../../lib/graphql/queries';
 import { Post } from '../../types/Post';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
-import Profile from '../User/Profile';
+import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
+import { PostLike } from './Like';
 
 type props={
   post : Post
@@ -17,6 +18,7 @@ export const PostItem:React.FC<props> = ({post}) => {
   return (
     <div>
       {post.Text} - {post.Sender.FirstName} {post.Sender.LastName}
+      <PostLike post={post} />
     </div>
   )
 }

@@ -7,7 +7,7 @@ import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
 import { CreatePost } from '../posts/CreatePost';
 import { Posts } from '../posts/Posts';
-import Profile from '../User/Profile';
+import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
 import { ChatItem } from './Item';
 

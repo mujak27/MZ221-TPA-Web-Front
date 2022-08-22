@@ -8,7 +8,7 @@ import { Login } from './components/Login/Login';
 import { Navbar } from './components/Nav/Navbar';
 import { Posts } from './components/posts/Posts';
 import { Register } from './components/register/Register';
-import Profile from './components/User/Profile';
+import Profile from './components/User/Profile/Profile';
 import { querySearch } from './lib/graphql/queries';
 import { ContextProvider } from './Provider/ContextProvider';
 import { Search } from './types/Search';

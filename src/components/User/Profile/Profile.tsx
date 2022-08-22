@@ -1,14 +1,15 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes, useParams } from 'react-router-dom';
-import { mutationVisit } from '../../lib/graphql/mutations';
-import { queryIsFollow, queryUser } from '../../lib/graphql/queries';
-import { useContextProvider } from '../../Provider/ContextProvider';
-import { User } from '../../types/User';
-import Connect from './Connect';
-import { Educations } from './Education/Educations';
-import { Experiences } from './Experience/Experiences';
-import Follow from './Follow';
+import { mutationVisit } from '../../../lib/graphql/mutations';
+import { queryIsFollow, queryUser } from '../../../lib/graphql/queries';
+import { useContextProvider } from '../../../Provider/ContextProvider';
+import { User } from '../../../types/User';
+import Connect from '../Connect';
+import { Educations } from '../Education/Educations';
+import { Experiences } from '../Experience/Experiences';
+import Follow from '../Follow';
+import ProfileUpdate from './Update';
 
 
 type props={
@@ -20,6 +21,7 @@ export const Profile:React.FC<props> = () => {
   const {user : myUser, userRefetch : myUserRefetch} = useContextProvider();
   const userId = useParams().profileId as string;
   const [myProfile, setMyProfile] = useState(false)
+  const [showUpdate, setShowUpdate] = useState(false)
 
 
   const {called: userCalled, loading: userLoading, data : userData, refetch : userRefetch} = useQuery(queryUser, {
@@ -57,6 +59,12 @@ export const Profile:React.FC<props> = () => {
 
   return (
     <div className="profileWrapper">
+      {
+        myProfile && (<button onClick={(e)=>{setShowUpdate(true)}} >update</button> )
+      }
+      {
+        showUpdate && (<ProfileUpdate setShowUpdate={setShowUpdate} />)
+      }
       <div className='profile'>
         <div>
           name : {user.FirstName + user.MidName + user.LastName}

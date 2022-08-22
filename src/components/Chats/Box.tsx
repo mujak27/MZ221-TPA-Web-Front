@@ -10,10 +10,10 @@ import { concatUserName } from '../../utils/User';
 import { Navbar } from '../Nav/Navbar';
 import { CreatePost } from '../posts/CreatePost';
 import { Posts } from '../posts/Posts';
-import Profile from '../User/Profile';
+import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
 import { MessageCreate } from './Message/Create';
-import { MessageItem } from './Message/item';
+import { MessageItem } from './Message/Item';
 
 type props={
   user : User

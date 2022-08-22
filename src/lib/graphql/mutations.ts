@@ -1,5 +1,31 @@
 import { gql } from "@apollo/client"
 
+// user
+
+export const mutationUpdateProfile = gql`
+  mutation mutationUpdateProfile($input : InputUser!){
+    UpdateProfile(input : $input){
+      ID
+    }
+  }
+`
+
+// forget
+
+export const mutationForgetPassword = gql`
+  mutation mutationForgetPassword($email : String!){
+    ForgetPassword(email: $email)
+  }
+`
+
+export const mutationResetPassword = gql`
+  mutation mutationResetPassword($id : ID!, $password : String!){
+    ResetPassword(id: $id, password: $password)
+  }
+`
+
+// activation
+
 export const mutationActivate = gql`
 mutation mutationActivate($id: ID!){
   Activate(id: $id)
@@ -126,6 +152,18 @@ export const mutationCreatePost = gql`
       Text
     }
 }
+`
+
+export const mutationLikePost = gql`
+  mutation mutationLikePost($id : ID!){
+    LikePost(id :$id)
+  }
+`
+
+export const mutationUnLikePost = gql`
+  mutation mutationUnLikePost($id : ID!){
+    UnLikePost(id :$id)
+  }
 `
 
 // message

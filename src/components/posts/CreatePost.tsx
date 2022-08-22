@@ -7,7 +7,7 @@ import { Search } from '../../types/Search';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
 import { Posts } from '../posts/Posts';
-import Profile from '../User/Profile';
+import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
 
 type props={

@@ -62,8 +62,14 @@ export const Login:React.FC<props> = () => {
             />
           <button onClick={onLogin}>login</button>
           {called && (!loading && loginData ? (<Navigate to={'/'} />) : (<>failed</>))}
-          <p>not registered yet?</p>
-          <NavLink to="/register">Register</NavLink>
+          <div>
+            <p>forget password?</p>
+            <NavLink to="/forget">forget password</NavLink>
+          </div>
+          <div>
+            <p>not registered yet?</p>
+            <NavLink to="/register">Register</NavLink>
+          </div>
         </div>
       </div>
     </>

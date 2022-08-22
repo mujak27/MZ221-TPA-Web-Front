@@ -8,7 +8,7 @@ import { Search } from '../../../types/Search';
 import { Education, Experience, User } from '../../../types/User';
 import { Navbar } from '../../Nav/Navbar';
 import { Posts } from '../../posts/Posts';
-import Profile from '../Profile';
+import Profile from '../Profile/Profile';
 import { SearchBar } from '../SearchBar';
 import { EducationUpdate } from './Update';
 

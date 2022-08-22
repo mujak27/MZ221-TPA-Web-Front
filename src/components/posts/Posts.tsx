@@ -5,7 +5,7 @@ import { queryPosts, queryUsersByName } from '../../lib/graphql/queries';
 import { Post } from '../../types/Post';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
-import Profile from '../User/Profile';
+import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
 import { PostItem } from './PostItem';
 

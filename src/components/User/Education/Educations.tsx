@@ -9,7 +9,7 @@ import { Navbar } from '../../Nav/Navbar';
 import { Posts } from '../../posts/Posts';
 import { EducationCreate } from './Create';
 import { EducationItem } from './Item';
-import Profile from '../Profile';
+import Profile from '../Profile/Profile';
 import { SearchBar } from '../SearchBar';
 
 type props={

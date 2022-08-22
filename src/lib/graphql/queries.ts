@@ -131,6 +131,19 @@ export const queryActivation = gql`
   }
 `
 
+export const queryCheckReset = gql`
+  query queryCheckReset($id:ID!){
+    CheckReset(id : $id){
+        ID
+        FirstName
+        MidName
+        LastName
+        IsActive
+        Email
+    }
+  }
+`
+
 export const queryIsFollow = gql`
   query IsFollow($id1: ID!, $id2: ID!){
     IsFollow(id1: $id1, id2:$id2)
@@ -159,6 +172,7 @@ export const queryConnectedUsers=gql`
 export const queryPosts = gql`
   query queryPosts($Limit : Int!, $Offset : Int!){
     Posts(Limit: $Limit, Offset:$Offset){
+      ID
       Text
       Sender{
           ID
@@ -167,7 +181,23 @@ export const queryPosts = gql`
           LastName
           ProfilePhoto
       }
+      Comments{
+        Text
+        ID
+        Replies{
+          ID
+        }
+      }
+      Likes{
+        ID
+      }
     }
+  }
+`
+
+export const queryIsLiked = gql`
+  query queryIsLiked($id : ID!){
+    IsLiked(id : $id)
   }
 `
 
