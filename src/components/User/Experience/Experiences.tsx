@@ -6,7 +6,7 @@ import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
 import { Search } from '../../../types/Search';
 import { Experience, User } from '../../../types/User';
 import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../posts/Posts';
+import { Posts } from '../../post/Posts';
 import { ExperienceCreate } from './Create';
 import { ExperienceItem } from './Item';
 import Profile from '../Profile/Profile';

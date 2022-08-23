@@ -4,6 +4,7 @@ import { useContextProvider } from '../../Provider/ContextProvider';
 import { Search } from '../../types/Search';
 import { User } from '../../types/User';
 import { strings } from '../../utils/strings';
+import { concatUserName } from '../../utils/User';
 import { SearchBar } from '../User/SearchBar';
 import { SearchResultPopup } from '../User/SearchResultPopup';
 
@@ -33,7 +34,10 @@ export const Navbar:React.FC<props> = ({search, setSearch, showPopup, onSearchHa
   return (
     <div>
       <NavLink to={"/profile/" + user.ID}>
-        <>welcome, {user.FirstName} {user.LastName}</>
+        <>welcome, {concatUserName(user)}</>
+      </NavLink>
+      <NavLink to={"/notifications/"}>
+        <>notifications</>
       </NavLink>
       <button onClick={onLogout}>logout</button>
       <SearchBar onSearchHandle={onSearchHandle} />

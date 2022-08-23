@@ -1,9 +1,10 @@
 import { useLazyQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { queryUsersByName } from '../../lib/graphql/queries';
+import { Post } from '../../types/Post';
 import { Search } from '../../types/Search';
 import { User } from '../../types/User';
-import { PostItem } from '../posts/PostItem';
+import { PostItem } from '../post/Item';
 import { UserItem } from './UserItem';
 
 type props={
@@ -12,21 +13,21 @@ type props={
 
 export const SearchResultPopup:React.FC<props> = ({search}) => {
   console.log(search);
+  const users = (search as Search).Users as User[]
+  const posts = (search as Search).Posts as Post[]
   return (
     <div>
       {
-        search && search.Users.length && 
-        search.Users.map((user)=>{
+        users.map((user)=>{
           return (
             <UserItem user={user} key={crypto.randomUUID()} />
           )
         })
       }
       {
-        search && search.Posts.length && 
-        search.Posts.map((post)=>{
+        posts.map((post)=>{
           return (
-            <PostItem post={post} key={crypto.randomUUID()} />
+            <PostItem postId={post.ID} key={crypto.randomUUID()} />
           )
         })
       }

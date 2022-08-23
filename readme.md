@@ -20,11 +20,17 @@ crud education and experience, realtime chat with connected users, send message
 
 5
 22 aug
-update profile (except password & email), update profile & background img, forget reset password, like
+update profile (except password & email), update profile & background img, forget reset password, like post
+
+6
+23 aug
+comment, reply comment, comment likes, notification
 
 
 problems:
 polling sometimes not working
+sso close by itself
+search bugging
 
 
 

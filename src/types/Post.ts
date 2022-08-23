@@ -1,11 +1,20 @@
+import { User } from "./User"
+
 export type Post = {
   ID : string
   Text : string
-  Sender: {
+  Sender: User
+  Comments : [Comment]
+  Likes : [User]
+}
+
+export type Comment = {
+  Text : string
+  ID : string 
+  Sender : User
+  Replies : {
     ID : string
-    FirstName : string
-    MidName : string
-    LastName : string
-    ProfilePhoto : string
   }
+  Post : Post
+  Likes : [User]
 }

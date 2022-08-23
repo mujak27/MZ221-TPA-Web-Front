@@ -55,6 +55,21 @@ query queryUser($input: ID!){
 }
 `
 
+export const queryActivities = gql`
+  query queryActivities{
+    Activities{
+      User{
+        ID
+        FirstName
+        MidName
+        LastName
+        ProfilePhoto
+      }
+      Text
+    }
+  }
+`
+
 export const querySearch = gql`query querySearch($Keyword:String!, $Limit : Int!, $Offset : Int!){
   Search(Keyword:$Keyword, Limit: $Limit, Offset:$Offset){
     Users{
@@ -169,6 +184,30 @@ export const queryConnectedUsers=gql`
 `
 
 
+
+export const queryMessages = gql`
+  query queryMessages($id1:ID!, $id2:ID!){
+    Messages(id1: $id1, id2 :$id2){
+      Text
+      User1{
+        ID
+        FirstName
+        MidName
+        LastName
+      }
+      User2{
+        ID
+        FirstName
+        MidName
+        LastName
+      }
+    }
+  }
+`
+
+
+// post
+
 export const queryPosts = gql`
   query queryPosts($Limit : Int!, $Offset : Int!){
     Posts(Limit: $Limit, Offset:$Offset){
@@ -195,28 +234,92 @@ export const queryPosts = gql`
   }
 `
 
-export const queryIsLiked = gql`
-  query queryIsLiked($id : ID!){
-    IsLiked(id : $id)
+export const queryPost = gql`
+  query queryPost($id : ID!){
+    Post(id: $id){
+      ID
+      Text
+      Sender{
+          ID
+          FirstName
+          MidName
+          LastName
+          ProfilePhoto
+      }
+      Comments{
+        Text
+        ID
+        Replies{
+          ID
+        }
+      }
+      Likes{
+        ID
+      }
+    }
   }
 `
 
-export const queryMessages = gql`
-  query queryMessages($id1:ID!, $id2:ID!){
-    Messages(id1: $id1, id2 :$id2){
+export const queryIsLikePost = gql`
+  query queryIsLikePost($id : ID!){
+    IsLikePost(id : $id)
+  }
+`
+
+// comment
+
+export const queryComment = gql`
+  query queryComment($id : ID!){
+    Comment(id:$id){
+        ID
+        Text
+        Sender{
+          ID
+          FirstName
+          LastName 
+          MidName
+          ProfilePhoto
+        }
+        Replies{
+          ID
+        }
+        Post {
+          ID
+        }
+        Likes{
+            ID
+        }
+    }
+  }
+`
+
+export const queryComments = gql`
+  query queryComments($CommentId : ID, $PostId : ID!){
+    Comments(CommentId : $CommentId, PostId :$PostId){
+      ID
       Text
-      User1{
+      Sender{
         ID
         FirstName
+        LastName 
         MidName
-        LastName
+        ProfilePhoto
       }
-      User2{
+      Replies{
         ID
-        FirstName
-        MidName
-        LastName
+      }
+      Post {
+        ID
+      }
+      Likes{
+          ID
       }
     }
+  }
+`
+
+export const queryIsLikeComment = gql`
+  query queryIsLikeComment($id : ID!){
+    IsLikeComment(id : $id)
   }
 `

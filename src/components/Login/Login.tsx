@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Navigate, NavLink } from "react-router-dom";
 import { queryLogin } from "../../lib/graphql/queries";
 import { strings } from "../../utils/strings";
+import {gapi} from 'gapi-script'
+import {OauthGoogleLogin} from "../Oauth/Login"
+import { CommentCreate } from "../post/Comment/Create";
 // import '../styles/LoginRegister.css'
 
 type props={
@@ -71,6 +74,7 @@ export const Login:React.FC<props> = () => {
             <NavLink to="/register">Register</NavLink>
           </div>
         </div>
+        <OauthGoogleLogin />
       </div>
     </>
   )

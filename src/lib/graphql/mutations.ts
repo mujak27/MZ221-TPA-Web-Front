@@ -142,6 +142,13 @@ export const mutationUnConnect = gql`
   }
 `
 
+// message
+
+export const mutationSendMessage = gql`
+  mutation mutationSendMessage($input : InputMessage!){
+    SendMessage(input : $input)
+  }
+`
 
 
 // post
@@ -166,10 +173,22 @@ export const mutationUnLikePost = gql`
   }
 `
 
-// message
+// comment
 
-export const mutationSendMessage = gql`
-  mutation mutationSendMessage($input : InputMessage!){
-    SendMessage(input : $input)
+export const mutationCommentPost = gql`
+  mutation mutationCommentPost($input : InputComment!){
+    CommentPost(input:$input)
+  }
+`
+
+export const mutationLikeComment =gql`
+  mutation mutationLikeComment($id : ID!){
+    LikeComment(id :$id)
+  }
+`
+
+export const mutationUnLikeComment = gql`
+  mutation mutationUnLikeComment($id : ID!){
+    UnLikeComment(id :$id)
   }
 `

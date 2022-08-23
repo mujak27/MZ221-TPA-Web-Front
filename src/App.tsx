@@ -6,7 +6,8 @@ import { Chat } from './components/Chats/Chat';
 import { Home } from './components/Home/Home';
 import { Login } from './components/Login/Login';
 import { Navbar } from './components/Nav/Navbar';
-import { Posts } from './components/posts/Posts';
+import Activities from './components/Notifications/Activities';
+import { Posts } from './components/post/Posts';
 import { Register } from './components/register/Register';
 import Profile from './components/User/Profile/Profile';
 import { querySearch } from './lib/graphql/queries';
@@ -59,6 +60,7 @@ export const App:React.FC<props> = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path="/profile/:profileId" element={<Profile />} />
+        <Route path="/notifications/" element={<Activities />} />
       </Routes>
       <Chat />
     </div>

@@ -37,8 +37,10 @@ export type Experience = {
 	IsActive  : boolean
 }
 
-export type Activation = {
-	
+export type Activity = {
+	ID : string
+	User : User
+	Text : string
 }
 
 export enum connectStatus{
@@ -47,3 +49,4 @@ export enum connectStatus{
   SentByUser2 = "SentByUser2",
   NotConnected = "NotConnected",
 }
+

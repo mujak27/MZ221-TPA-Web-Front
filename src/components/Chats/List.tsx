@@ -5,8 +5,8 @@ import { queryConnectedUsers, querySearch, queryUsersByName } from '../../lib/gr
 import { Search } from '../../types/Search';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
-import { CreatePost } from '../posts/CreatePost';
-import { Posts } from '../posts/Posts';
+import { CreatePost } from '../post/Create';
+import { Posts } from '../post/Posts';
 import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
 import { ChatItem } from './Item';
