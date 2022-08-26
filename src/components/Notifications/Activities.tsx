@@ -23,7 +23,7 @@ export const Activities:React.FC<props> = () => {
       notifications:
       {
         activities.map((activity)=>{
-          return <ActivityItem activity={activity} />
+          return <ActivityItem key={crypto.randomUUID()} activity={activity} />
         })
       }
     </div>

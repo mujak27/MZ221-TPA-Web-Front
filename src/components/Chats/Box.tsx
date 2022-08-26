@@ -8,12 +8,13 @@ import { Search } from '../../types/Search';
 import { User } from '../../types/User';
 import { concatUserName } from '../../utils/User';
 import { Navbar } from '../Nav/Navbar';
-import { CreatePost } from '../post/Create';
+import { PostCreate } from '../post/Create';
 import { Posts } from '../post/Posts';
 import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../User/SearchBar';
 import { MessageCreate } from './Message/Create';
 import { MessageItem } from './Message/Item';
+import { VideoCall } from './VideoCall/VideoCall';
 
 type props={
   user : User
@@ -31,13 +32,9 @@ export const ChatBox:React.FC<props> = ({user}) => {
   })
   if(messagesLoading) return <>fetching data...</>
 
-  
+  console.info(messagesData)
   const messages = messagesData.Messages as Message[]
-
-  // useEffect(()=>{
-  //   console.info("called change")
-  // }, [messagesLoading])
-
+  
   return (
     <div>
       chat with {concatUserName(user)}
@@ -46,7 +43,8 @@ export const ChatBox:React.FC<props> = ({user}) => {
           return <MessageItem key={crypto.randomUUID()} message={message} />
         })
       }
-      {/* <MessageCreate user={user} messagesRefetch={messagesRefetch} /> */}
+      <MessageCreate user={user} messagesRefetch={messagesRefetch} />
+      <VideoCall user={user} />
     </div>
   )
 }

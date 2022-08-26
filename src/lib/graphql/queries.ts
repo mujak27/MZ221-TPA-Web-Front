@@ -1,5 +1,12 @@
 import { gql } from "@apollo/client";
 
+// login regis
+
+export const queryLoginRegisWithSso = gql`
+  query queryLoginRegisWithSso($token: String!){
+    LoginRegisWithSSO(token : $token)
+  }
+`
 
 export const queryLogin = gql`
   query queryLogin($input: InputLogin!){
@@ -88,21 +95,22 @@ export const querySearch = gql`query querySearch($Keyword:String!, $Limit : Int!
       Location
     }
     Posts{
+      ID
       Text
       Sender{
-      ID
-      Email
-      FirstName
-      LastName
-      MidName
-      IsActive
-      ProfilePhoto
-      BackgroundPhoto
-      Headline
-      Pronoun
-      ProfileLink
-      About
-      Location
+        ID
+        Email
+        FirstName
+        LastName
+        MidName
+        IsActive
+        ProfilePhoto
+        BackgroundPhoto
+        Headline
+        Pronoun
+        ProfileLink
+        About
+        Location
       }
     }
   }
@@ -182,6 +190,33 @@ export const queryConnectedUsers=gql`
     }
   }
 `
+
+export const queryConnectRequests = gql`
+  query queryConnectionRequest{
+    ConnectionRequest{
+      ID
+      Email
+      FirstName
+      MidName
+      LastName
+      ProfilePhoto
+    }
+  }
+`
+
+export const queryUserSuggestions = gql`
+  query queryUsersSuggestion{
+    UsersSuggestion{
+      ID
+      Email
+      FirstName
+      MidName
+      LastName
+    }
+  }
+`
+
+// messages
 
 
 
@@ -321,5 +356,23 @@ export const queryComments = gql`
 export const queryIsLikeComment = gql`
   query queryIsLikeComment($id : ID!){
     IsLikeComment(id : $id)
+  }
+`
+
+// jobs
+
+export const queryJobs = gql`
+  query queryJobs{
+    Jobs{
+      ID
+      User{
+        ID
+        Email
+        FirstName
+        MidName
+        LastName
+      }
+      Text
+    }
   }
 `

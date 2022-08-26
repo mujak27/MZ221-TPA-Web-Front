@@ -39,6 +39,12 @@ export const Navbar:React.FC<props> = ({search, setSearch, showPopup, onSearchHa
       <NavLink to={"/notifications/"}>
         <>notifications</>
       </NavLink>
+      <NavLink to={"/networks/"}>
+        <>networks</>
+      </NavLink>
+      <NavLink to={"/jobs/"}>
+        <>jobs</>
+      </NavLink>
       <button onClick={onLogout}>logout</button>
       <SearchBar onSearchHandle={onSearchHandle} />
       {

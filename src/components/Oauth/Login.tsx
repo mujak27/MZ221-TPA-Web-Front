@@ -1,5 +1,9 @@
 import { GoogleLogin } from 'react-google-login'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { queryLoginRegisWithSso } from '../../lib/graphql/queries';
+import { strings } from '../../utils/strings';
+import { Navigate } from 'react-router-dom';
 
 const googleConfig = {
   "web": {
@@ -20,25 +24,41 @@ type props = {
 
 export const OauthGoogleLogin:React.FC<props> = () => {
 
-  const onSuccess = (res : any)=>{
-    console.info(res)
+  const [successLogin, setSuccessLogin] = useState(false)
+
+  const [loginRegisWithSsoFunc, {called : loginRegisWithSsoCalled, loading:loginRegisWithSsoLoading, data : loginRegisWithSsoData}] = useLazyQuery(queryLoginRegisWithSso)
+
+  const onLogin = (response : any)=>{
+    console.info(response)
+    loginRegisWithSsoFunc({
+      variables: {
+        "token" : response.credential
+      }
+    }).then((data)=>{
+      console.info(data)
+      localStorage.setItem(strings.sessionKey, data.data.LoginRegisWithSSO)
+      setSuccessLogin(true)
+    })
   }
 
-  const onFailure = (res : any)=>{
-    console.info("error")
-    console.info(res)
-  }
+  useEffect(()=>{
+    window.google?.accounts.id.initialize({
+      client_id : "991139370977-724qdcg8dghdp0ald1hm350j8um2v4hn.apps.googleusercontent.com",
+      callback: onLogin
+    })
+    window.google?.accounts.id.renderButton(
+      document.getElementById("googleLoginButton") as HTMLElement,{
+        type: "standard",
+        theme: "outline", 
+        size: "large"
+      }
+    )
+  }, [])
 
   return (
     <div>
-      <GoogleLogin 
-        clientId={googleConfig.web.client_id}
-        buttonText={"google login"}
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        cookiePolicy={'single_host_origin'}
-        isSignedIn={false}
-        />
+      <div id="googleLoginButton" />
+      {successLogin && (<Navigate to={'/'} />)}
     </div>
   )
 }

@@ -50,3 +50,8 @@ export enum connectStatus{
   NotConnected = "NotConnected",
 }
 
+export type Job = {
+	ID : string
+	User : User
+	Text : string
+}

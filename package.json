@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "firebase": "^9.9.3",
+    "@ckeditor/ckeditor5-build-classic": "^35.0.1",
+    "@ckeditor/ckeditor5-react": "^5.0.2",
+    "firebase": "^8.2.10",
     "gapi-script": "^1.2.0",
     "graphql": "^16.6.0",
     "react": "^18.2.0",

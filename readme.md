@@ -26,11 +26,18 @@ update profile (except password & email), update profile & background img, forge
 23 aug
 comment, reply comment, comment likes, notification
 
+7 
+24 aug
+connect request, users you might know, job,
+25 aug
+sso, 
+->video call, rich text, mention
+--> send post to chat, toast, styling 
+
 
 problems:
 polling sometimes not working
-sso close by itself
-search bugging
+video call not generating ice candidate
 
 
 

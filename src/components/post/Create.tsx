@@ -14,7 +14,7 @@ type props={
 
 };
 
-export const CreatePost:React.FC<props> = () => {
+export const PostCreate:React.FC<props> = () => {
 
   const [showPopup, setShowPopup] = useState(false);
 

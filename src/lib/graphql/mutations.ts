@@ -192,3 +192,12 @@ export const mutationUnLikeComment = gql`
     UnLikeComment(id :$id)
   }
 `
+
+
+// jobs
+
+export const mutationAddJob = gql`
+  mutation mutationAddJob($Text : String!){
+    AddJob(Text: $Text)
+  }
+`
