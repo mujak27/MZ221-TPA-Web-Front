@@ -47,15 +47,22 @@ export const ThemeProvider : React.FC<props> = ({children}) => {
   
   const changeCurrTheme = ()=>{
     if(currTheme === enumTypeTheme.light){
-      localStorage.setItem(strings.theme, enumTypeTheme.dark)
       setCurrTheme(enumTypeTheme.dark);
-      document.getElementsByTagName("body")[0].style.backgroundColor = "#222"
     }else{
-      localStorage.setItem(strings.theme, enumTypeTheme.light)
       setCurrTheme(enumTypeTheme.light);
-      document.getElementsByTagName("body")[0].style.backgroundColor = "#fff"
     }
   }
+
+  useEffect(()=>{
+    if(currTheme === enumTypeTheme.light){
+      localStorage.setItem(strings.theme, enumTypeTheme.light)
+      document.getElementsByTagName("body")[0].style.backgroundColor = "#fff"
+    }else{
+      localStorage.setItem(strings.theme, enumTypeTheme.dark)
+      document.getElementsByTagName("body")[0].style.backgroundColor = "#222"
+    }
+
+  }, [currTheme])
 
   useEffect(()=>{
     console.info('loaded')

@@ -1,7 +1,6 @@
-import { useLazyQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { queryUsersByName } from '../../lib/graphql/queries';
+
 import { User } from '../../types/User';
 
 type props={

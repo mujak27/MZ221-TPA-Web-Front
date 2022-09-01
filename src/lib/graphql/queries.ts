@@ -168,6 +168,12 @@ export const queryUsersByName = gql`
   }
 `
 
+export const queryCountUser = gql`
+  query queryCountUser($Keyword : String!){
+    CountUser(Keyword : $Keyword)
+  }
+`
+
 export const queryActivation = gql`
   query queryActivation($id : ID!){
     Activation(id: $id){
@@ -272,6 +278,12 @@ export const queryMessages = gql`
 
 // post
 
+export const queryCountPost = gql`
+  query queryCountPost($Keyword : String!){
+    CountPost(Keyword : $Keyword)
+  }
+`
+
 export const queryPosts = gql`
   query queryPosts($Limit : Int!, $Offset : Int!){
     Posts(Limit: $Limit, Offset:$Offset){
@@ -283,6 +295,7 @@ export const queryPosts = gql`
           MidName
           LastName
           ProfilePhoto
+          ProfileLink
       }
       Comments{
         Text
@@ -310,6 +323,7 @@ export const queryPost = gql`
           MidName
           LastName
           ProfilePhoto
+          ProfileLink
       }
       Comments{
         Text

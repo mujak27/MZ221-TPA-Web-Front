@@ -36,7 +36,7 @@ export const Commentitem:React.FC<props> = ({commentId, depth}) => {
   return (
     <div className='commentItem'>
       <div className="commentItemContent">
-        <UserInfo user={comment.Sender} />
+        <UserInfo showDetail={true} user={comment.Sender} />
         {parse(comment.Text)}
         <div className="commentItemBar">
           <CommentLike comment={comment} commentRefetch={commentRefetch} />

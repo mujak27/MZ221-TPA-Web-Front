@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
 import { Route, Routes } from 'react-router-dom';
 import { Tiptap } from '../../Elements/Tiptap/TiptapEditor';
+import { toastPromise } from '../../Elements/Toast/Toast';
 import { mutationAddJob, mutationCreatePost } from '../../lib/graphql/mutations';
+import { useThemeContext } from '../../Provider/ThemeProvider';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconSmall } from '../../styles/Icon/IconStyles';
 
@@ -13,26 +15,28 @@ type props={
 
 export const JobCreate:React.FC<props> = ({jobsRefetch}) => {
 
+  const {currTheme} = useThemeContext()
+
   const [showPopup, setShowPopup] = useState(false);
 
   const [text, setText] = useState('')
 
-  const [addJobFunc, {loading:addJobLoading, data:addJobData, called : addJobCalled}] = useMutation(mutationAddJob)
+  const [addJobFunc] = useMutation(mutationAddJob)
 
   const onSubmitHandle = ()=>{
-    addJobFunc({
-      variables:{
-        "Text" : text
-    }
-    })
-  }
+    toastPromise(
 
-  useEffect(()=>{
-    if(!addJobLoading && addJobCalled) {
-      jobsRefetch()
-    }
-  }, [addJobLoading, addJobCalled])
-  
+      addJobFunc({
+        variables:{
+          "Text" : text
+        }
+      }).then((data)=>{
+        jobsRefetch()
+        setShowPopup(false)
+      })
+      , currTheme
+      )
+  }
 
 
   return (

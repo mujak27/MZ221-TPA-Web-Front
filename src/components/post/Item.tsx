@@ -42,6 +42,7 @@ export const PostItem:React.FC<props> = ({postId, showExtras}) => {
 
   const post = postData.Post as Post
 
+  console.info(post)
   return (
     <div className='postItem' >
       <div className="postItemContent">

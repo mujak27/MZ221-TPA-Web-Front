@@ -15,6 +15,7 @@ type props={
 export const SearchResultPopup:React.FC<props> = ({search, onClosePopup}) => {
   const users = (search as Search).Users as User[]
   const posts = (search as Search).Posts as Post[]
+  console.info(users)
   return (
     <div id='searchResultPopup'>
       <h3>users</h3>

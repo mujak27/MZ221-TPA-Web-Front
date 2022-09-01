@@ -1,17 +1,16 @@
 import './style.sass';
 
 import React, { useState } from 'react';
-import { FaHome, FaLinkedin, FaRegBell } from 'react-icons/fa';
 import { BsPeople } from 'react-icons/bs';
+import { FaHome, FaLinkedin, FaRegBell } from 'react-icons/fa';
 import { IoReaderOutline } from 'react-icons/io5';
-import { Navigate, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { useUserContext } from '../../Provider/UserProvider';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconBig, IconSmall } from '../../styles/Icon/IconStyles';
 import { Search } from '../../types/Search';
-import { strings } from '../../utils/strings';
-import { concatUserName, getUserProfilePhoto } from '../../utils/User';
+import { getUserProfilePhoto } from '../../utils/User';
 import { SearchBar } from './SearchBar';
 import { SearchResultPopup } from './SearchResultPopup';
 import { UserPopup } from './UserPopup';
@@ -21,6 +20,7 @@ type props={
   setSearch : React.Dispatch<React.SetStateAction<Search | undefined>>
   showPopup : boolean
   onSearchHandle: (searchString: string) => void
+  
 };
 
 

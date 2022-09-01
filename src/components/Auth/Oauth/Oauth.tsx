@@ -1,9 +1,9 @@
-import { GoogleLogin } from 'react-google-login'
-import React, { useEffect, useState } from "react";
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { strings } from '../../../utils/strings';
+import { useMutation } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+
 import { mutationLoginRegisWithSso } from '../../../lib/graphql/mutations';
+import { strings } from '../../../utils/strings';
 
 const googleConfig = {
   "web": {
