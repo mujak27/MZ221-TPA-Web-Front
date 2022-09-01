@@ -13,7 +13,7 @@ type props={
 export const ConnectRequestItem:React.FC<props> = ({user}) => {
 
   return (
-    <div>
+    <div className='connectRequestItem'>
       {
         concatUserName(user)
       }

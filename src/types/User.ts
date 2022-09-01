@@ -17,6 +17,8 @@ export type User = {
 	Follows					: User[]
 	Educations			: Education[]
 	Experiences			: Experience[]
+	IsSso : boolean
+	HasFilledData : boolean
 }
 
 export type Education = {

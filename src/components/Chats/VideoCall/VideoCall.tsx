@@ -76,6 +76,8 @@ export const VideoCall:React.FC<props> = ({user}) => {
     const offerCandidates = callDoc.collection(strings.offerCandidates)
     const answerCandidates = callDoc.collection(strings.answerCandidates)
     
+    setCallId(callDoc.id)
+
     // create offer candidates
     const offerDescription = await pc.createOffer()
     await pc.setLocalDescription(offerDescription)

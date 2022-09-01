@@ -4,38 +4,42 @@
 import { User } from "../../types/User";
 import { firebaseConfig } from "./config";
 import firebase from 'firebase/app';
+import 'firebase/storage'
 
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://firebase.google.com/docs/web/learn-more#config-object
-
-
-// Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+export enum enumFileType {
+  picture = "picture",
+  video = "video"
 }
-export const storage = firebase.storage
+export const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
+export const imageExtensions = ['.png', '.jpg', '.jpeg']
 
+export const uploadFile = async (file : File, user : User)=>{
+  if (!firebase.apps.length) {
+    console.info(firebase.initializeApp(firebaseConfig))
+  }
+  const storage = firebase.storage()
+  const storageRef = firebase.storage().ref()
+  const contentType = checkFileExtension(file)
 
-
-// Initialize Cloud Storage and get a reference to the service
-// export const storage = getStorage(app);
-
-export const uploadImage = async (file : File, user : User)=>{
-  const storageRef = storage().ref()
-
-  console.info(storage)
-  console.info(`${user.ID}/${(file as File).name}`)
   const refStorage = storageRef.child(`${user.ID}/${(file as File).name}`)
-  // ref(storage, `${user.ID}/${(file as File).name}`)
-  console.info(refStorage)
-  const metadata = {contentType : 'picture'}
+  const metadata = {contentType : contentType}
 
   const uploaded = await refStorage.put(file, metadata)
   const url = await uploaded.ref.getDownloadURL()
   return url;
+}
 
-  // await uploadBytes(refStorage, file as File, metadata)
-  // const url = await getDownloadURL(refStorage);
-  // return url
+
+export const checkFileExtension = (file : File)=>{
+  if(imageTypes.includes(file.type)) return enumFileType.picture
+  return enumFileType.video
+}
+
+export const checkLinkExtension = (link : string)=>{
+  var isImage = false
+  imageExtensions.forEach((imageExtension)=>{
+    if(link.includes(imageExtension)) isImage = true
+  })
+  if(isImage) return enumFileType.picture
+  return enumFileType.video 
 }

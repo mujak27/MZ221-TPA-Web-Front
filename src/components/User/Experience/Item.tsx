@@ -1,15 +1,9 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { mutationCreatePost, mutationRemoveExperience } from '../../../lib/graphql/mutations';
-import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
-import { Search } from '../../../types/Search';
-import { Experience, User } from '../../../types/User';
-import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../post/Posts';
-import Profile from '../Profile/Profile';
-import { SearchBar } from '../SearchBar';
+
+import { mutationRemoveExperience } from '../../../lib/graphql/mutations';
+import { useUserContext } from '../../../Provider/UserProvider';
+import { Experience } from '../../../types/User';
 import { ExperienceUpdate } from './Update';
 
 type props={
@@ -19,7 +13,7 @@ type props={
 
 export const ExperienceItem:React.FC<props> = ({experience, myProfile}) => {
 
-  const {userRefetch} = useContextProvider()
+  const {userRefetch} = useUserContext()
 
   const [showUpdate, setShowUpdate] = useState(false)
 
@@ -45,14 +39,14 @@ export const ExperienceItem:React.FC<props> = ({experience, myProfile}) => {
   
 
   return (
-    <div>
-      <h1> {experience.Position} </h1>
+    <div className='experienceItem'>
+      <h1 className='title1'> {experience.Position} </h1>
       <h3> {experience.Company} </h3>
       {
         myProfile && (
           <div>
-            <button onClick={onRemove}>remove</button>
-            <button onClick={()=>{setShowUpdate(true)}}>update</button>
+            <button className='button3' onClick={onRemove}>remove</button>
+            <button className='button3' onClick={()=>{setShowUpdate(true)}}>update</button>
             {
               showUpdate && <ExperienceUpdate experience={experience} setShowUpdate={setShowUpdate} />
             }

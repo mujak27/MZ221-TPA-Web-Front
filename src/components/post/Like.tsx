@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { mutationLikePost, mutationUnLikePost } from '../../lib/graphql/mutations';
 import { queryIsLikePost, queryPosts, queryUsersByName } from '../../lib/graphql/queries';
-import { useContextProvider } from '../../Provider/ContextProvider';
+import { useUserContext } from '../../Provider/UserProvider';
 import { Post } from '../../types/Post';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
 import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../User/SearchBar';
+import { SearchBar } from '../Nav/SearchBar';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { Icon } from '../../styles/Icon/IconContext';
+import { IconSmall } from '../../styles/Icon/IconStyles';
 
 type props={
   post : Post
@@ -17,7 +20,7 @@ type props={
 
 export const PostLike:React.FC<props> = ({post, postRefetch}) => {
 
-  const {user} = useContextProvider()
+  const {user} = useUserContext()
 
   const {loading : isLikedLoading, data : isLikedData, refetch : isLikedRefetch} = useQuery(queryIsLikePost, {
     variables: {
@@ -64,13 +67,16 @@ export const PostLike:React.FC<props> = ({post, postRefetch}) => {
   
 
   return (
-    <div>
+    <div className='postLike'>
       {
         isLike ? 
-          <button onClick={onUnLikePost}>unlike</button> :
-          <button onClick={onLikePost}>like</button>
-      }
-      liked by {post.Likes.length}
+          <button onClick={onUnLikePost}>
+            <Icon config={IconSmall} icon={<FaHeart />} />
+          </button> :
+          <button onClick={onLikePost}>
+            <Icon config={IconSmall} icon={<FaRegHeart />} />
+          </button>
+      }{post.Likes.length}
     </div>
   )
 }

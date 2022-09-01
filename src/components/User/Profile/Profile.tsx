@@ -1,15 +1,20 @@
+import '../style.sass';
+
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Navigate, Route, Routes, useParams } from 'react-router-dom';
-import { mutationVisit } from '../../../lib/graphql/mutations';
-import { queryIsFollow, queryUser } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
+import { useParams } from 'react-router-dom';
+
+import { mutationVisit, mutationVisitByLink } from '../../../lib/graphql/mutations';
+import { queryUserByLink } from '../../../lib/graphql/queries';
+import { useUserContext } from '../../../Provider/UserProvider';
 import { User } from '../../../types/User';
+import { concatUserName, fromUrl, getUserBackgroundPhoto, getUserProfilePhoto } from '../../../utils/User';
 import Connect from '../Connect';
 import { Educations } from '../Education/Educations';
 import { Experiences } from '../Experience/Experiences';
 import Follow from '../Follow';
 import ProfileUpdate from './Update';
+import { ErrorPage } from '../../../Elements/Error/ErrorPage';
 
 
 type props={
@@ -18,25 +23,25 @@ type props={
 
 export const Profile:React.FC<props> = () => {
 
-  const {user : myUser, userRefetch : myUserRefetch} = useContextProvider();
-  const userId = useParams().profileId as string;
+  const {user : myUser, userRefetch : myUserRefetch} = useUserContext();
+  const userProfileLink = useParams().userProfileLink as string;
   const [myProfile, setMyProfile] = useState(false)
   const [showUpdate, setShowUpdate] = useState(false)
 
 
-  const {called: userCalled, loading: userLoading, data : userData, refetch : userRefetch} = useQuery(queryUser, {
+  const {called: userCalled, loading: userLoading, data : userData, refetch : userRefetch} = useQuery(queryUserByLink, {
     variables: {
-      input: userId
+      "link": userProfileLink
     }
   });
 
-  const [visitFunc, {loading : visitLoading, data: visitData}] = useMutation(mutationVisit)
+  const [visitFunc, {loading : visitLoading, data: visitData}] = useMutation(mutationVisitByLink)
 
 
   useEffect(()=>{
     visitFunc({
       variables:{
-        id: userId
+        "ProfileLink": userProfileLink
       }
     })
   }, [])
@@ -44,46 +49,43 @@ export const Profile:React.FC<props> = () => {
   
   useEffect(()=>{
     if(visitData && userData){
-      if(visitData.Visit.length != user.Visits.length) userRefetch()
+      if(userCalled && !userLoading && visitData.VisitByLink.length != user.Visits.length) userRefetch()
     }
-  }, [visitLoading, userLoading])
+  }, [visitLoading, userLoading, userData])
 
-  
-  if(myUser.ID == userId && !myProfile) setMyProfile(true);
 
   if(userLoading) return (<>fetching user data...</>)
+  
+  if(!userData) return (<ErrorPage text='user not exists' />)
+  
+  const user = userData.UserByLink as User;
 
-  if(!userData) return (<>user not exist</>)
-
-  const user = userData.user as User;
+  console.info(myUser.ID)
+  console.info(user.ID)
+  if(myUser.ProfileLink == userProfileLink && !myProfile) setMyProfile(true);
 
   return (
-    <div className="profileWrapper">
-      {
-        myProfile && (<button onClick={(e)=>{setShowUpdate(true)}} >update</button> )
-      }
-      {
-        showUpdate && (<ProfileUpdate setShowUpdate={setShowUpdate} />)
-      }
-      <div className='profile'>
-        <div>
-          name : {user.FirstName + user.MidName + user.LastName}
-          visited by : {user.Visits.length}
+    <div id="profileWrapper">
+      <div id='profile'>
+        <div id='profileBanner' style={{backgroundImage : fromUrl(getUserBackgroundPhoto(user))}}>
+          <img className='userImage' src={getUserProfilePhoto(user)} />
+          {myProfile && (<button className='button2' onClick={(e)=>{setShowUpdate(true)}} >update</button> )}
+          {showUpdate && (<ProfileUpdate setShowUpdate={setShowUpdate} />)}
         </div>
-        <div>
-          email : {user.Email}
+          <div id="profileContent">
+          <h1 className='title1'>{concatUserName(user)}</h1>
+          <h2>{user.Email}</h2>
+          visited by : {user.Visits.length}
+          {
+            !myProfile && (<div id='profileMenu'>
+              <Follow userId={userProfileLink} />
+              <Connect userId={userProfileLink} />
+            </div>)
+          }
         </div>
       </div>
-      <Follow userId={userId} />
-      <Connect userId={userId} />
-      {
-        user && (
-          <>
-            <Experiences experiences={user.Experiences} myProfile={myProfile}  />
-            <Educations educations={user.Educations} myProfile={myProfile} />
-          </>
-        )
-      }
+      <Experiences experiences={user.Experiences} myProfile={myProfile}  />
+      <Educations educations={user.Educations} myProfile={myProfile} />
     </div>
   )
 }

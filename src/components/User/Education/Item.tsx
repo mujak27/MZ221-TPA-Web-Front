@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { mutationCreatePost, mutationRemoveEducation, mutationRemoveExperience } from '../../../lib/graphql/mutations';
 import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
+import { useUserContext } from '../../../Provider/UserProvider';
 import { Search } from '../../../types/Search';
 import { Education, Experience, User } from '../../../types/User';
 import { Navbar } from '../../Nav/Navbar';
 import { Posts } from '../../post/Posts';
 import Profile from '../Profile/Profile';
-import { SearchBar } from '../SearchBar';
+import { SearchBar } from '../../Nav/SearchBar';
 import { EducationUpdate } from './Update';
 
 type props={
@@ -19,7 +19,7 @@ type props={
 
 export const EducationItem:React.FC<props> = ({education, myProfile}) => {
 
-  const {userRefetch} = useContextProvider()
+  const {userRefetch} = useUserContext()
 
   const [showUpdate, setShowUpdate] = useState(false)
 
@@ -45,14 +45,14 @@ export const EducationItem:React.FC<props> = ({education, myProfile}) => {
   
 
   return (
-    <div>
-      <h1> {education.School} </h1>
+    <div className='educationItem'>
+      <h1 className='title1'> {education.School} </h1>
       <h3> {education.Field} </h3>
       {
         myProfile && (
           <div>
-            <button onClick={onRemove}>remove</button>
-            <button onClick={()=>{setShowUpdate(true)}}>update</button>
+            <button className='button3' onClick={onRemove}>remove</button>
+            <button className='button3' onClick={()=>{setShowUpdate(true)}}>update</button>
             {
               showUpdate && <EducationUpdate education={education} setShowUpdate={setShowUpdate} />
             }

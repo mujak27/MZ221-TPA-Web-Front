@@ -1,8 +1,9 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import parse from 'html-react-parser';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ItemWithUser } from '../../Elements/User/ItemWithUser';
+
+import { UserInfo } from '../../Elements/User/UserInfo';
 import { Job } from '../../types/User';
-import { concatUserName } from '../../utils/User';
 
 type props={
   job : Job
@@ -11,8 +12,10 @@ type props={
 export const JobItem:React.FC<props> = ({job}) => {
 
   return (
-    <div>
-      {concatUserName(job.User)} has posted a new job : {job.Text}
-    </div>
+    <ItemWithUser user={job.User} content={
+      <div>
+        {parse(job.Text)}
+      </div>
+    } />
   )
 }

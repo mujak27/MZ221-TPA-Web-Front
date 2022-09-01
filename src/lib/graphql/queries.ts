@@ -1,24 +1,6 @@
 import { gql } from "@apollo/client";
 
-// login regis
-
-export const queryLoginRegisWithSso = gql`
-  query queryLoginRegisWithSso($token: String!){
-    LoginRegisWithSSO(token : $token)
-  }
-`
-
-export const queryLogin = gql`
-  query queryLogin($input: InputLogin!){
-    login(input:$input)
-  }
-`
-
-export const queryRegister = gql`
-  query queryRegister($input: InputRegister!){
-    register(input: $input)
-  }
-`
+// user
 
 export const queryUser = gql`
 query queryUser($input: ID!){
@@ -58,9 +40,56 @@ query queryUser($input: ID!){
       EndedAt
       IsActive
     }
+    IsSso
+    HasFilledData
   }
 }
 `
+
+export const queryUserByLink = gql`
+  query queryUserByLink($link: String!){
+    UserByLink(link: $link){
+      ID
+      Email
+      FirstName
+      LastName
+      MidName
+      IsActive
+      ProfilePhoto
+      BackgroundPhoto
+      Headline
+      Pronoun
+      ProfileLink
+      About
+      Location
+      Visits{
+        Email
+      }
+      Follows{
+        Email
+      }
+      Educations{
+        ID
+        School
+        Field
+        StartedAt
+        EndedAt
+      }
+      Experiences{
+        ID
+        Position
+        Desc
+        Company
+        StartedAt
+        EndedAt
+        IsActive
+      }
+      IsSso
+      HasFilledData
+    }
+  }
+`
+
 
 export const queryActivities = gql`
   query queryActivities{
@@ -265,6 +294,7 @@ export const queryPosts = gql`
       Likes{
         ID
       }
+      AttachmentLink
     }
   }
 `
@@ -291,6 +321,7 @@ export const queryPost = gql`
       Likes{
         ID
       }
+      AttachmentLink
     }
   }
 `

@@ -2,7 +2,7 @@ import { ApolloQueryResult, useLazyQuery, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { mutationSendMessage } from '../../../lib/graphql/mutations';
-import { useContextProvider } from '../../../Provider/ContextProvider';
+import { useUserContext } from '../../../Provider/UserProvider';
 import { Message } from '../../../types/Message';
 import { User } from '../../../types/User';
 import { concatUserName } from '../../../utils/User';
@@ -16,7 +16,7 @@ type props={
 };
 
 export const MessageCreate:React.FC<props> = ({user, messagesRefetch}) => {
-  const {user : myUser} = useContextProvider()
+  const {user : myUser} = useUserContext()
 
   const [text, setText] = useState("")
 
@@ -39,7 +39,7 @@ export const MessageCreate:React.FC<props> = ({user, messagesRefetch}) => {
   }, [sendMessageLoading, sendMessageCalled])
 
   return (
-    <div>
+    <div className='messageCreate'>
       <input type={"text"} value={text} onChange={(e)=>{setText(e.target.value)}} />
       <button onClick={onSendMessage}>send</button>
     </div>

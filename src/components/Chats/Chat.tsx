@@ -1,14 +1,11 @@
-import { useLazyQuery } from '@apollo/client';
+import './style.sass';
+
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { querySearch, queryUsersByName } from '../../lib/graphql/queries';
-import { Search } from '../../types/Search';
+import { BsFillChatSquareTextFill } from 'react-icons/bs';
+
+import { Icon } from '../../styles/Icon/IconContext';
+import { IconSmall } from '../../styles/Icon/IconStyles';
 import { User } from '../../types/User';
-import { Navbar } from '../Nav/Navbar';
-import { PostCreate } from '../post/Create';
-import { Posts } from '../post/Posts';
-import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../User/SearchBar';
 import { ChatBox } from './Box';
 import { ChatList } from './List';
 
@@ -27,9 +24,20 @@ export const Chat:React.FC<props> = () => {
     setBoxUser(user)
   }
 
+  const onChatButtonClick = ()=>{
+    if(showList){
+      setShowList(false)
+      setShowBox(false)
+    }else{
+      setShowList(true)
+    }
+  }
+
   return (
-    <div>
-      <button onClick={()=>{setShowList(!showList)}}>chat</button>
+    <div id='chat'>
+      <button id='chatButton' onClick={onChatButtonClick}>
+        <Icon config={IconSmall} icon={<BsFillChatSquareTextFill />} />
+      </button>
       {
         showList && (<ChatList onOpenBox={onOpenBox} />)
       }

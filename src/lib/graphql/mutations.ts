@@ -1,12 +1,38 @@
 import { gql } from "@apollo/client"
 
+
+
+// login regis
+
+export const mutationLoginRegisWithSso = gql`
+  mutation mutationLoginRegisWithSso($GoogleToken: String!){
+    LoginRegisWithSSO(GoogleToken : $GoogleToken)
+  }
+`
+
+export const mutationLogin = gql`
+  mutation mutationLogin($input: InputLogin!){
+    Login(input:$input)
+  }
+`
+
+export const mutationRegister = gql`
+  mutation mutationRegister($input: InputRegister!){
+    Register(input: $input)
+  }
+`
+
 // user
+
+export const mutationFirstUpdateProfile = gql`
+  mutation mutationFirstUpdateProfile($input : InputFirstUpdateProfile!){
+    FirstUpdateProfile(input : $input)
+  }
+`
 
 export const mutationUpdateProfile = gql`
   mutation mutationUpdateProfile($input : InputUser!){
-    UpdateProfile(input : $input){
-      ID
-    }
+    UpdateProfile(input : $input)
   }
 `
 
@@ -43,18 +69,13 @@ mutation mutationSendActivation($id:ID!){
 
 export const mutationAddExperience = gql`
   mutation mutationAddExperience($input :InputExperience!){
-    AddExperience(input: $input){
-      ID
-      Position
-    }
+    AddExperience(input: $input)
   }
 `
 
 export const mutationUpdateExperience=gql`
   mutation mutationUpdateExperience($id: ID!, $input : InputExperience!){
-    UpdateExperience(id: $id, input : $input){
-      Position
-    }
+    UpdateExperience(id: $id, input : $input)
   }
 `
 
@@ -68,21 +89,12 @@ export const mutationRemoveExperience = gql`
 
 export const mutationAddEducation = gql`
   mutation mutationAddEducation($input :InputEducation!){
-    AddEducation(input: $input){
-      ID
-      School
-      Field
-      StartedAt
-      EndedAt
-    }
+    AddEducation(input: $input)
   }
 `
 export const mutationUpdateEducation = gql`
   mutation mutationUpdateEducation($id: ID!, $input : InputEducation!){
-    UpdateEducation(id: $id, input : $input){
-      School
-      Field
-    }
+    UpdateEducation(id: $id, input : $input)
   }
 `
 
@@ -99,6 +111,13 @@ export const mutationRemoveEducation = gql`
 export const mutationVisit = gql`
   mutation mutationVisit($id: ID!){
     Visit(id : $id)
+  }
+`
+
+
+export const mutationVisitByLink = gql`
+  mutation mutationVisitByLink($ProfileLink: String!){
+    VisitByLink(ProfileLink : $ProfileLink)
   }
 `
 
@@ -155,9 +174,28 @@ export const mutationSendMessage = gql`
 
 export const mutationCreatePost = gql`
   mutation mutationCreatePost($input : InputPost!){
-    CreatePost(input: $input){
-      Text
+  CreatePost(input: $input){
+    ID
+    Text
+    Sender{
+      ID
+      FirstName
+      MidName
+      LastName
+      ProfilePhoto
     }
+    Comments{
+      Text
+      ID
+      Replies{
+        ID
+      }
+    }
+    Likes{
+      ID
+    }
+    AttachmentLink
+  }
 }
 `
 

@@ -1,23 +1,19 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { mutationAddExperience, mutationCreatePost } from '../../../lib/graphql/mutations';
-import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
-import { Search } from '../../../types/Search';
-import { Experience, User } from '../../../types/User';
-import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../post/Posts';
-import { ExperienceItem } from './Item';
-import Profile from '../Profile/Profile';
-import { SearchBar } from '../SearchBar';
+import { FaWindowClose } from 'react-icons/fa';
+
+import { mutationAddExperience } from '../../../lib/graphql/mutations';
+import { useUserContext } from '../../../Provider/UserProvider';
+import { Icon } from '../../../styles/Icon/IconContext';
+import { IconSmall } from '../../../styles/Icon/IconStyles';
 
 type props={
+  setShowCreate: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-export const ExperienceCreate:React.FC<props> = ({}) => {
+export const ExperienceCreate:React.FC<props> = ({setShowCreate}) => {
 
-  const {userRefetch} = useContextProvider()
+  const {userRefetch} = useUserContext()
 
   const [position, setPosition] = useState("")
   const [desc, setDesc] = useState("")
@@ -48,37 +44,34 @@ export const ExperienceCreate:React.FC<props> = ({}) => {
   }, [addExperienceLoading, addExperienceCalled])
   
   return (
-    <div>
-      create new Experience
-      <div>
+    <div className='fixedPopup'>
+      <div className="popupHead">
+        <button onClick={()=>{setShowCreate(false)}}>
+          <Icon config={IconSmall} icon={<FaWindowClose />} />
+        </button>
+        <h1 className='title1'> create new Experience </h1>
+      </div>
+      <div className='gridInput'>
         <label>position</label>
         <input type={"text"} value={position} onChange={(e)=>setPosition(e.target.value)} placeholder={"position"} />
-      </div>
-      <div>
         <label>company</label>
         <input type={"text"} value={company} onChange={(e)=>setCompany(e.target.value)} placeholder={"company"} />
-      </div>
-      <div>
         <label>Description</label>
         <input type={"text"} value={desc} onChange={(e)=>setDesc(e.target.value)} placeholder={"description"} />
-      </div>
-      <div>
         <label>Started At</label>
         <input type={"date"} value={startedAt} onChange={(e)=>setStartedAt(e.target.value)} placeholder={"started at"} />
-      </div>
-      <div>
-        <label>Is this your current active job?</label>
+        <label>active</label>
         <input type={"checkbox"} checked={isActive} onChange={(e)=>setIsActive(e.target.checked)} placeholder={"ended at"} />
+        {
+          !isActive && (
+            <>
+            <label>Ended At</label>
+            <input type={"date"} value={endedAt} onChange={(e)=>setEndedAt(e.target.value)} placeholder={"ended at"} />
+          </>
+          )
+        }
       </div>
-      {
-        !isActive && (
-        <div>
-          <label>Ended At</label>
-          <input type={"date"} value={endedAt} onChange={(e)=>setEndedAt(e.target.value)} placeholder={"ended at"} />
-        </div>
-        )
-      }
-      <button onClick={onCreateExperience}>submit</button>
+      <button className='button2' onClick={onCreateExperience}>submit</button>
     </div>
   )
 }

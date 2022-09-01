@@ -6,6 +6,7 @@ export type Post = {
   Sender: User
   Comments : [Comment]
   Likes : [User]
+  AttachmentLink : string
 }
 
 export type Comment = {

@@ -4,4 +4,5 @@ export enum strings {
   callDocs = 'callDoc',
   offerCandidates = 'offerCandidates',
   answerCandidates = 'answerCandidates',
+  theme = 'theme,'
 }

@@ -1,7 +1,11 @@
 import { ApolloQueryResult, OperationVariables, useLazyQuery, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
+import { FaWindowClose } from 'react-icons/fa';
 import { Route, Routes } from 'react-router-dom';
+import { Tiptap } from '../../Elements/Tiptap/TiptapEditor';
 import { mutationAddJob, mutationCreatePost } from '../../lib/graphql/mutations';
+import { Icon } from '../../styles/Icon/IconContext';
+import { IconSmall } from '../../styles/Icon/IconStyles';
 
 type props={
   jobsRefetch : (variables?: Partial<OperationVariables> | undefined) => Promise<ApolloQueryResult<any>>
@@ -32,17 +36,22 @@ export const JobCreate:React.FC<props> = ({jobsRefetch}) => {
 
 
   return (
-    <div>
-      <button
+    <div id='jobCreate'>
+      <button className='button3'
         onClick={()=>setShowPopup(true)}
-      > create job
+      > post a new job
       </button>
         {
           showPopup && (
-            <div>
-              <button onClick={()=>setShowPopup(false)}>close</button>
-              <input type={text} placeholder="text" value={text} onChange={(e)=>setText(e.target.value)} />
-              <button onClick={onSubmitHandle}>create new Job</button>
+            <div id='jobCreatePopup' className='fixedPopup'>
+              <div className='popupHead'>
+                <button onClick={()=>setShowPopup(false)}>
+                  <Icon config={IconSmall} icon={<FaWindowClose />} />
+                </button>
+                <h1> Create Job </h1>
+              </div>
+              <Tiptap setText={setText} showBar={true} />
+              <button className='button2' onClick={onSubmitHandle}>create new Job</button>
             </div>
           )
         }

@@ -3,20 +3,24 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { queryPost, queryPosts, queryUsersByName } from '../../lib/graphql/queries';
 import { Post } from '../../types/Post';
-import { User } from '../../types/User';
-import { Navbar } from '../Nav/Navbar';
-import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../User/SearchBar';
 import { Comments } from './Comment/Comments';
 import { CommentCreate } from './Comment/Create';
 import { Commentitem } from './Comment/Item';
 import { PostLike } from './Like';
+import parse from 'html-react-parser'
+import { UserProfilePhoto } from '../../Elements/User/UserProfilePhoto';
+import { UserInfo } from '../../Elements/User/UserInfo';
+import { Icon } from '../../styles/Icon/IconContext';
+import { IconSmall } from '../../styles/Icon/IconStyles';
+import { FaRegCommentDots } from 'react-icons/fa';
+import { PostMedia } from './Media';
 
 type props={
   postId : String
+  showExtras : boolean
 };
 
-export const PostItem:React.FC<props> = ({postId}) => {
+export const PostItem:React.FC<props> = ({postId, showExtras}) => {
 
   console.info(postId)
   
@@ -28,17 +32,38 @@ export const PostItem:React.FC<props> = ({postId}) => {
     }
   })
 
+  const onCommentButtonClick = ()=>{
+    setShowComments(!showComments)
+  }
+
   if(postLoading) return <>...</>
+
+  console.info(postData)
 
   const post = postData.Post as Post
 
   return (
-    <div style={{"border":"1px solid black", "margin":"10px"}}>
-      {post.Text} - {post.Sender.FirstName} {post.Sender.LastName}
-      <PostLike post={post} postRefetch={postRefetch} />
-
-      <Comments commentId='' postId={post.ID} />
-      {/* <CommentCreate postId={post.ID} commentId={""} /> */}
+    <div className='postItem' >
+      <div className="postItemContent">
+        <UserInfo showDetail={false} user={post.Sender} />
+        {parse(post.Text)}
+        {
+          showExtras && (
+            <>
+              <PostMedia attachmentLink={post.AttachmentLink} />
+              <div className="postItemBar">
+                <PostLike post={post} postRefetch={postRefetch} />
+                <div onClick={onCommentButtonClick}>
+                  <Icon config={IconSmall} icon={<FaRegCommentDots />} />
+                </div>
+              </div>
+            </>
+            )
+          }
+      </div>
+      {
+        showComments && ( <Comments commentId='' postId={post.ID} depth={0} /> )
+      }
     </div>
   )
 }

@@ -12,8 +12,8 @@ type props={
 export const MessageItem:React.FC<props> = ({message}) => {
 
   return (
-    <div>
-      from {concatUserName(message.User1)} : {message.Text}
+    <div className='messageItem'>
+      {concatUserName(message.User1)} : {message.Text}
     </div>
   )
 }

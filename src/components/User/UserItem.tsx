@@ -10,7 +10,7 @@ type props={
 
 export const UserItem:React.FC<props> = ({user}) => {
   return (
-    <NavLink to={`/profile/${user.ID}`}>
+    <NavLink to={`/profile/${user.ProfileLink}`}>
       <div>
         <h3>{user.FirstName} {user.LastName}</h3>
         <p>{user.Email}</p>

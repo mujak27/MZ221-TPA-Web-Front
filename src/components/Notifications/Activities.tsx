@@ -1,6 +1,9 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import './style.sass';
+
+import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { LoadingPage } from '../../Elements/Loading/Loading';
 import { queryActivities } from '../../lib/graphql/queries';
 import { Activity } from '../../types/User';
 import { ActivityItem } from './Item';
@@ -14,13 +17,16 @@ export const Activities:React.FC<props> = () => {
 
   const {loading:activitiesLoading, data:activitiesData, called:activitiesCalled, refetch:activitiesRefetch}= useQuery(queryActivities)
 
-  if(activitiesLoading) return <>...</>
+  if(activitiesLoading) return <LoadingPage text='loading notifications...' />
 
   const activities = activitiesData.Activities as Activity[]
 
   return (
-    <div style={{"border":"1px solid black", "margin":"10px"}}>
-      notifications:
+    <div id='notifications'>
+      <h1> notifications: </h1>
+      {
+        !activities.length && <p>no notification here...</p>
+      }
       {
         activities.map((activity)=>{
           return <ActivityItem key={crypto.randomUUID()} activity={activity} />

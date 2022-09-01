@@ -6,8 +6,10 @@ import { Post } from '../../types/Post';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
 import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../User/SearchBar';
+import { SearchBar } from '../Nav/SearchBar';
 import { PostItem } from './Item';
+import { PostCreate } from './Create';
+import "./style.sass"
 
 type props={
 };
@@ -19,6 +21,9 @@ export const Posts:React.FC<props> = ({}) => {
   const [posts, setPosts] = useState<Array<Post>>([])
   const [postsFunc, {loading:postsLoading, data:postsData, called:postsCalled, refetch:postsRefetch} ]= useLazyQuery(queryPosts)
 
+  const onAddPost = (post : Post)=>{
+    setPosts([post, ...posts])
+  }
 
   const onLoadMore = ()=>{
     postsFunc({
@@ -26,6 +31,10 @@ export const Posts:React.FC<props> = ({}) => {
         "Limit" : limit,
         "Offset" : offset
       }
+    }).then((data)=>{
+      const newPosts = data.data.Posts as Array<Post>
+      if(newPosts.length) setPosts([...posts, ...newPosts])
+      else setEmpty(true)
     })
     setOffset(offset+limit);
   }
@@ -34,35 +43,29 @@ export const Posts:React.FC<props> = ({}) => {
     onLoadMore()
   }, [])
 
-  useEffect(()=>{
-    if(postsCalled && !postsLoading && postsData && !postsData.Posts.length){
-      setEmpty(true);
-      return;
-    }
-    if(!postsLoading && postsData) {
-      const newPosts = postsData.Posts as Array<Post>
-      setPosts([...posts, ...newPosts])
-    }
-  }, [postsLoading])
-
   return (
-    <div>
-      <div>
-        {
-          posts.map((post)=>{
-            return <PostItem postId={post.ID} key={crypto.randomUUID()} />
-          })
-        }
-      </div>
-      <button
-        onClick={onLoadMore}
-        disabled={empty}
-        >
+    <div id="postsWrapper">
+      <div id="posts">
+        <PostCreate onAddPost={onAddPost}/>
+        <div>
           {
-            !empty ? <>load more</> : <>that's all</>
+            posts.map((post)=>{
+              return <PostItem showExtras={true} postId={post.ID} key={crypto.randomUUID()} />
+            })
           }
-        </button>
+        </div>
+        <button
+          onClick={onLoadMore}
+          disabled={empty}
+          >
+            {
+              !empty ? 
+                <button className='button2'>load more</button> :
+                null
+                // <button className='button3' disabled>that's all</button>
+            }
+          </button>
+      </div>
     </div>
   )
 }
-

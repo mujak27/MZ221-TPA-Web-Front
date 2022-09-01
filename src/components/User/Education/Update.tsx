@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { mutationAddExperience, mutationCreatePost, mutationUpdateEducation, mutationUpdateExperience } from '../../../lib/graphql/mutations';
 import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
+import { useUserContext } from '../../../Provider/UserProvider';
 import { Search } from '../../../types/Search';
 import { Education, Experience, User } from '../../../types/User';
 import { Navbar } from '../../Nav/Navbar';
 import { Posts } from '../../post/Posts';
 import { EducationItem } from './Item';
 import Profile from '../Profile/Profile';
-import { SearchBar } from '../SearchBar';
+import { SearchBar } from '../../Nav/SearchBar';
 
 type props={
   education : Education
@@ -19,7 +19,7 @@ type props={
 
 export const EducationUpdate:React.FC<props> = ({education, setShowUpdate}) => {
 
-  const {userRefetch} = useContextProvider()
+  const {userRefetch} = useUserContext()
 
 
 	const [school, setSchool] = useState(education.School)   

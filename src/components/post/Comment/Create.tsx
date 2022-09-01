@@ -1,6 +1,7 @@
 import { ApolloQueryResult, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { Tiptap } from '../../../Elements/Tiptap/TiptapEditor';
 import { mutationCommentPost, mutationSendMessage } from '../../../lib/graphql/mutations';
 import { queryComments } from '../../../lib/graphql/queries';
 import { Comment } from '../../../types/Post';
@@ -17,6 +18,7 @@ type props={
 
 export const CommentCreate:React.FC<props> = ({commentId, postId, CommentsRefetch}) => {
 
+  const [showCreate, setShowCreate] = useState(false)
   const [text, setText] = useState("")
 
   const [commentPostFunc, {called : commentPostCalled, loading : commentPostLoading}] = useMutation(mutationCommentPost)
@@ -42,10 +44,14 @@ export const CommentCreate:React.FC<props> = ({commentId, postId, CommentsRefetc
 
 
   return (
-    <div>
-      Insert comment:
-      <input type={text} onChange={(e)=>setText(e.target.value)} />
-      <button onClick={onCreateComment}>send</button>
+    <div className='commentCreate'>
+      <button onClick={()=>setShowCreate(!showCreate)} >reply</button>
+      {showCreate && 
+        <div>
+          <Tiptap setText={setText} showBar={false} />
+          <button onClick={onCreateComment}>send</button>
+        </div>
+      }
     </div>
   )
 }

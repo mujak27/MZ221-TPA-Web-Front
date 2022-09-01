@@ -1,18 +1,24 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
+import { FaRegCommentDots } from 'react-icons/fa';
 import { Route, Routes } from 'react-router-dom';
+import { UserInfo } from '../../../Elements/User/UserInfo';
 import { queryComment, queryComments } from '../../../lib/graphql/queries';
+import { Icon } from '../../../styles/Icon/IconContext';
+import { IconSmall } from '../../../styles/Icon/IconStyles';
 import { Comment } from '../../../types/Post';
 import { concatUserName } from '../../../utils/User';
 import { Comments } from './Comments';
 import { CommentCreate } from './Create';
 import { CommentLike } from './Like';
+import parse from 'html-react-parser'
 
 type props={
   commentId : string
+  depth : number
 };
 
-export const Commentitem:React.FC<props> = ({commentId}) => {
+export const Commentitem:React.FC<props> = ({commentId, depth}) => {
   
   const [showComments, setShowComments] = useState(false)
 
@@ -28,22 +34,22 @@ export const Commentitem:React.FC<props> = ({commentId}) => {
 
 
   return (
-    <div>
-      {concatUserName(comment.Sender)} : {comment.Text}
-      <CommentLike comment={comment} commentRefetch={commentRefetch} />
-      <br/>
-      {
-        !showComments && (
-          <button onClick={()=>setShowComments(true)}>show comment</button>
-        )
-      }
+    <div className='commentItem'>
+      <div className="commentItemContent">
+        <UserInfo user={comment.Sender} />
+        {parse(comment.Text)}
+        <div className="commentItemBar">
+          <CommentLike comment={comment} commentRefetch={commentRefetch} />
+          <button onClick={()=>setShowComments(!showComments)}>
+            <Icon config={IconSmall} icon={<FaRegCommentDots />} />
+          </button>
+        </div>
+      </div>
       {
         showComments && (
           <>
-            <button onClick={()=>setShowComments(false)}>hide comment</button>
-            {comment.Text} <br/>
             {
-              <Comments postId={comment.Post.ID} commentId={comment.ID} />
+              <Comments postId={comment.Post.ID} commentId={comment.ID} depth={depth + 1} />
             }
           </>
         )

@@ -10,7 +10,7 @@ import { Posts } from '../../post/Posts';
 import { EducationCreate } from './Create';
 import { EducationItem } from './Item';
 import Profile from '../Profile/Profile';
-import { SearchBar } from '../SearchBar';
+import { SearchBar } from '../../Nav/SearchBar';
 
 type props={
   myProfile : boolean
@@ -22,7 +22,7 @@ export const Educations:React.FC<props> = ({educations, myProfile}) => {
   const [showCreate, setShowCreate] = useState(false)
 
   return (
-    <div>
+    <div id='educations'>
       <h1>educations</h1>
       {
         educations.map((education)=>{
@@ -30,10 +30,10 @@ export const Educations:React.FC<props> = ({educations, myProfile}) => {
         })
       }
       {
-        myProfile && (<button onClick={()=>setShowCreate(true)}>add new education</button>)
+        myProfile && (<button className='button2' onClick={()=>setShowCreate(true)}>add new education</button>)
       }
       {
-        showCreate && <EducationCreate />
+        showCreate && <EducationCreate setShowCreate={setShowCreate} />
       }
     </div>
   )

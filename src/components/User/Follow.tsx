@@ -1,10 +1,9 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Navigate, Route, Routes, useParams } from 'react-router-dom';
+
 import { mutationFollow, mutationUnFollow } from '../../lib/graphql/mutations';
-import { queryIsFollow, queryUser } from '../../lib/graphql/queries';
-import { useContextProvider } from '../../Provider/ContextProvider';
-import { User } from '../../types/User';
+import { queryIsFollow } from '../../lib/graphql/queries';
+import { useUserContext } from '../../Provider/UserProvider';
 
 
 type props={
@@ -13,7 +12,8 @@ type props={
 
 export const Follow:React.FC<props> = ({userId}) => {
 
-  const {user : myUser} = useContextProvider();
+  const {user : myUser} = useUserContext();
+  console.info(myUser.ID)
 
   const {called : isFollowCalled, loading : isFollowLoading, data : isFollowData, refetch: isFollowRefetch} = useQuery(queryIsFollow, {
     variables: {
@@ -55,7 +55,7 @@ export const Follow:React.FC<props> = ({userId}) => {
   const isFollow = isFollowData as boolean
 
   return (
-    <button
+    <button className='button2'
       onClick={isFollow ? onUnFollow : onFollow}
       >
         {isFollow ? <>unfollow</> : <>follow</>}

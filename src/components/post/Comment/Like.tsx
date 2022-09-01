@@ -1,9 +1,12 @@
 import { ApolloQueryResult, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Route, Routes } from 'react-router-dom';
 import { mutationCommentPost, mutationLikeComment, mutationSendMessage, mutationUnLikeComment } from '../../../lib/graphql/mutations';
 import { queryComments, queryIsLikeComment } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
+import { useUserContext } from '../../../Provider/UserProvider';
+import { Icon } from '../../../styles/Icon/IconContext';
+import { IconSmall } from '../../../styles/Icon/IconStyles';
 import { Comment, Post } from '../../../types/Post';
 import { Comments } from './Comments';
 
@@ -17,7 +20,7 @@ type props={
 
 export const CommentLike:React.FC<props> = ({comment, commentRefetch}) => {
 
-  const {user} = useContextProvider()
+  const {user} = useUserContext()
 
   const {loading : isLikeCommentLoading, data : isLikeCommentData, refetch : isLikeCommentRefetch} = useQuery(queryIsLikeComment, {
     variables: {
@@ -67,13 +70,16 @@ export const CommentLike:React.FC<props> = ({comment, commentRefetch}) => {
   
 
   return (
-    <div>
+    <div className='postLike'>
       {
         isLike ? 
-          <button onClick={onUnLikeComment}>unlike</button> :
-          <button onClick={onLikeComment}>like</button>
-      }
-      liked by {comment.Likes.length}
+          <button onClick={onUnLikeComment}>
+            <Icon config={IconSmall} icon={<FaHeart />} />
+          </button> :
+          <button onClick={onLikeComment}>
+            <Icon config={IconSmall} icon={<FaRegHeart />} />
+          </button>
+      }{comment.Likes.length}
     </div>
   )
 }

@@ -19,12 +19,20 @@ export const UserSuggestions:React.FC<props> = () => {
   console.info(userSuggestions)
 
   return (
-    <div>
-      <h3>User you might know:</h3>
+    <div id='userSuggestions'>
       {
-        userSuggestions.map((connectRequest)=>{
-          return <UserSuggestionItem key={crypto.randomUUID()} user={connectRequest} />
-        })
+        userSuggestions.length ? <>
+          <h3>User you might know:</h3>
+          {
+            userSuggestions.map((connectRequest)=>{
+              return <UserSuggestionItem key={crypto.randomUUID()} user={connectRequest} />
+            })
+          }
+        </> : 
+        <div id='noUserSuggestion'>
+          <h3>no suggestion</h3>
+          connect to new people
+        </div>
       }
     </div>
   )

@@ -9,11 +9,11 @@ import { Commentitem } from './Item';
 type props={
   commentId : string
   postId : string
+  depth : number
 };
 
-export const Comments:React.FC<props> = ({commentId, postId}) => {
+export const Comments:React.FC<props> = ({commentId, postId, depth}) => {
   
-  const [showComments, setShowComments] = useState(false)
 
   const {loading:commentsLoading, data:commentsData, called:commentsCalled, refetch:commentsRefetch}= useQuery(queryComments, {
     variables: {
@@ -27,13 +27,13 @@ export const Comments:React.FC<props> = ({commentId, postId}) => {
   const comments = commentsData.Comments as Comment[]
 
   return (
-    <div style={{"border":"1px solid black", "margin":"10px"}}>
+    <div className='comments'>
+      <CommentCreate commentId={commentId} postId={postId} CommentsRefetch={commentsRefetch} />
       {
         comments.map((comment)=>{
-          return <Commentitem key={crypto.randomUUID()} commentId={comment.ID}  />
+          return <Commentitem depth={depth} key={crypto.randomUUID()} commentId={comment.ID}  />
         })
       }
-      <CommentCreate commentId={commentId} postId={postId} CommentsRefetch={commentsRefetch} />
     </div>
   )
 }

@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { mutationAddExperience, mutationCreatePost, mutationUpdateExperience } from '../../../lib/graphql/mutations';
 import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
-import { useContextProvider } from '../../../Provider/ContextProvider';
+import { useUserContext } from '../../../Provider/UserProvider';
 import { Search } from '../../../types/Search';
 import { Experience, User } from '../../../types/User';
 import { Navbar } from '../../Nav/Navbar';
 import { Posts } from '../../post/Posts';
 import { ExperienceItem } from './Item';
 import Profile from '../Profile/Profile';
-import { SearchBar } from '../SearchBar';
+import { SearchBar } from '../../Nav/SearchBar';
 
 type props={
   experience : Experience
@@ -19,7 +19,7 @@ type props={
 
 export const ExperienceUpdate:React.FC<props> = ({experience, setShowUpdate}) => {
 
-  const {userRefetch} = useContextProvider()
+  const {userRefetch} = useUserContext()
 
   const [position, setPosition] = useState(experience.Position)
   const [desc, setDesc] = useState(experience.Desc)

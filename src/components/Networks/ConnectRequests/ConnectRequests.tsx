@@ -16,15 +16,19 @@ export const ConnectRequests:React.FC<props> = () => {
   if(connectRequestsLoading) return <>fetching data...</>
 
   const connectRequests = connectRequestsData.ConnectionRequest as User[]
-  console.info(connectRequests)
 
   return (
-    <div>
-      <h3>connect requests:</h3>
+    <div id='connectRequests'>
       {
-        connectRequests.map((connectRequest)=>{
-          return <ConnectRequestItem key={crypto.randomUUID()} user={connectRequest} />
-        })
+        connectRequests.length ?
+        <>
+          <h1>connect requests:</h1>
+          {
+            connectRequests.map((connectRequest)=>{
+              return <ConnectRequestItem key={crypto.randomUUID()} user={connectRequest} />
+            })
+          }
+        </> : <h3 id='noConnectRequest'>no waiting connect request</h3>
       }
     </div>
   )

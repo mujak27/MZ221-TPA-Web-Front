@@ -1,6 +1,8 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import './style.sass';
+
+import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
 import { queryJobs } from '../../lib/graphql/queries';
 import { Job } from '../../types/User';
 import { JobCreate } from './Create';
@@ -17,11 +19,10 @@ export const Jobs:React.FC<props> = () => {
   if(jobsLoading) return <>fetching data...</>
 
   const jobs = jobsData.Jobs as Job[]
-  console.info(jobs)
-
+  
   return (
-    <div>
-      <h3>Jobs:</h3>
+    <div id='jobs'>
+      {/* <h1 className='title1'>Jobs</h1> */}
       <JobCreate jobsRefetch={jobsRefetch} />
       {
         !jobs.length ? <>no jobs found...</> :
