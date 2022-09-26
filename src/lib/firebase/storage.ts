@@ -26,7 +26,7 @@ export const uploadFile = async (file : File, user : User)=>{
 
   const uploaded = await refStorage.put(file, metadata)
   const url = await uploaded.ref.getDownloadURL()
-  return url;
+  return url as string;
 }
 
 

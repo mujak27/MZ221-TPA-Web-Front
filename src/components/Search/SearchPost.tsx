@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 
 import { queryCountPost, queryCountUser } from '../../lib/graphql/queries';
 import { Post } from '../../types/Post';
-import { Search } from '../../types/Search';
+import { TypeSearch } from '../../types/Search';
 import { PostItem } from '../post/Item';
 import "../post/style.sass"
 
 type props={
   posts : Post[]
-  setSearch : React.Dispatch<React.SetStateAction<Search | undefined>>
+  setSearch : React.Dispatch<React.SetStateAction<TypeSearch | undefined>>
   searchString : string
   searchOffset : number
   setSearchOffset: React.Dispatch<React.SetStateAction<number>>
@@ -28,7 +28,6 @@ export const SearchPost:React.FC<props> = ({posts, setSearch, searchString, sear
 
   if(countPostLoading) return <>fetching data...</>
   const countUser = countPostData.CountUser as Number
-  console.info(countUser)
 
   const onPrev = ()=>{
     setSearchOffset(searchOffset - searchLimit)

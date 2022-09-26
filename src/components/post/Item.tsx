@@ -13,17 +13,16 @@ import { UserInfo } from '../../Elements/User/UserInfo';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconSmall } from '../../styles/Icon/IconStyles';
 import { FaRegCommentDots } from 'react-icons/fa';
-import { PostMedia } from './Media';
+import { Media } from '../../Elements/Media/Media';
+import { PostShare } from './Share/Share';
 
 type props={
   postId : String
-  showExtras : boolean
+  showExtras? : boolean
 };
 
 export const PostItem:React.FC<props> = ({postId, showExtras}) => {
 
-  console.info(postId)
-  
   const [showComments, setShowComments] = useState(false)
 
   const {loading:postLoading, data:postData, called:postCalled, refetch:postRefetch}= useQuery(queryPost, {
@@ -38,29 +37,34 @@ export const PostItem:React.FC<props> = ({postId, showExtras}) => {
 
   if(postLoading) return <>...</>
 
-  console.info(postData)
-
+  if(postData == undefined || postData == null) return null
   const post = postData.Post as Post
 
-  console.info(post)
+
   return (
-    <div className='postItem' >
-      <div className="postItemContent">
-        <UserInfo showDetail={false} user={post.Sender} />
-        {parse(post.Text)}
+    <div className="postWrapper">
+      <div className='postItem' >
+        <div className="postItemContent">
+          <UserInfo user={post.Sender} />
+          <p>
+            {parse(post.Text)}
+          </p>
+        </div>
         {
           showExtras && (
             <>
-              <PostMedia attachmentLink={post.AttachmentLink} />
+              <Media attachmentLink={post.AttachmentLink} />
               <div className="postItemBar">
                 <PostLike post={post} postRefetch={postRefetch} />
                 <div onClick={onCommentButtonClick}>
                   <Icon config={IconSmall} icon={<FaRegCommentDots />} />
+                  {post.Comments.length}
                 </div>
+                <PostShare post={post} />
               </div>
             </>
-            )
-          }
+          )
+        }
       </div>
       {
         showComments && ( <Comments commentId='' postId={post.ID} depth={0} /> )

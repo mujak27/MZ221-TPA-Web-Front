@@ -16,7 +16,6 @@ export const UserSuggestions:React.FC<props> = () => {
   if(userSuggestionsLoading) return <>fetching data...</>
 
   const userSuggestions = userSuggestionsData.UsersSuggestion as User[]
-  console.info(userSuggestions)
 
   return (
     <div id='userSuggestions'>

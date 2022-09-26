@@ -15,9 +15,8 @@ export const ExperienceItem:React.FC<props> = ({experience, myProfile}) => {
 
   const {userRefetch} = useUserContext()
 
-  const [showUpdate, setShowUpdate] = useState(false)
 
-  const [removeExperienceFunc, {loading:removeExperienceLoading, called : removeExperienceCalled}] = useMutation(mutationRemoveExperience)
+  const [removeExperienceFunc] = useMutation(mutationRemoveExperience)
 
 
   const onRemove = ()=>{
@@ -25,18 +24,10 @@ export const ExperienceItem:React.FC<props> = ({experience, myProfile}) => {
       variables : {
         "id": experience.ID
       }
+    }).then(()=>{
+      userRefetch()
     })
   }
-
-  const onUpdate = ()=>{
-
-  }
-
-  
-  useEffect(()=>{
-    if(!removeExperienceLoading && removeExperienceCalled) userRefetch()
-  }, [removeExperienceLoading, removeExperienceCalled])
-  
 
   return (
     <div className='experienceItem'>
@@ -44,12 +35,9 @@ export const ExperienceItem:React.FC<props> = ({experience, myProfile}) => {
       <h3> {experience.Company} </h3>
       {
         myProfile && (
-          <div>
+          <div className='flex'> 
             <button className='button3' onClick={onRemove}>remove</button>
-            <button className='button3' onClick={()=>{setShowUpdate(true)}}>update</button>
-            {
-              showUpdate && <ExperienceUpdate experience={experience} setShowUpdate={setShowUpdate} />
-            }
+            <ExperienceUpdate experience={experience} />
           </div>
           )
         }

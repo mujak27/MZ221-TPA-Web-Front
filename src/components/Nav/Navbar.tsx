@@ -2,34 +2,37 @@ import './style.sass';
 
 import React, { useState } from 'react';
 import { BsPeople } from 'react-icons/bs';
-import { FaHome, FaLinkedin, FaRegBell } from 'react-icons/fa';
+import { FaBars, FaHome, FaLinkedin, FaRegBell } from 'react-icons/fa';
 import { IoReaderOutline } from 'react-icons/io5';
 import { NavLink } from 'react-router-dom';
 
+import { UserProfilePhoto } from '../../Elements/User/UserProfilePhoto';
 import { useUserContext } from '../../Provider/UserProvider';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconBig, IconSmall } from '../../styles/Icon/IconStyles';
-import { Search } from '../../types/Search';
-import { getUserProfilePhoto } from '../../utils/User';
+import { TypeSearch } from '../../types/Search';
 import { SearchBar } from './SearchBar';
-import { SearchResultPopup } from './SearchResultPopup';
 import { UserPopup } from './UserPopup';
 
 type props={
-  search : Search | undefined
-  setSearch : React.Dispatch<React.SetStateAction<Search | undefined>>
-  showPopup : boolean
   onSearchHandle: (searchString: string) => void
-  
 };
 
 
-export const Navbar:React.FC<props> = ({search, setSearch, showPopup, onSearchHandle}) => {
+export const Navbar:React.FC<props> = ({onSearchHandle}) => {
 
   const [showUserPopup, setShowUserPopup] = useState(false)
+  const [showNavbarMenu, setShowNavbarMenu] = useState(false)
   const {user} = useUserContext();
+  console.info(user)
 
   const onClosePopup = ()=>{
+    setShowNavbarMenu(false)
+    setShowUserPopup(false)
+  }
+
+  const onToggleNavbarMenu = ()=>{
+    setShowNavbarMenu(!showNavbarMenu);
     setShowUserPopup(false)
   }
 
@@ -39,28 +42,32 @@ export const Navbar:React.FC<props> = ({search, setSearch, showPopup, onSearchHa
         <div id="navSearch">
           <Icon config={IconBig} icon={<FaLinkedin />}  />
           <SearchBar onSearchHandle={onSearchHandle} />
-          { showPopup && (<SearchResultPopup onClosePopup={onClosePopup} search={search} />)}
         </div>
-        <div id="navMenu">
-          <NavLink to={"/"}>
+        <div id="navButton" onClick={onToggleNavbarMenu}>
+            <div id="navMenuIcon">
+              <Icon config={IconSmall} icon={<FaBars />} /> 
+            </div>
+        </div>
+        <div id="navMenu" className={showNavbarMenu ? 'active' : ""}>
+          <NavLink to={"/"}  onClick={onClosePopup}>
             <div id="navMenuIcon">
               <Icon config={IconSmall} icon={<FaHome />} /> 
             </div>
             <p>home</p>
           </NavLink>
-          <NavLink to={"/notifications/"}>
+          <NavLink to={"/notifications/"}  onClick={()=>{onClosePopup}}>
             <div id="navMenuIcon">
               <Icon config={IconSmall} icon={<FaRegBell />} /> 
             </div>
             <p>notifications</p>
           </NavLink>
-          <NavLink to={"/networks/"}>
+          <NavLink to={"/networks/"}  onClick={()=>{onClosePopup}}>
             <div id="navMenuIcon">
               <Icon config={IconSmall} icon={<BsPeople />} /> 
             </div>
             <p>networks</p>
           </NavLink>
-          <NavLink to={"/jobs/"}>
+          <NavLink to={"/jobs/"}  onClick={()=>{onClosePopup}}>
             <div id="navMenuIcon">
               <Icon config={IconSmall} icon={<IoReaderOutline />} /> 
             </div>
@@ -68,10 +75,15 @@ export const Navbar:React.FC<props> = ({search, setSearch, showPopup, onSearchHa
           </NavLink>
           <div onClick={()=>setShowUserPopup(!showUserPopup)}>
             <div id="navMenuIcon">
-              <img className="userProfilePhoto userImage" src={getUserProfilePhoto(user)} />
+              <UserProfilePhoto user={user} />
+              {/* <img className="userProfilePhoto userImage" src={getUserProfilePhoto(user)} /> */}
             </div>
             <p>me</p>
-            { showUserPopup && (<UserPopup />)}
+            { showUserPopup && (
+              <div onClick={onClosePopup}>
+                <UserPopup  />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,0 +1,16 @@
+@use '../../styles/sass/mixins' as *
+
+#popup
+  @include center() 
+  @include secondary()
+  @include padding()
+  position: fixed
+
+
+#popupOverlay
+  width: 100vw
+  height: 100vw
+  position: fixed
+  top: 0
+  left: 0
+  background-color: #3336

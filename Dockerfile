@@ -12,9 +12,9 @@ RUN npm install
 
 COPY . .
 
-ENV PORT=4173
+ENV PORT=5173
 
-EXPOSE 4173
+EXPOSE 5173
 
 CMD [ "npm", "start"]
 # RUN npm run start

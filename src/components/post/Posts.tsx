@@ -23,6 +23,7 @@ export const Posts:React.FC<props> = ({}) => {
 
   const onAddPost = (post : Post)=>{
     setPosts([post, ...posts])
+    setOffset(offset + 1)
   }
 
   const onLoadMore = ()=>{
@@ -54,9 +55,8 @@ export const Posts:React.FC<props> = ({}) => {
             })
           }
         </div>
-        <button
+        <div
           onClick={onLoadMore}
-          disabled={empty}
           >
             {
               !empty ? 
@@ -64,7 +64,7 @@ export const Posts:React.FC<props> = ({}) => {
                 null
                 // <button className='button3' disabled>that's all</button>
             }
-          </button>
+          </div>
       </div>
     </div>
   )

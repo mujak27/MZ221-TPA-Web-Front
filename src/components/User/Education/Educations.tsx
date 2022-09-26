@@ -1,16 +1,8 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { mutationCreatePost } from '../../../lib/graphql/mutations';
-import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
-import { Search } from '../../../types/Search';
-import { Education, Experience, User } from '../../../types/User';
-import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../post/Posts';
+
+import { Education } from '../../../types/User';
 import { EducationCreate } from './Create';
 import { EducationItem } from './Item';
-import Profile from '../Profile/Profile';
-import { SearchBar } from '../../Nav/SearchBar';
 
 type props={
   myProfile : boolean

@@ -1,7 +1,7 @@
 import { Post } from "./Post"
 import { User } from "./User"
 
-export type Search = {
+export type TypeSearch = {
   Users : User[],
   Posts : Post[],
 }

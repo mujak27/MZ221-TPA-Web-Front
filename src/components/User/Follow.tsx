@@ -13,8 +13,7 @@ type props={
 export const Follow:React.FC<props> = ({userId}) => {
 
   const {user : myUser} = useUserContext();
-  console.info(myUser.ID)
-
+  
   const {called : isFollowCalled, loading : isFollowLoading, data : isFollowData, refetch: isFollowRefetch} = useQuery(queryIsFollow, {
     variables: {
       id1: myUser.ID,

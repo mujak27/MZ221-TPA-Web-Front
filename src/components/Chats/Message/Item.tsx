@@ -1,9 +1,9 @@
-import { useLazyQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { Message } from '../../../types/Message';
-import { User } from '../../../types/User';
-import { concatUserName } from '../../../utils/User';
+
+import { Media } from '../../../Elements/Media/Media';
+import { useUserContext } from '../../../Provider/UserProvider';
+import { enumMessageType, Message } from '../../../types/Message';
+import { PostItem } from '../../post/Item';
 
 type props={
   message : Message
@@ -11,9 +11,23 @@ type props={
 
 export const MessageItem:React.FC<props> = ({message}) => {
 
-  return (
-    <div className='messageItem'>
-      {concatUserName(message.User1)} : {message.Text}
+  const {user} = useUserContext()
+
+  const messageContent = (()=>{
+    switch(message.messageType){
+      case enumMessageType.text:
+        return <>{message.Text}</>
+      case enumMessageType.post:
+        return <PostItem postId={message.Text} showExtras={true} />
+    }
+  })()
+
+  return ( 
+    <div className={`messageItem ${message.User1.ID == user.ID ? 'myMessageItem' : ''}`}>
+      {messageContent}
+      {
+        message.imageLink && <Media attachmentLink={message.imageLink} />
+      }
     </div>
   )
 }

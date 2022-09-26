@@ -1,37 +1,34 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { queryConnectedUsers, querySearch, queryUsersByName } from '../../lib/graphql/queries';
-import { Search } from '../../types/Search';
+
+import { queryConnectedUsers, queryRecentMessages } from '../../lib/graphql/queries';
+import { Message } from '../../types/Message';
 import { User } from '../../types/User';
-import { Navbar } from '../Nav/Navbar';
-import { PostCreate } from '../post/Create';
-import { Posts } from '../post/Posts';
-import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../Nav/SearchBar';
+import { UserSearch } from '../User/Search';
 import { ChatListItem } from './ListItem';
 
 type props={
-  onOpenBox : (user: User) => void
+  onOpenBox : (user: User) => Promise<void>
 };
 
 export const ChatList:React.FC<props> = ({onOpenBox}) => {
 
-  const {loading : connectedUsersLoading, data : connectedUsersData} = useQuery(queryConnectedUsers, {})
+  const {loading : recentMessagesLoading, data : recentMessagesData} = useQuery(queryRecentMessages)
 
-  if(connectedUsersLoading) return <>fetching data...</>
+  if(recentMessagesLoading) return <>fetching data...</>
 
-  const connectedUsers = connectedUsersData.ConnectedUsers as User[]
-
+  const messages = recentMessagesData.RecentMessage as Message[]
 
   return (
     <div id='chatList'>
-      <div id="chatListHeader">
-        <h1>chat with connected people</h1>
-      </div>
+      <UserSearch 
+        body={<div className='button3'>search user</div>}
+        onClickHandle={onOpenBox}
+        title={"new chat"}
+        />
       {
-        connectedUsers.map((connectedUser)=>{
-          return <ChatListItem key={crypto.randomUUID()} onOpenBox={onOpenBox} connectedUser={connectedUser} />
+        messages.map((message)=>{
+          return <ChatListItem key={crypto.randomUUID()} onOpenBox={onOpenBox} message={message} />
         })
       }
     </div>

@@ -30,15 +30,12 @@ export const FillData:React.FC<props> = ({user}) => {
   
   const [firstUpdateProfileFunc, {data : firstUpdateProfileData, loading: firstUpdateProfileLoading, called: firstUpdateProfileCalled}] = useMutation(mutationFirstUpdateProfile);
 
-  console.info(userRefetch)
-
   const onUpdateProfile = async ()=>{
     try{
       const prom = async ()=>{
         if(profilePhotoFile != null){
           const url = await uploadFile(profilePhotoFile, user)
           setProfilePhoto(url)
-          console.info(url)
         }
         firstUpdateProfileFunc({variables:{
           "input": {
@@ -60,7 +57,6 @@ export const FillData:React.FC<props> = ({user}) => {
   }
 
   useEffect(()=>{}, [successFillData])
-  console.info(successFillData)
 
   if(successFillData) return (<Navigate to="/" />)
 
@@ -86,7 +82,6 @@ export const FillData:React.FC<props> = ({user}) => {
           <button className="button2" onClick={onUpdateProfile}>update profile</button>
         </div>
       </div>
-      <button onClick={()=>console.info(successFillData)} >check</button>
     </>
   )
 }

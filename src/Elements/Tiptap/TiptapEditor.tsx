@@ -1,26 +1,24 @@
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import {
-  FaBold,
-  FaHeading,
-  FaItalic,
-  FaListOl,
-  FaListUl,
-  FaQuoteLeft,
-  FaRedo,
-  FaStrikethrough,
-  FaUnderline,
-  FaUndo,
-} from "react-icons/fa";
+import './style.sass';
 
-import "./style.sass"
+import { useLazyQuery } from '@apollo/client';
+import Mention from '@tiptap/extension-mention';
+import Underline from '@tiptap/extension-underline';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { useEffect, useState } from 'react';
+import { FaBold, FaHeading, FaItalic, FaListOl, FaListUl, FaQuoteLeft, FaStrikethrough, FaUnderline } from 'react-icons/fa';
+
+import { queryUsersByName } from '../../lib/graphql/queries';
+import { User } from '../../types/User';
+import Suggestions from './Suggestion';
+import {Hashtag} from './Hashtags'
+import Suggestion from './Suggestion';
 
 type props = {
   editor : any
 }
 
-const MenuBar:React.FC<props> = ({ editor  }) => {
+const MenuBar:React.FC<props> = ({ editor }) => {
   if (!editor) {
     return null;
   }
@@ -96,15 +94,37 @@ const MenuBar:React.FC<props> = ({ editor  }) => {
 };
 
 export const Tiptap:React.FC<{setText : React.Dispatch<React.SetStateAction<string>>, showBar : boolean}>  = ({ setText, showBar }) => {
-  const editor = useEditor({
-    extensions: [StarterKit, Underline],
-    content: ``,
 
-    onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      setText(html);
-    },
-  });
+  const [name, setName] = useState("")
+  
+  
+  const [funcUsersByName, {loading : loadingUsersByName, data : dataUsersByName}] = useLazyQuery(queryUsersByName)
+
+  const users = dataUsersByName as User[]
+
+  const editor = useEditor({
+    extensions: [
+    StarterKit,
+    Underline,
+    // Mention.configure({
+    //   HTMLAttributes: {
+    //     class: 'mention',
+    //   },
+    //   suggestion : !loadingUsersByName ? Suggestions({users, setName}) : Suggestions({users : [], setName}),
+    // }),
+    Hashtag.configure({
+      HTMLAttributes:{
+        class: 'mention',
+      },
+      suggestion: Suggestion
+    })
+  ],
+  content: ``,
+  onUpdate: ({ editor }) => {
+    const html = editor.getHTML();
+    setText(html);
+  },
+  })
 
   return (
     <div className="textEditor">

@@ -1,10 +1,11 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { Navigate, NavLink } from "react-router-dom";
-import { toastPromise } from "../../../Elements/Toast/Toast";
+import { toastError, toastPromise } from "../../../Elements/Toast/Toast";
 import { mutationRegister } from "../../../lib/graphql/mutations";
 import { useThemeContext } from "../../../Provider/ThemeProvider";
 import { strings } from "../../../utils/strings";
+import { validateEmail, validatePassword } from "../../../utils/validation";
 import { OauthGoogleLogin } from "../Oauth/Oauth";
 import '../style.sass'
 import { UserMiddleware } from "../UserMiddleware";
@@ -17,18 +18,17 @@ type props={
 export const Register:React.FC<props> = () => {
 
   const {currTheme} = useThemeContext()
-  const [successLogin, setSuccessLogin] = useState(false)
+  const [successRegister, setSuccessRegister] = useState(false)
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [midName, setMidName] = useState('');
   
-  const [register, {data : registerData, loading, called}] = useMutation(mutationRegister);
+  const [register] = useMutation(mutationRegister);
   
 
-  const onLogin = ()=>{
+  const onRegister = async ()=>{
+    if(!validateEmail(email, currTheme)) return
+    if(!validatePassword(password, currTheme)) return
     try{
       toastPromise(
         register({variables:{
@@ -38,7 +38,7 @@ export const Register:React.FC<props> = () => {
           }
         }}).then((data)=>{
           localStorage.setItem(strings.sessionKey, data.data.Register)
-          setSuccessLogin(true)
+          setSuccessRegister(true)
         }),
         currTheme
       )
@@ -48,15 +48,15 @@ export const Register:React.FC<props> = () => {
     }
   }
 
-  if(successLogin || localStorage.getItem(strings.sessionKey)) return <Navigate to={'/'} />
+  if(successRegister || localStorage.getItem(strings.sessionKey)) return <Navigate to={'/'} />
 
   return (
     <>
     <UserMiddleware homeToGuest={false} />
       <div id="loginRegisterWrapper">
+        <img id="logo" src="logo.png" />
         <div id="register">
           <h1>Make the most of your professional life</h1>
-
           <input 
             required
             type="email" 
@@ -73,7 +73,7 @@ export const Register:React.FC<props> = () => {
             placeholder="password"
             />
 
-          <button className="button2" onClick={onLogin}>register</button>
+          <button className="button2" onClick={onRegister}>register</button>
           <OauthGoogleLogin />
         </div>
         <div id="changeMethod">

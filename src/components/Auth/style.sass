@@ -1,25 +1,33 @@
-#loginRegisterWrapper, #forgetWrapper, #resetWrapper, #errorPageWrapper, #activationWrapper
-  background-color: var(--primary-color-1)
-  color: var(--font-color-1)
+@use '../../var' as *
+
+#loginRegisterWrapper, #forgetWrapper, #resetWrapper, #activationWrapper
+  padding: 30px
   width: 100vw
   height: 100vh
   display: flex
   flex-direction: column
   justify-content: center
   align-items: center
+  background-color: var(--primary-color-1)
+  color: var(--font-color-1)
   *
     padding : 5px
     margin: 5px 0
-  #login, #register, #forget, #reset, #errorPage, #activation
-    width: 50vw
-    padding: 10px
+  #logo
+    position: absolute
+    top: 10px
+    left: 10px
+    width: 100px
+  #login, #register, #forget, #reset, #activation
+    // width: 50vw
     display: flex
     flex-direction: column
     justify-content: center
     border-radius: 30px
     background-color: var(--primary-color-1)
-    filter: drop-shadow(0px 0px 5px var(--accent-color-1))
-    // color: var(--secondary-color-1)
+    @media ( min-width:  $medium-width)
+      padding: 10px
+      filter: drop-shadow(0px 0px 5px var(--accent-color-1))
     input
       width: 100%
       color: var(--font-color-2)
@@ -29,3 +37,25 @@
   #googleLoginButton #container
     padding: 0
     width: 100%
+
+#errorPageWrapper
+  padding: 30px
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  background-color: var(--primary-color-1)
+  color: var(--font-color-1)
+  *
+    padding : 5px
+    margin: 5px 0
+  #errorPage
+    // width: 50vw
+    display: flex
+    flex-direction: column
+    justify-content: center
+    border-radius: 30px
+    background-color: var(--primary-color-1)
+    @media ( min-width:  $medium-width)
+      padding: 10px
+      filter: drop-shadow(0px 0px 5px var(--accent-color-1))

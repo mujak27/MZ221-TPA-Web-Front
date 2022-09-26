@@ -1,19 +1,13 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { mutationAddEducation, mutationAddExperience, mutationCreatePost } from '../../../lib/graphql/mutations';
-import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
+import { FaWindowClose } from 'react-icons/fa';
+
+import { mutationAddEducation } from '../../../lib/graphql/mutations';
+import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Search } from '../../../types/Search';
-import { Experience, User } from '../../../types/User';
-import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../post/Posts';
-import { EducationItem } from './Item';
-import Profile from '../Profile/Profile';
-import { SearchBar } from '../../Nav/SearchBar';
 import { Icon } from '../../../styles/Icon/IconContext';
 import { IconSmall } from '../../../styles/Icon/IconStyles';
-import { FaWindowClose } from 'react-icons/fa';
+import { validateFilled } from '../../../utils/validation';
 
 type props={
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>
@@ -22,6 +16,7 @@ type props={
 export const EducationCreate:React.FC<props> = ({setShowCreate}) => {
 
   const {userRefetch} = useUserContext()
+  const {currTheme} = useThemeContext()
 
 
 	const [school, setSchool] = useState("")   
@@ -29,9 +24,11 @@ export const EducationCreate:React.FC<props> = ({setShowCreate}) => {
 	const [startedAt, setStartedAt] = useState("")
 	const [endedAt, setEndedAt] = useState("")  
 
-  const [addEducationFunc, {loading:addEducationLoading, called : addEducationCalled}] = useMutation(mutationAddEducation)
+  const [addEducationFunc] = useMutation(mutationAddEducation)
 
   const onAddEducation = ()=>{
+    if(!validateFilled(school, "school", currTheme)) return
+    if(!validateFilled(field, "field", currTheme)) return
     addEducationFunc({
       variables:{
         "input": {
@@ -41,12 +38,11 @@ export const EducationCreate:React.FC<props> = ({setShowCreate}) => {
           "Field": field
         }
       }
+    }).then(()=>{
+      userRefetch()
+      setShowCreate(false)
     })
   }
-
-  useEffect(()=>{
-    if(!addEducationLoading && addEducationCalled) userRefetch()
-  }, [addEducationLoading, addEducationCalled])
   
   return (
     

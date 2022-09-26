@@ -1,14 +1,16 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import React, { useState } from "react";
-import { Navigate, NavLink, useParams } from "react-router-dom";
-import { ErrorPage } from "../../../Elements/Error/ErrorPage";
-import { mutationResetPassword } from "../../../lib/graphql/mutations";
-import { queryCheckReset } from "../../../lib/graphql/queries";
-import { User } from "../../../types/User";
-import { strings } from "../../../utils/strings";
-import { concatUserName } from "../../../utils/User";
-import '../style.sass'
-import { UserMiddleware } from "../UserMiddleware";
+import '../style.sass';
+
+import { useMutation, useQuery } from '@apollo/client';
+import React, { useState } from 'react';
+import { Navigate, NavLink, useParams } from 'react-router-dom';
+
+import { ErrorPage } from '../../../Elements/Error/ErrorPage';
+import { mutationResetPassword } from '../../../lib/graphql/mutations';
+import { queryCheckReset } from '../../../lib/graphql/queries';
+import { useThemeContext } from '../../../Provider/ThemeProvider';
+import { User } from '../../../types/User';
+import { concatUserName } from '../../../utils/User';
+import { validatePassword } from '../../../utils/validation';
 
 type props={
 
@@ -16,9 +18,10 @@ type props={
 
 export const Reset:React.FC<props> = () => {
   
+  const {currTheme} = useThemeContext();
   const resetId = useParams().resetId;
 
-  const [processing, setProcessing] = useState(false);
+  const [successReset, setSuccessReset] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
@@ -28,31 +31,20 @@ export const Reset:React.FC<props> = () => {
     }
   });
 
-  const [resetPasswordFunc, {called: resetPasswordCalled, loading: resetPasswordLoading, data: resetPasswordData}] = useMutation(mutationResetPassword)
+  const [resetPasswordFunc] = useMutation(mutationResetPassword)
   
   const onResetPassword = ()=>{
-    if(password != confirmPassword){
-      alert("password not same!")
-      return
-    }
+    if(!validatePassword(password, currTheme, confirmPassword)) return 
     try{
       resetPasswordFunc({
         variables: {
           "id": resetId,
           "password": password
         }
+      }).then((data)=>{
+        setSuccessReset(true)
       })
-      setProcessing(true);
     }catch(e){
-      alert(e);
-    }
-  }
-
-  if(processing){
-    if(!resetPasswordLoading){
-      setProcessing(false);
-      if(!resetPasswordData) alert("failed");
-      else alert("success");
     }
   }
 
@@ -60,6 +52,10 @@ export const Reset:React.FC<props> = () => {
     return (
       <>checking activation link...</>
     )
+  }
+
+  if(successReset){
+    return <Navigate to={"/login"} />
   }
 
   if(!checkResetData){
@@ -75,6 +71,7 @@ export const Reset:React.FC<props> = () => {
   return (
     <>
       <div id="resetWrapper">
+        <img id="logo" src="logo.png" />
         <div id="reset">
           <h1>reset password for {concatUserName(user)}</h1>
           <input 

@@ -1,5 +1,5 @@
 export type User = {
-	ID              : string
+	ID              : string,
 	Email           : string
 	Password        : string
 	FirstName       : string
@@ -13,12 +13,12 @@ export type User = {
 	ProfileLink     : string
 	About           : string
 	Location        : string
-	Visits          : User[] 
+	Visits         	: User[] 
 	Follows					: User[]
 	Educations			: Education[]
 	Experiences			: Experience[]
-	IsSso : boolean
-	HasFilledData : boolean
+	IsSso 					: boolean
+	HasFilledData 	: boolean
 }
 
 export type Education = {

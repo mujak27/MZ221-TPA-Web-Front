@@ -77,6 +77,8 @@ export const Connect:React.FC<props> = ({userId}) => {
 
   const isConnect = isConnectData.IsConnect as connectStatus
 
+  if(userId == myUser.ID) return null;
+
 
   const button = (()=>{
     if(isConnect == connectStatus.Connected) 

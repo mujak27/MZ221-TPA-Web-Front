@@ -1,88 +1,93 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { mutationAddExperience, mutationCreatePost, mutationUpdateExperience } from '../../../lib/graphql/mutations';
-import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
+import { useMutation } from '@apollo/client';
+import React, { createRef, useEffect, useRef, useState } from 'react';
+
+import { Popup } from '../../../Elements/popup/popup';
+import { mutationUpdateExperience } from '../../../lib/graphql/mutations';
+import { useMiscContext } from '../../../Provider/MiscProvider';
+import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Search } from '../../../types/Search';
-import { Experience, User } from '../../../types/User';
-import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../post/Posts';
-import { ExperienceItem } from './Item';
-import Profile from '../Profile/Profile';
-import { SearchBar } from '../../Nav/SearchBar';
+import { Experience } from '../../../types/User';
+import { validateFilled } from '../../../utils/validation';
 
 type props={
   experience : Experience
-  setShowUpdate : (value: React.SetStateAction<boolean>) => void
 };
 
-export const ExperienceUpdate:React.FC<props> = ({experience, setShowUpdate}) => {
+export const ExperienceUpdate:React.FC<props> = ({experience}) => {
 
   const {userRefetch} = useUserContext()
-
-  const [position, setPosition] = useState(experience.Position)
-  const [desc, setDesc] = useState(experience.Desc)
-  const [company, setCompany] = useState(experience.Company)
-  const [startedAt, setStartedAt] = useState(experience.StartedAt)
-  const [endedAt, setEndedAt] = useState(experience.EndedAt)
-  const [isActive, setIsActive] = useState(experience.IsActive)
-
-  const [mutationUpdateFunc, {loading:mutationUpdateLoading, called : updateExperienceCalled}] = useMutation(mutationUpdateExperience)
+  const {setShowPopup} = useMiscContext();
+  const {currTheme} = useThemeContext();
+  
+  const position = useRef<HTMLInputElement>(null)
+  const company = useRef<HTMLInputElement>(null)
+  const desc = useRef<HTMLInputElement>(null)
+  const startedAt = useRef<HTMLInputElement>(null)
+  const endedAt = useRef<HTMLInputElement>(null)
+  const isActive = useRef<HTMLInputElement>(null)
+  
+  const [mutationUpdateFunc] = useMutation(mutationUpdateExperience)   
 
   const onUpdateExperience = ()=>{
+    if(!validateFilled(position.current?.value as string, "position", currTheme)) return
+    if(!validateFilled(company.current?.value as string, "company", currTheme)) return
     mutationUpdateFunc({
       variables:{
         "id": experience.ID,
         "input": {
-          "Position": position,
-          "Desc": desc,
-          "Company" : company,
-          "StartedAt": startedAt,
-          "EndedAt": endedAt,
-          "IsActive": isActive
+          "Position": position.current?.value,
+          "Desc": desc.current?.value,
+          "Company" : desc.current?.value,
+          "StartedAt": startedAt.current?.value,
+          "IsActive": isActive.current?.value ? true : false,
+          "EndedAt": endedAt.current?.value ? endedAt.current?.value  : "",
         }
       }
+    }).then(()=>{
+      userRefetch();
+      setShowPopup(false);
     })
   }
-
-  useEffect(()=>{
-    if(!mutationUpdateLoading && updateExperienceCalled) userRefetch()
-  }, [mutationUpdateLoading, updateExperienceCalled])
   
   return (
     <div>
-      <button onClick={()=>setShowUpdate(false)}>close</button>
-      update Experience
-      <div>
-        <label>position</label>
-        <input type={"text"} value={position} onChange={(e)=>setPosition(e.target.value)} placeholder={"position"} />
-      </div>
-      <div>
-        <label>company</label>
-        <input type={"text"} value={company} onChange={(e)=>setCompany(e.target.value)} placeholder={"company"} />
-      </div>
-      <div>
-        <label>Description</label>
-        <input type={"text"} value={desc} onChange={(e)=>setDesc(e.target.value)} placeholder={"description"} />
-      </div>
-      <div>
-        <label>Started At</label>
-        <input type={"date"} value={startedAt} onChange={(e)=>setStartedAt(e.target.value)} placeholder={"started at"} />
-      </div>
-      <div>
-        <label>Is this your current active job?</label>
-        <input type={"checkbox"} checked={isActive} onChange={(e)=>setIsActive(e.target.checked)} placeholder={"ended at"} />
-      </div>
-      {
-        !isActive && (
-        <div>
-          <label>Ended At</label>
-          <input type={"date"} value={endedAt} onChange={(e)=>setEndedAt(e.target.value)} placeholder={"ended at"} />
+      <Popup
+      body={<button className='button3'>update</button>}
+      popup={
+
+        <>
+        <h3> update Experience </h3>
+        <div className='gridInput'>
+
+          <label>position</label>
+          <input defaultValue={experience.Position} ref={position} type={"text"} placeholder={"position"} />
+
+          <label>company</label>
+          <input defaultValue={experience.Company} ref={company} type={"text"} placeholder={"Company"} />
+
+          <label>Description</label>
+          <input defaultValue={experience.Desc} ref={desc} type={"text"} placeholder={"desc"} />
+
+          <label>Started At</label>
+          <input defaultValue={experience.StartedAt} ref={startedAt} type={"date"} placeholder={"startedAt"} />
+
+          <label>Is this your current active job?</label>
+          <input defaultValue={experience.IsActive ? 1 : 0} ref={isActive} type={"checkbox"} placeholder={"isActive"} />
+          
+          {
+            !isActive && (
+              <>
+                <label>Ended At</label>
+                <input defaultValue={experience.EndedAt} ref={endedAt} type={"text"} placeholder={"endedAt"} />
+              </>
+            
+            )
+          }
         </div>
-        )
-      }
-      <button onClick={onUpdateExperience}>update</button>
+        <button onClick={onUpdateExperience} className="button3">update</button>
+        </>
+      } />
+      
     </div>
   )
 }

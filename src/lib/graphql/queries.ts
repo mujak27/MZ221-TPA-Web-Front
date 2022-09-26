@@ -2,6 +2,16 @@ import { gql } from "@apollo/client";
 
 // user
 
+export const qIsEmailValid = gql`
+  query qIsEmailValid($email : String!){
+    isEmailValid(email : $email)
+  }
+`
+
+export type qIsEmailValidVars = {
+  "email" : string
+}
+
 export const queryUser = gql`
 query queryUser($input: ID!){
   user(id: $input){
@@ -148,8 +158,8 @@ export const querySearch = gql`query querySearch($Keyword:String!, $Limit : Int!
 `
 
 export const queryUsersByName = gql`
-  query queryUsersByName($name : String!){
-    UsersByName(name: $name){
+  query queryUsersByName($name : String!, $Limit : Int!, $Offset : Int!){
+    UsersByName(name: $name, Limit : $Limit, Offset : $Offset){
       ID
       Email
       Password
@@ -214,6 +224,12 @@ export const queryIsConnect = gql`
   }
 `
 
+export const qIsBlock = gql`
+  query qIsBlock($userId : ID!){
+    IsBlock(userId : $userId)
+  }
+`
+
 export const queryConnectedUsers=gql`
   query queryConnectedUsers{
     ConnectedUsers{
@@ -257,24 +273,62 @@ export const queryUserSuggestions = gql`
 
 export const queryMessages = gql`
   query queryMessages($id1:ID!, $id2:ID!){
-    Messages(id1: $id1, id2 :$id2){
+  Messages(id1: $id1, id2 :$id2){
       Text
+      imageLink
+      messageType
+      User1{
+        ID
+        FirstName
+        LastName
+        MidName
+        ProfilePhoto
+        BackgroundPhoto
+        Headline
+        Pronoun
+        ProfileLink
+        About
+        Location
+      }
+      User2{
+        ID
+        FirstName
+        LastName
+        MidName
+        ProfilePhoto
+        BackgroundPhoto
+        Headline
+        Pronoun
+        ProfileLink
+        About
+        Location
+      }
+    }
+  }
+`
+
+export const queryRecentMessages = gql`
+  query queryRecentMessages{
+    RecentMessage{
       User1{
         ID
         FirstName
         MidName
         LastName
+        ProfilePhoto
       }
       User2{
         ID
         FirstName
         MidName
         LastName
+        ProfilePhoto
       }
+      Text
+      
     }
   }
 `
-
 
 // post
 
@@ -416,6 +470,7 @@ export const queryJobs = gql`
         FirstName
         MidName
         LastName
+        ProfileLink
       }
       Text
     }

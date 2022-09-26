@@ -3,47 +3,41 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { Chat } from './components/Chats/Chat';
+import { Footer } from './components/Footer/Footer';
 import { Home } from './components/Home/Home';
 import { Jobs } from './components/Job/Jobs';
 import { Navbar } from './components/Nav/Navbar';
 import { Networks } from './components/Networks/Networks';
 import Activities from './components/Notifications/Activities';
-import { SearchPost } from './components/Search/SearchPost';
+import { Search } from './components/Search/Search';
 import { SearchUser } from './components/Search/SearchUser';
 import Profile from './components/User/Profile/Profile';
 import { toastError, toastPromiseErrorOnly } from './Elements/Toast/Toast';
 import { querySearch } from './lib/graphql/queries';
 import { useThemeContext } from './Provider/ThemeProvider';
-import { Post } from './types/Post';
-import { Search } from './types/Search';
+import { useUserContext } from './Provider/UserProvider';
+import { TypeSearch } from './types/Search';
 import { User } from './types/User';
 
 type props={
 
 };
 
-const searchPage = ['/SearchUser', '/SearchPost']
+const searchPage = ['/SearchUser', '/SearchPost', '/Search']
 
 export const App:React.FC<props> = () => {
   
   const {currTheme} = useThemeContext()
+  const {user, userRefetch} = useUserContext()
 
   const [searchString, setSearchString] = useState("")
 
   const [searchOffset, setSearchOffset] = useState(0)
-  const [searchLimit, setSearchLimit] = useState(1)
+  const searchLimit = 4
 
-  const [processing, setProcessing] = useState(false);
-  const [search, setSearch] = useState<Search>()
+  const [search, setSearch] = useState<TypeSearch>()
   
-  const [searchFunc, {loading: searchLoading, data: searchData, called:searchCalled}] = useLazyQuery(querySearch);
-  
-  const [showPopup, setShowPopup] = useState(searchCalled && !searchLoading && !processing)
-
-  useEffect(()=>{
-    setShowPopup(searchCalled && !searchLoading && !processing)
-    if(searchPage.includes(window.location.pathname)) setShowPopup(false)
-  },[searchCalled, searchLoading, processing])
+  const [searchFunc] = useLazyQuery(querySearch);
 
   const onSearchHandle = (searchString : string)=>{
     if(searchString === ''){
@@ -51,7 +45,6 @@ export const App:React.FC<props> = () => {
     }
     setSearchString(searchString)
     try{
-      setProcessing(true);
       toastPromiseErrorOnly(
           searchFunc({
             variables:{
@@ -60,9 +53,7 @@ export const App:React.FC<props> = () => {
               Offset: searchOffset
             }
           }).then((data)=>{
-            console.info(data)
-            setSearch(data.data.Search as Search)
-            setProcessing(false)
+            setSearch(data.data.Search as TypeSearch)
           })
           , currTheme
         )
@@ -70,10 +61,9 @@ export const App:React.FC<props> = () => {
     }
   }
 
+
   useEffect(()=>{
     if(searchString === '') return
-    console.info(searchOffset)
-    console.info("changed")
     searchFunc({
       variables:{
         Keyword: searchString,
@@ -81,28 +71,42 @@ export const App:React.FC<props> = () => {
         Offset: searchOffset
       }
     }).then((data)=>{
-      console.info(data)
-      setSearch(data.data.Search as Search)
-      setProcessing(false)
+      setSearch(data.data.Search as TypeSearch)
     })
   }, [searchOffset])
 
+
   return (
-    <div>
-      <Navbar 
-        search={search} setSearch={setSearch} showPopup={showPopup} onSearchHandle={onSearchHandle} 
-        />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path="/profile/:userProfileLink" element={<Profile />} />
-        <Route path="/notifications/" element={<Activities />} />
-        <Route path="/networks/" element={<Networks />} />
-        <Route path="/jobs/" element={<Jobs />} />
-        <Route path="/SearchUser/"  element={<SearchUser searchLimit={searchLimit} searchOffset={searchOffset} setSearchLimit={setSearchLimit} setSearchOffset={setSearchOffset} searchString={searchString} users={search?.Users as User[]} setSearch={setSearch} />} />
-        <Route path="/SearchPost/"  element={<SearchPost searchLimit={searchLimit} searchOffset={searchOffset} setSearchLimit={setSearchLimit} setSearchOffset={setSearchOffset} searchString={searchString} posts={search?.Posts as Post[]} setSearch={setSearch} />} />
-      </Routes>
+    <div id='app'>
+      <Navbar  onSearchHandle={onSearchHandle} />
+      <div id='appBody'>
+        <div id="appLeft">
+
+        </div>
+        <div id="appMain">
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path="/profile/:userProfileLink" element={<Profile />} />
+            <Route path="/notifications/" element={<Activities />} />
+            <Route path="/networks/" element={<Networks />} />
+            <Route path="/jobs/" element={<Jobs />} />
+            <Route path="/Search/"  element={<Search  search={search!} />} />
+            <Route path="/SearchUser/"  element={<SearchUser 
+                searchLimit={searchLimit}
+                searchOffset={searchOffset}
+                searchString={searchString}
+                setSearchOffset={setSearchOffset}
+                users={search?.Users as User[]} 
+              />} />
+          </Routes>
+        </div>
+        <div id="appRight">
+          <Footer />
+        </div>
+      </div>
       <Chat />
     </div>
+
   )
 }
 

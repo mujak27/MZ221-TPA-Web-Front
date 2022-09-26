@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client"
+import { enumMessageType } from "../../types/Message"
 
 
 
@@ -35,6 +36,16 @@ export const mutationUpdateProfile = gql`
     UpdateProfile(input : $input)
   }
 `
+
+export const mChangePassword = gql`
+  mutation mChangePassword($password : String!){
+    ChangePassword(password:$password)
+  }
+`
+
+export type typeMChangePassword = {
+  password : string
+}
 
 // forget
 
@@ -161,6 +172,24 @@ export const mutationUnConnect = gql`
   }
 `
 
+// block
+export const mBlock = gql`
+  mutation mBlock($userId : ID!){
+    Block(userId : $userId){
+      ID
+    }
+}
+`
+
+export const mUnBlock = gql`
+  mutation mUnBlock($userId : ID!){
+    UnBlock(userId : $userId){
+      ID
+    }
+  }
+`
+
+
 // message
 
 export const mutationSendMessage = gql`
@@ -168,6 +197,16 @@ export const mutationSendMessage = gql`
     SendMessage(input : $input)
   }
 `
+
+
+
+export type typeMSendMessage = {
+  "text": string
+  "user1Id": string
+  "user2Id": string
+  "imageLink": string
+  "messageType": enumMessageType
+}
 
 
 // post

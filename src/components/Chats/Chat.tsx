@@ -8,6 +8,8 @@ import { IconSmall } from '../../styles/Icon/IconStyles';
 import { User } from '../../types/User';
 import { ChatBox } from './Box';
 import { ChatList } from './List';
+import { useUserContext } from '../../Provider/UserProvider';
+import { useMiscContext } from '../../Provider/MiscProvider';
 
 type props={
 
@@ -15,13 +17,17 @@ type props={
 
 export const Chat:React.FC<props> = () => {
 
+  const {user} = useUserContext()
+  const {setShowPopup} = useMiscContext()
+
   const [showList, setShowList] = useState(false)
   const [showBox, setShowBox] = useState(false)
   const [boxUser, setBoxUser] = useState<User>()
 
-  const onOpenBox = (user : User)=>{
+  const onOpenBox = async (user : User)=>{
     setShowBox(true)
     setBoxUser(user)
+    setShowPopup(false)
   }
 
   const onChatButtonClick = ()=>{
@@ -35,14 +41,16 @@ export const Chat:React.FC<props> = () => {
 
   return (
     <div id='chat'>
-      <button id='chatButton' onClick={onChatButtonClick}>
-        <Icon config={IconSmall} icon={<BsFillChatSquareTextFill />} />
-      </button>
+      <div id='chatButtonList'>
+        <button id='chatButton' onClick={onChatButtonClick}>
+          <h4>chat</h4>
+        </button>
+        {
+          showList && (<ChatList onOpenBox={onOpenBox} />)
+        }
+      </div>
       {
-        showList && (<ChatList onOpenBox={onOpenBox} />)
-      }
-      {
-        showBox && (<ChatBox user={boxUser as User}/>)
+        showBox && (<ChatBox user={boxUser as User} setShowBox={setShowBox} />)
       }
     </div>
   )

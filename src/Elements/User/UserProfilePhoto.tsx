@@ -5,7 +5,7 @@ import { queryPost, queryPosts, queryUsersByName } from '../../lib/graphql/queri
 import { Post } from '../../types/Post';
 import { User } from '../../types/User';
 import parse from 'html-react-parser'
-import { concatUserName, getUserProfilePhoto } from '../../utils/User';
+import { concatUserName, fromUrl, getUserProfilePhoto } from '../../utils/User';
 import "./style.sass"
 
 type props={
@@ -15,8 +15,14 @@ type props={
 export const UserProfilePhoto:React.FC<props> = ({user}) => {
 
   return (
-    <div className='userProfilePhoto'>
-      <img src={getUserProfilePhoto(user)} alt={concatUserName(user)} />
+    <div 
+      className='userProfilePhoto' 
+      style={{
+        backgroundImage : fromUrl(getUserProfilePhoto(user))
+      }}
+      >
+      <div 
+      ></div>
     </div>
   )
 

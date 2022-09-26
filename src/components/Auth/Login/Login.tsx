@@ -52,6 +52,7 @@ export const Login:React.FC<props> = () => {
     <>
       <UserMiddleware homeToGuest={false} />
       <div id="loginRegisterWrapper">
+        <img id="logo" src="logo.png" />
         <div id="login">
           <h1>Sign in</h1>
           <p>stay updated on your professional world</p>

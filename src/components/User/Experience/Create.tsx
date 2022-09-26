@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
 
 import { mutationAddExperience } from '../../../lib/graphql/mutations';
+import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useUserContext } from '../../../Provider/UserProvider';
 import { Icon } from '../../../styles/Icon/IconContext';
 import { IconSmall } from '../../../styles/Icon/IconStyles';
+import { validateFilled } from '../../../utils/validation';
 
 type props={
   setShowCreate: React.Dispatch<React.SetStateAction<boolean>>
@@ -14,6 +16,7 @@ type props={
 export const ExperienceCreate:React.FC<props> = ({setShowCreate}) => {
 
   const {userRefetch} = useUserContext()
+  const {currTheme} = useThemeContext()
 
   const [position, setPosition] = useState("")
   const [desc, setDesc] = useState("")
@@ -22,9 +25,11 @@ export const ExperienceCreate:React.FC<props> = ({setShowCreate}) => {
   const [endedAt, setEndedAt] = useState("")
   const [isActive, setIsActive] = useState(false)
 
-  const [addExperienceFunc, {loading:addExperienceLoading, called : addExperienceCalled}] = useMutation(mutationAddExperience)
+  const [addExperienceFunc] = useMutation(mutationAddExperience)
 
   const onCreateExperience = ()=>{
+    if(!validateFilled(position, "position", currTheme)) return
+    if(!validateFilled(company, "company", currTheme)) return
     addExperienceFunc({
       variables:{
         "input": {
@@ -36,13 +41,12 @@ export const ExperienceCreate:React.FC<props> = ({setShowCreate}) => {
           "IsActive": isActive
         }
       }
+    }).then(()=>{
+      userRefetch()
+      setShowCreate(false)
     })
   }
 
-  useEffect(()=>{
-    if(!addExperienceLoading && addExperienceCalled) userRefetch()
-  }, [addExperienceLoading, addExperienceCalled])
-  
   return (
     <div className='fixedPopup'>
       <div className="popupHead">

@@ -31,9 +31,10 @@ export const toastError = (message: string, theme : enumTypeTheme) => {
     progress: undefined,
     theme: theme
   })
+  return false
 }
 
-export const toastPromise = (promiseFunction : Promise<any>,  theme : enumTypeTheme) => {
+export const toastPromise = (promiseFunction : Promise<any>,  theme : enumTypeTheme, errorMessage : string = "", showIfErrorOnly : boolean = true) => {
   return toast.promise(
     promiseFunction,
     {
@@ -52,7 +53,7 @@ export const toastPromise = (promiseFunction : Promise<any>,  theme : enumTypeTh
       error: {
         ...config(theme),
         render(data){
-          return `${data.data}`
+          return errorMessage == "" ? `${data.data}` : errorMessage
         }
       },
     },

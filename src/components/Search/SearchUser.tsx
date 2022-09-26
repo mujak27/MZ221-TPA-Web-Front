@@ -1,22 +1,21 @@
+import "./style.sass"
 import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 
 import { UserInfo } from '../../Elements/User/UserInfo';
 import { queryCountUser } from '../../lib/graphql/queries';
-import { Search } from '../../types/Search';
 import { User } from '../../types/User';
+import { ErrorPage } from "../../Elements/Error/ErrorPage";
 
 type props={
   users : User[]
-  setSearch : React.Dispatch<React.SetStateAction<Search | undefined>>
   searchString : string
+  searchLimit : number
   searchOffset : number
   setSearchOffset: React.Dispatch<React.SetStateAction<number>>
-  searchLimit : number
-  setSearchLimit: React.Dispatch<React.SetStateAction<number>>
 };
 
-export const SearchUser:React.FC<props> = ({users, setSearch, searchString, searchLimit, searchOffset, setSearchLimit, setSearchOffset}) => {
+export const SearchUser:React.FC<props> = ({users, searchString, searchLimit, searchOffset, setSearchOffset}) => {
 
 
   const {data:countUserData, loading:countUserLoading} = useQuery(queryCountUser, {
@@ -27,7 +26,6 @@ export const SearchUser:React.FC<props> = ({users, setSearch, searchString, sear
 
   if(countUserLoading) return <>fetching data...</>
   const countUser = countUserData.CountUser as Number
-  console.info(countUser)
 
   const onPrev = ()=>{
     setSearchOffset(searchOffset - searchLimit)
@@ -38,25 +36,30 @@ export const SearchUser:React.FC<props> = ({users, setSearch, searchString, sear
   }
 
   return (
-    <div>
+    <div id="searchUser">
       {
         !users || !users.length ?
-        <>no user match</> :
-        users.map((user)=>{
-          return <UserInfo key={crypto.randomUUID()} user={user} showDetail={true}/>
-        })
-      }
-      {
-        users && users.length && countUser > searchLimit && (
+        <ErrorPage text='no user match' /> : 
+        (
           <>
-            {
-              searchOffset > 0  && <button onClick={onPrev}>prev</button> 
-            }
-            {
-              (searchOffset + 1) * searchLimit < countUser && <button onClick={onNext}>next</button>
-            }
+          {users.map((user)=>{
+            return <UserInfo key={crypto.randomUUID()} user={user} showDetail={true}/>
+          })}
+          {countUser > searchLimit && (
+            <>
+              {
+                searchOffset > 0  && <button onClick={onPrev}>prev</button> 
+              }
+              {
+                (searchOffset + 1) * searchLimit < countUser && <button onClick={onNext}>next</button>
+              }
+            </>
+          )}
           </>
         )
+        
+      }
+      {
       }
     </div>
   )

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { querySearch, queryUsersByName } from '../../lib/graphql/queries';
 import { useThemeContext } from '../../Provider/ThemeProvider';
-import { Search } from '../../types/Search';
+import { TypeSearch } from '../../types/Search';
 import { User } from '../../types/User';
 import { Navbar } from '../Nav/Navbar';
 import { PostCreate } from '../post/Create';
@@ -26,7 +26,7 @@ export const Home:React.FC<props> = () => {
 
   return (
     <div id='home'>
-      <Posts></Posts>
+        <Posts /> 
     </div>
   )
 }

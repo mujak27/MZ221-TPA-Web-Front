@@ -1,15 +1,9 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { mutationCreatePost, mutationRemoveEducation, mutationRemoveExperience } from '../../../lib/graphql/mutations';
-import { querySearch, queryUsersByName } from '../../../lib/graphql/queries';
+
+import { mutationRemoveEducation } from '../../../lib/graphql/mutations';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Search } from '../../../types/Search';
-import { Education, Experience, User } from '../../../types/User';
-import { Navbar } from '../../Nav/Navbar';
-import { Posts } from '../../post/Posts';
-import Profile from '../Profile/Profile';
-import { SearchBar } from '../../Nav/SearchBar';
+import { Education } from '../../../types/User';
 import { EducationUpdate } from './Update';
 
 type props={
@@ -21,8 +15,6 @@ export const EducationItem:React.FC<props> = ({education, myProfile}) => {
 
   const {userRefetch} = useUserContext()
 
-  const [showUpdate, setShowUpdate] = useState(false)
-
   const [removeEducationFunc, {loading:removeEducationLoading, called : removeEducationCalled}] = useMutation(mutationRemoveEducation)
 
 
@@ -33,11 +25,6 @@ export const EducationItem:React.FC<props> = ({education, myProfile}) => {
       }
     })
   }
-
-  const onUpdate = ()=>{
-
-  }
-
   
   useEffect(()=>{
     if(!removeEducationLoading && removeEducationCalled) userRefetch()
@@ -50,12 +37,9 @@ export const EducationItem:React.FC<props> = ({education, myProfile}) => {
       <h3> {education.Field} </h3>
       {
         myProfile && (
-          <div>
+          <div className='flex'>
             <button className='button3' onClick={onRemove}>remove</button>
-            <button className='button3' onClick={()=>{setShowUpdate(true)}}>update</button>
-            {
-              showUpdate && <EducationUpdate education={education} setShowUpdate={setShowUpdate} />
-            }
+            <EducationUpdate education={education} />
           </div>
           )
         }

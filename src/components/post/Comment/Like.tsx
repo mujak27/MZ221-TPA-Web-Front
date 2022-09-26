@@ -66,8 +66,6 @@ export const CommentLike:React.FC<props> = ({comment, commentRefetch}) => {
 
   const isLike = isLikeCommentData.IsLikeComment as boolean
   
-  console.info(isLikeCommentData)
-  
 
   return (
     <div className='postLike'>

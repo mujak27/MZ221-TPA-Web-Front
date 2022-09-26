@@ -1,0 +1,39 @@
+@mixin padding()
+  padding: 10px
+  border-radius: 20px
+
+@mixin margin()
+  margin: 5px
+  
+@mixin bg()
+  background-position: center
+  background-repeat: no-repeat
+  background-size: cover
+
+@mixin border()
+  border-radius: 100%
+  border: 1px solid var(--accent-color-1)
+
+@mixin secondary()
+  background-color: var(--secondary-color-1)
+  @include margin()
+  // border: 2px solid var(--primary-color-1)
+  // filter: drop-shadow(1px 1px 2px var(--primary-color-1))
+  border-radius: 20px
+
+@mixin centerHorizontal()
+  position: relative
+  transform: translateX(-50%)
+  left: 50%
+
+@mixin centerVertical()
+  position: relative
+  transform: translateY(-50%)
+  top: 50%
+
+@mixin center()
+  @include centerVertical()
+  @include centerHorizontal()
+  transform: translate(-50%, -50%)
+  
+  

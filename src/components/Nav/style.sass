@@ -1,4 +1,7 @@
+@use '../../var' as *
+  
 #navBarWrapper
+  width: 100vw
   padding: 15px 8px
   position: sticky
   top: 0
@@ -20,26 +23,50 @@
         background-color: var(--secondary-color-2)
       #searchResultPopup
         position: absolute
+        display: flex
+        flex-direction: column
         background-color: var(--secondary-color-1)
         border: 2px solid var(--accent-color-1)
         z-index: 5
         top: 100%
         right: 0
+    #navButton
+      display: none
+      @media screen and ( max-width: $medium-width )
+        display: block
+        position: fixed
+        z-index: 100
+        top: 20px
+        right: 20px
     #navMenu
-      // justify-self: right
       position: absolute
       right: 0
       top: 50%
       transform: translateY(-50%)
       display: flex
       flex-direction: row
-      &>div, &>a
+      transition: 1s
+      @media screen and ( max-width: $medium-width )
+        top: 0
+        display: grid
+        width: 100vw
+        transform: translateY(-150%) 
+        background-color: var(--secondary-color-1)
+        &.active
+          transform: translateY(0%) 
+      & > div, & > a
         width: 100px
         margin: 5px
         display: flex
         flex-direction: column
         justify-content: center
         align-items: center
+        @media screen and ( max-width: $medium-width )
+          width: 100%
+          display: grid
+          grid-template-columns: 100px calc(100% - 100px)
+          div
+            justify-self: center
   #userPopupWrapper
     position: relative
     #userPopup

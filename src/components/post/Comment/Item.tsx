@@ -32,16 +32,16 @@ export const Commentitem:React.FC<props> = ({commentId, depth}) => {
 
   const comment = commentData.Comment as Comment
 
-
   return (
     <div className='commentItem'>
       <div className="commentItemContent">
-        <UserInfo showDetail={true} user={comment.Sender} />
+        <UserInfo user={comment.Sender} />
         {parse(comment.Text)}
         <div className="commentItemBar">
           <CommentLike comment={comment} commentRefetch={commentRefetch} />
           <button onClick={()=>setShowComments(!showComments)}>
             <Icon config={IconSmall} icon={<FaRegCommentDots />} />
+            {comment.Replies.length}
           </button>
         </div>
       </div>

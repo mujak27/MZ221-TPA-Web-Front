@@ -30,11 +30,13 @@ const servers = {
       credential: "openrelayproject",
     },
   ],
-  iceCandidatePoolSize: 10,
+  iceCandidatePoolSize: 100,
 }
 
+const pc = new RTCPeerConnection(servers)
+
 export const VideoCall:React.FC<props> = ({user}) => {
-  const pc = new RTCPeerConnection(servers)
+  console.info(pc)
   const [showLocalVideo, setShowLocalVideo] = useState(false)
   const [localStream, setLocalStream] = useState<MediaStream>()
   const [remoteStream, setRemoteStream] = useState<MediaStream>()
@@ -78,16 +80,15 @@ export const VideoCall:React.FC<props> = ({user}) => {
     
     setCallId(callDoc.id)
 
-    // create offer candidates
-    const offerDescription = await pc.createOffer()
-    await pc.setLocalDescription(offerDescription)
     
     // store candidates in db
     pc.onicecandidate = async (event) =>{
-      console.info(event.candidate)
-      console.info((event.candidate as RTCIceCandidate).toJSON())
       offerCandidates.add((event.candidate as RTCIceCandidate).toJSON())
     }
+    
+    // create offer candidates
+    const offerDescription = await pc.createOffer()
+    await pc.setLocalDescription(offerDescription)
 
     // store offer in db
     const offer = {
@@ -113,6 +114,7 @@ export const VideoCall:React.FC<props> = ({user}) => {
 
     // when answered add answer candidate to our peer connection
     answerCandidates.onSnapshot((snapshot)=>{
+      console.info("answered")
       snapshot.docChanges().forEach((change) => {
         if(change.type === 'added'){
           const candidate = new RTCIceCandidate(change.doc.data())
@@ -163,27 +165,27 @@ export const VideoCall:React.FC<props> = ({user}) => {
     })
   }
 
-  // console.info(localStream)
-
-  return <>
-    <button onClick={onWebcamButton}>webcam button</button>
-    {/* <video id='videoCallCam' autoPlay playsInline /> */}
-    {/* {
-      localStream!=null && localStream != undefined &&  */}
-      <video autoPlay={true} playsInline={true} ref={video => {
-        console.info(video)
-        if(video!=null && video!=undefined ) (video as HTMLVideoElement).srcObject = localStream as MediaStream}} />
-    {/* } */}
-    {
-      remoteStream!=null && remoteStream != undefined && 
-      <video autoPlay={true} playsInline={true} ref={video => {
-        
-        if(video!=null && video!=undefined )(video as HTMLVideoElement).srcObject = remoteStream as MediaStream
-      }} />
-    }
-    <input value={callId} onChange={(e)=>setCallId(e.target.value)} />
-    <button onClick={onStartVideoCall}>start video call</button>
-    <button onClick={onAnswerVideoCall}>join video</button>
-  </>
+  return (
+    <div id="videoCall">
+      <button onClick={onWebcamButton}>webcam button</button>
+      {/* <video id='videoCallCam' autoPlay playsInline /> */}
+      {/* {
+        localStream!=null && localStream != undefined &&  */}
+        <video autoPlay={true} playsInline={true} ref={video => {
+          console.info(video)
+          if(video!=null && video!=undefined ) (video as HTMLVideoElement).srcObject = localStream as MediaStream}} />
+      {/* } */}
+      {
+        remoteStream!=null && remoteStream != undefined && 
+        <video autoPlay={true} playsInline={true} ref={video => {
+          
+          if(video!=null && video!=undefined )(video as HTMLVideoElement).srcObject = remoteStream as MediaStream
+        }} />
+      }
+      <input value={callId} onChange={(e)=>setCallId(e.target.value)} />
+      <button onClick={onStartVideoCall}>start video call</button>
+      <button onClick={onAnswerVideoCall}>join video</button>
+    </div>
+  )
 }
 

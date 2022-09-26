@@ -1,3 +1,6 @@
+@use "../../styles/sass/mixins" as *
+
+
 #profileWrapper
   background-color: var(--primary-color-1)
   padding: 20px
@@ -8,11 +11,11 @@
     background-color: var(--secondary-color-1)
   #profile
     #profileBanner
+      @include bg()
       height: 200px
-      background-size: cover
       padding: 20px
       position: relative
-      button
+      & > button
         position: absolute
         right: 10px
         top: 10px
@@ -20,7 +23,7 @@
       padding: 20px
       #profileMenu
         button
-          width: auto !important
+          width: auto
           margin-right: 15px
   #experiences, #educations
     padding: 20px

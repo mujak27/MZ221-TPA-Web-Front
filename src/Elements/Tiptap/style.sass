@@ -89,3 +89,26 @@ button.is_active
   background: var(--accent-color-1)
   padding: 2px 2px
   border-radius: 2px
+
+
+.items 
+  background-color: var(--secondary-color-1)
+  border-radius: 0.5rem
+  box-shadow: 0 0 0 1px var(--primary-color-1)
+  color: var(--font-color-1)
+  font-size: 0.9rem
+  overflow: hidden
+  padding: 0.2rem
+  position: relative
+  .item 
+    background: transparent
+    border: 1px solid transparent
+    border-radius: 0.4rem
+    display: block
+    margin: 0
+    padding: 0.2rem 0.4rem
+    text-align: left
+    width: 100%
+    &.is-selected 
+      border-color: var(--primary-color-1)
+    

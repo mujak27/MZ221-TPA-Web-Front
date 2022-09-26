@@ -13,9 +13,7 @@ export type Comment = {
   Text : string
   ID : string 
   Sender : User
-  Replies : {
-    ID : string
-  }
+  Replies : [Comment]
   Post : Post
   Likes : [User]
 }

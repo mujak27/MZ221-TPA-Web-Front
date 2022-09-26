@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from 'react';
+import { UserInfo } from '../../Elements/User/UserInfo';
+import { UserProfilePhoto } from '../../Elements/User/UserProfilePhoto';
+import { useUserContext } from '../../Provider/UserProvider';
+import { getUserMessage, Message } from '../../types/Message';
 
 import { User } from '../../types/User';
 import { concatUserName } from '../../utils/User';
 
 type props={
-  connectedUser : User
+  message : Message
   onOpenBox : (user: User) => void
 };
 
-export const ChatListItem:React.FC<props> = ({connectedUser, onOpenBox}) => {
+export const ChatListItem:React.FC<props> = ({message, onOpenBox}) => {
+
+  const {user: myUser} = useUserContext()
+  const connectedUser = getUserMessage(message, myUser.ID)
 
   return (
     <button onClick={()=>onOpenBox(connectedUser)} className='chatListItem'>
-      {concatUserName(connectedUser)}
+      <div className='userInfo' >
+        <UserProfilePhoto user={connectedUser} />
+          <div className='userInfoText'>
+            <h4>
+            {concatUserName(connectedUser)}
+            </h4>
+            {message.Text}
+          </div>
+      </div>
     </button>
   )
 }
