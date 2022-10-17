@@ -10,7 +10,7 @@ import { UserProfilePhoto } from '../../Elements/User/UserProfilePhoto';
 import { useUserContext } from '../../Provider/UserProvider';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconBig, IconSmall } from '../../styles/Icon/IconStyles';
-import { TypeSearch } from '../../types/Search';
+import { TypeSearch } from '../../types/TypeSearch';
 import { SearchBar } from './SearchBar';
 import { UserPopup } from './UserPopup';
 

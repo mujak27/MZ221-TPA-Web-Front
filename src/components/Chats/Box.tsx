@@ -10,14 +10,14 @@ import { useUserContext } from '../../Provider/UserProvider';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconSmall } from '../../styles/Icon/IconStyles';
 import { Message } from '../../types/Message';
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 import { concatUserName } from '../../utils/User';
 import { MessageCreate } from './Message/Create';
 import { MessageItem } from './Message/Item';
 import { VideoCall } from './VideoCall/VideoCall';
 
 type props={
-  user : User
+  user : TypeUser
   setShowBox: React.Dispatch<React.SetStateAction<boolean>>
 };
 
@@ -48,7 +48,7 @@ export const ChatBox:React.FC<props> = ({user, setShowBox}) => {
           <div onClick={()=>{setShowBox(false)}}>
             <Icon config={IconSmall} icon={<FaRegWindowClose />} />
           </div>
-          <UserInfo user={user} showDetail />
+          <UserInfo user={user} showDetail showPopup={false} />
           <div id="chatBoxMenu">
             <button onClick={()=>setShowVideoCall(!showVideoCall)}> <Icon  config={IconSmall} icon={<BsFillCameraVideoFill />} /></button>
           </div>

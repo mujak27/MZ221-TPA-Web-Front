@@ -2,7 +2,7 @@ import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { queryUser } from '../../lib/graphql/queries';
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 import { strings } from '../../utils/strings';
 import { parseJwt } from '../../utils/token';
 type props = {
@@ -23,8 +23,8 @@ export const UserMiddleware : React.FC<props> = ({homeToGuest}) => {
 
   if(loading) return <>checking token...</>
   
-  let user = '' as unknown as User;
-  if(userData) user = userData.user as User;
+  let user = '' as unknown as TypeUser;
+  if(userData) user = userData.user as TypeUser;
   
   if((!sessionKey || !user ) && homeToGuest){
     return <Navigate to={'/login'} />

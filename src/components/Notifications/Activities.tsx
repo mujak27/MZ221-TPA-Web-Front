@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 import { LoadingPage } from '../../Elements/Loading/Loading';
 import { queryActivities } from '../../lib/graphql/queries';
-import { Activity } from '../../types/User';
+import { TypeActivity } from '../../types/TypeUser';
 import { ActivityItem } from './Item';
 
 type props={
@@ -19,7 +19,7 @@ export const Activities:React.FC<props> = () => {
 
   if(activitiesLoading) return <LoadingPage text='loading notifications...' />
 
-  const activities = activitiesData.Activities as Activity[]
+  const activities = activitiesData.Activities as TypeActivity[]
 
   return (
     <div id='notifications'>

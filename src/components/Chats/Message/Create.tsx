@@ -10,11 +10,11 @@ import { useUserContext } from '../../../Provider/UserProvider';
 import { Icon } from '../../../styles/Icon/IconContext';
 import { IconSmall } from '../../../styles/Icon/IconStyles';
 import { enumMessageType } from '../../../types/Message';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 import { validateMessage } from '../../../utils/validation';
 
 type props={
-  user : User
+  user : TypeUser
   messagesRefetch : (variables?: Partial<{
     id1: string;
     id2: string;

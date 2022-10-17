@@ -2,7 +2,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { queryConnectRequests } from '../../../lib/graphql/queries';
-import { User } from '../../../types/User';
+import { TypeConnectionRequest, TypeUser } from '../../../types/TypeUser';
 import { ConnectRequestItem } from './item';
 
 type props={
@@ -15,7 +15,9 @@ export const ConnectRequests:React.FC<props> = () => {
 
   if(connectRequestsLoading) return <>fetching data...</>
 
-  const connectRequests = connectRequestsData.ConnectionRequest as User[]
+  console.info(connectRequestsData)
+
+  const connectRequests = connectRequestsData.ConnectionRequest as TypeConnectionRequest[]
 
   return (
     <div id='connectRequests'>
@@ -25,7 +27,7 @@ export const ConnectRequests:React.FC<props> = () => {
           <h1>connect requests:</h1>
           {
             connectRequests.map((connectRequest)=>{
-              return <ConnectRequestItem key={crypto.randomUUID()} user={connectRequest} />
+              return <ConnectRequestItem key={crypto.randomUUID()} connectionRequest={connectRequest} />
             })
           }
         </> : <h3 id='noConnectRequest'>no waiting connect request</h3>

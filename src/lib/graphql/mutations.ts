@@ -149,8 +149,8 @@ mutation mutationUnFollow($id1: ID!, $id2: ID!){
 // connect
 
 export const mutationSendConnectRequest = gql`
-  mutation mutationSendConnectRequest($id1 : ID!, $id2 : ID!){
-    SendConnectRequest(id1: $id1, id2: $id2)
+  mutation mutationSendConnectRequest($id : ID!, $text : String!){
+    SendConnectRequest(id: $id, text: $text)
   }
 `
 
@@ -254,7 +254,9 @@ export const mutationUnLikePost = gql`
 
 export const mutationCommentPost = gql`
   mutation mutationCommentPost($input : InputComment!){
-    CommentPost(input:$input)
+    CommentPost(input:$input){
+      ID
+    }
   }
 `
 

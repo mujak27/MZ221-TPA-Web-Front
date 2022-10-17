@@ -4,12 +4,12 @@ import { UserProfilePhoto } from '../../Elements/User/UserProfilePhoto';
 import { useUserContext } from '../../Provider/UserProvider';
 import { getUserMessage, Message } from '../../types/Message';
 
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 import { concatUserName } from '../../utils/User';
 
 type props={
   message : Message
-  onOpenBox : (user: User) => void
+  onOpenBox : (user: TypeUser) => void
 };
 
 export const ChatListItem:React.FC<props> = ({message, onOpenBox}) => {

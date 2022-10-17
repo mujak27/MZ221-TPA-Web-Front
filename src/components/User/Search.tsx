@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Popup } from '../../Elements/popup/popup';
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 import { UserList } from './List';
 
 
 type props={
   body : JSX.Element
   title : string
-  onClickHandle : (user: User) => Promise<void>
+  onClickHandle : (user: TypeUser) => Promise<void>
 };
 
 export const UserSearch:React.FC<props> = ({body, title,onClickHandle}) => {

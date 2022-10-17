@@ -1,17 +1,15 @@
 import './style.sass';
 
 import { useLazyQuery } from '@apollo/client';
-import Mention from '@tiptap/extension-mention';
 import Underline from '@tiptap/extension-underline';
-import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useState } from 'react';
 import { FaBold, FaHeading, FaItalic, FaListOl, FaListUl, FaQuoteLeft, FaStrikethrough, FaUnderline } from 'react-icons/fa';
 
 import { queryUsersByName } from '../../lib/graphql/queries';
-import { User } from '../../types/User';
-import Suggestions from './Suggestion';
-import {Hashtag} from './Hashtags'
+import { TypeUser } from '../../types/TypeUser';
+import { Hashtag } from './Hashtags';
 import Suggestion from './Suggestion';
 
 type props = {
@@ -100,7 +98,7 @@ export const Tiptap:React.FC<{setText : React.Dispatch<React.SetStateAction<stri
   
   const [funcUsersByName, {loading : loadingUsersByName, data : dataUsersByName}] = useLazyQuery(queryUsersByName)
 
-  const users = dataUsersByName as User[]
+  const users = dataUsersByName as TypeUser[]
 
   const editor = useEditor({
     extensions: [

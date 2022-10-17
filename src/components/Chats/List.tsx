@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 import { queryConnectedUsers, queryRecentMessages } from '../../lib/graphql/queries';
 import { Message } from '../../types/Message';
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 import { UserSearch } from '../User/Search';
 import { ChatListItem } from './ListItem';
 
 type props={
-  onOpenBox : (user: User) => Promise<void>
+  onOpenBox : (user: TypeUser) => Promise<void>
 };
 
 export const ChatList:React.FC<props> = ({onOpenBox}) => {

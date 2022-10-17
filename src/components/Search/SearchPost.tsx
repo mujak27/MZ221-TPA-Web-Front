@@ -1,64 +1,100 @@
-import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
+import './style.sass';
 
-import { queryCountPost, queryCountUser } from '../../lib/graphql/queries';
-import { Post } from '../../types/Post';
-import { TypeSearch } from '../../types/Search';
+import { useLazyQuery } from '@apollo/client';
+import { uniqBy } from 'lodash';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import { ErrorPage } from '../../Elements/Error/ErrorPage';
+import { queryPostsByKeyword } from '../../lib/graphql/queries';
+import { useMiscContext } from '../../Provider/MiscProvider';
+import { TypePost } from '../../types/TypePost';
 import { PostItem } from '../post/Item';
-import "../post/style.sass"
 
 type props={
-  posts : Post[]
-  setSearch : React.Dispatch<React.SetStateAction<TypeSearch | undefined>>
   searchString : string
-  searchOffset : number
-  setSearchOffset: React.Dispatch<React.SetStateAction<number>>
-  searchLimit : number
-  setSearchLimit: React.Dispatch<React.SetStateAction<number>>
 };
 
-export const SearchPost:React.FC<props> = ({posts, setSearch, searchString, searchLimit, searchOffset, setSearchLimit, setSearchOffset}) => {
+export const SearchPost:React.FC<props> = ({searchString}) => {
+  const {setShowLoadingAnimation} = useMiscContext()
+
+  var limit = 5
+  const [offset, setOffset] = useState(0)
+  const [empty, setEmpty] = useState(false)
+  const [posts, setPosts] = useState<Array<TypePost>>([])
+  const [loading, setLoading] = useState(false)
 
 
-  const {data:countPostData, loading:countPostLoading} = useQuery(queryCountPost, {
-    variables:{
-      "Keyword": searchString
+  
+  const ref = useRef<HTMLDivElement>(null);
+  
+  const [queryPostsFunc, {loading:postsLoading, error}]= useLazyQuery(queryPostsByKeyword)
+
+  const onLoadMore = (isNew : boolean)=>{
+    console.info("load more search post")
+    if(loading || (!isNew && empty)) return
+    setLoading(true)
+    setShowLoadingAnimation(true)
+    console.info("search 1 " + searchString)
+    queryPostsFunc({
+      variables:{
+        "Keyword": searchString,
+        "Limit": limit,
+        "Offset": isNew ? 0 : offset
+      },
+    }).then((data)=>{
+      console.info(data)
+      var newPosts = data.data.PostsByKeyword as TypePost[]
+      if(newPosts.length < limit) setEmpty(true)
+      var mergedPosts = isNew ? newPosts : [...posts, ...newPosts]
+      mergedPosts = uniqBy(mergedPosts, (e)=>{
+        return e.ID
+      })
+      setPosts(mergedPosts)
+    })
+    setOffset(isNew ? limit : offset+limit )
+    setTimeout(()=>{
+      setLoading(false)
+    }, 500)
+    setTimeout(()=>{
+      setShowLoadingAnimation(false)
+    }, 300)
+  }
+
+  window.onscroll = ()=>{
+    const check = window.innerHeight + window.scrollY
+    if(!loading && !postsLoading && !error && ref && (check >= (ref?.current?.offsetHeight as number))){
+      onLoadMore(false)
     }
-  })
-
-  if(countPostLoading) return <>fetching data...</>
-  const countUser = countPostData.CountUser as Number
-
-  const onPrev = ()=>{
-    setSearchOffset(searchOffset - searchLimit)
   }
 
-  const onNext = ()=>{
-    setSearchOffset(searchOffset + searchLimit)
-  }
+  useEffect(()=>{
+    console.info('reloaded page')
+    onLoadMore(true)
+  }, [])
+  
+  useEffect(()=>{
+    console.info("search string change in search post " + searchString)
+    setEmpty(false)
+    setOffset(0)
+    setPosts([])
+    onLoadMore(true)
+  }, [searchString])
 
-  return (
-    <div>
+  return useMemo(()=>(
+    <div id="searchPost" ref={ref}>
       {
         !posts || !posts.length ?
-        <>no user match</> :
-        posts.map((post)=>{
-          return <PostItem key={crypto.randomUUID()} postId={post.ID} showExtras={true}/>
-        })
-      }
-      {
-        posts && posts.length && countUser > searchLimit && (
+        <ErrorPage text='no post match' /> : 
+        (
           <>
-            {
-              searchOffset > 0  && <button onClick={onPrev}>prev</button> 
-            }
-            {
-              (searchOffset + 1) * searchLimit < countUser && <button onClick={onNext}>next</button>
-            }
+          {posts.map((post)=>{
+            return <PostItem key={crypto.randomUUID()} postId={post.ID}/>
+          })}
           </>
         )
+        
       }
     </div>
-  )
+  ), [posts, searchString])
 }
 

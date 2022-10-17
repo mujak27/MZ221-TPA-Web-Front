@@ -5,9 +5,10 @@ import { Navigate } from 'react-router-dom';
 import { NotActive } from '../components/Auth/Activation/NotActive';
 import { FillData } from '../components/User/FillData/FillData';
 import { queryUser } from '../lib/graphql/queries';
-import { User } from '../types/User';
+import { TypeUser } from '../types/TypeUser';
 import { strings } from '../utils/strings';
-import { getUserIdFromLocalStorage } from '../utils/User';
+import { getExpiredToken, getUserIdFromLocalStorage } from '../utils/User';
+import { isDatePassed } from '../utils/validation';
 
 type props = {
   children : React.ReactNode | React.ReactNode[]
@@ -28,14 +29,14 @@ export const checkGuestPath = ()=>{
 
 
 type typeContextProvider = {
-  user : User,
+  user : TypeUser,
   userRefetch : (variables?: Partial<{input: any;}> | undefined) => Promise<ApolloQueryResult<any>>
   sessionKey : String,
   doRefresh: () => void,
   logOutHandler : ()=>void,
 }
 let userContext = createContext<typeContextProvider>({
-  user : '' as unknown as User,
+  user : '' as unknown as TypeUser,
   userRefetch : '' as unknown as (variables?: Partial<{input: any;}> | undefined) => Promise<ApolloQueryResult<any>>,
   sessionKey : localStorage.getItem(strings.sessionKey) as string,
   doRefresh: () => {},
@@ -51,7 +52,7 @@ export const UserProvider : React.FC<props> = ({children}) => {
   const [refresh, setRefresh] = useState(false);
 
   
-  const [user, setUser] = useState<User>({
+  const [user, setUser] = useState<TypeUser>({
     ID: "",
     Email: "",
     FirstName : "",
@@ -123,7 +124,7 @@ export const UserProvider : React.FC<props> = ({children}) => {
   const providerWrapper = (children : React.ReactNode | React.ReactNode[]) => {
     return (
       <userContext.Provider value={{
-        user : userData ? userData.user as User : '' as unknown as User, 
+        user : userData ? userData.user as TypeUser : '' as unknown as TypeUser, 
         userRefetch,
         sessionKey, 
         doRefresh,
@@ -136,7 +137,7 @@ export const UserProvider : React.FC<props> = ({children}) => {
     )
   }
 
-  if((!sessionKey || !user) && !checkGuestPath()){
+  if((!sessionKey || isDatePassed(getExpiredToken()) ||  !user) && !checkGuestPath()){
     localStorage.removeItem(strings.sessionKey)
     return (
       <Navigate to={'/login'} />

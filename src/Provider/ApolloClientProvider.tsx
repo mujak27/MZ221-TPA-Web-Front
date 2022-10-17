@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
+import { offsetLimitPagination } from "@apollo/client/utilities";
 import React from "react";
 import { strings } from "../utils/strings";
 
@@ -28,8 +29,19 @@ export const ApolloClientProvider : React.FC<props> = ({children}) => {
   const graphqlServerUri = strings.backendUrl;
   const client = new ApolloClient({
     uri: graphqlServerUri,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies:{
+        Query: {
+          fields: {
+            Posts : offsetLimitPagination
+          }
+        }
+      }
+    }),
     link: apolloLink.concat(httpLink),
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    }
   });
 
   return (

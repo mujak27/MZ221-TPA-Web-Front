@@ -1,9 +1,8 @@
-import { LazyQueryExecFunction, OperationVariables, useQuery } from '@apollo/client'
-import { ReactRenderer } from '@tiptap/react'
-import tippy from 'tippy.js'
-import { queryUsersByName } from '../../lib/graphql/queries.js'
+import { LazyQueryExecFunction, OperationVariables } from '@apollo/client';
+import { ReactRenderer } from '@tiptap/react';
+import tippy from 'tippy.js';
 
-import MentionList from './MentionList.jsx'
+import MentionList from './MentionList.jsx';
 
 export default {
   items: ({query, funcUsersByName} : {query : string, funcUsersByName: LazyQueryExecFunction<any, OperationVariables>}) => {

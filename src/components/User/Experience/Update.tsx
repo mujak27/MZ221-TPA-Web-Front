@@ -6,11 +6,11 @@ import { mutationUpdateExperience } from '../../../lib/graphql/mutations';
 import { useMiscContext } from '../../../Provider/MiscProvider';
 import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Experience } from '../../../types/User';
+import { TypeExperience } from '../../../types/TypeUser';
 import { validateFilled } from '../../../utils/validation';
 
 type props={
-  experience : Experience
+  experience : TypeExperience
 };
 
 export const ExperienceUpdate:React.FC<props> = ({experience}) => {

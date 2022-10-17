@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 import { mutationRemoveExperience } from '../../../lib/graphql/mutations';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Experience } from '../../../types/User';
+import { TypeExperience } from '../../../types/TypeUser';
 import { ExperienceUpdate } from './Update';
 
 type props={
   myProfile : boolean
-  experience : Experience
+  experience : TypeExperience
 };
 
 export const ExperienceItem:React.FC<props> = ({experience, myProfile}) => {

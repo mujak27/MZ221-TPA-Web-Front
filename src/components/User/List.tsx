@@ -3,12 +3,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { UserInfo } from '../../Elements/User/UserInfo';
 import { queryUsersByName } from '../../lib/graphql/queries';
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 
 
 type props={
   // nameRef: React.RefObject<HTMLInputElement>
-  onClickHandle : (user: User) => Promise<void>
+  onClickHandle : (user: TypeUser) => Promise<void>
 };
 
 export const UserList:React.FC<props> = ({onClickHandle}) => {
@@ -16,7 +16,7 @@ export const UserList:React.FC<props> = ({onClickHandle}) => {
   const userRef = useRef<HTMLInputElement>(null)
   const [queryUsersByNameFunc, {loading}] = useLazyQuery(queryUsersByName)
 
-  const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<TypeUser[]>([])
 
 
   

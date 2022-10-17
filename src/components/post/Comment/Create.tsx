@@ -1,33 +1,29 @@
-import { ApolloQueryResult, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { ApolloQueryResult, useMutation } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+
 import { Tiptap } from '../../../Elements/Tiptap/TiptapEditor';
-import { mutationCommentPost, mutationSendMessage } from '../../../lib/graphql/mutations';
-import { queryComments } from '../../../lib/graphql/queries';
-import { Comment } from '../../../types/Post';
-import { Comments } from './Comments';
+import { mutationCommentPost } from '../../../lib/graphql/mutations';
+import { TypeComment } from '../../../types/TypePost';
 
 type props={
   postId : string
   commentId : string
+  addComment : (comment: TypeComment) => void
   CommentsRefetch : (variables?: Partial<{
     CommentId: string | null;
     PostId: string;
 }> | undefined) => Promise<ApolloQueryResult<any>>
+  parentRefetch: () => void
 };
 
-export const CommentCreate:React.FC<props> = ({commentId, postId, CommentsRefetch}) => {
+export const CommentCreate:React.FC<props> = ({commentId, postId, addComment, CommentsRefetch, parentRefetch}) => {
 
   const [showCreate, setShowCreate] = useState(false)
   const [text, setText] = useState("")
 
-  const [commentPostFunc, {called : commentPostCalled, loading : commentPostLoading}] = useMutation(mutationCommentPost)
+  const [commentPostFunc] = useMutation(mutationCommentPost)
 
 
-  useEffect(()=>{
-    if(!commentPostLoading && commentPostCalled) CommentsRefetch()
-  }, [commentPostCalled, commentPostLoading])
-  
 
   const onCreateComment = ()=>{
     commentPostFunc({
@@ -38,6 +34,11 @@ export const CommentCreate:React.FC<props> = ({commentId, postId, CommentsRefetc
           "Text": text,
         }
       }
+    }).then((data)=>{
+      // console.info(data.data.CommentPost)
+      addComment(data.data.CommentPost)
+      // CommentsRefetch()
+      // parentRefetch()
     })
   }
 

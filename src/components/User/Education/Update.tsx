@@ -6,11 +6,11 @@ import { mutationUpdateEducation } from '../../../lib/graphql/mutations';
 import { useMiscContext } from '../../../Provider/MiscProvider';
 import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Education } from '../../../types/User';
+import { TypeEducation } from '../../../types/TypeUser';
 import { validateFilled } from '../../../utils/validation';
 
 type props={
-  education : Education
+  education : TypeEducation
 };
 
 export const EducationUpdate:React.FC<props> = ({education}) => {

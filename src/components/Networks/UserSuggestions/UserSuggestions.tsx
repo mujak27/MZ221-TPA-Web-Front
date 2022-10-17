@@ -1,8 +1,8 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { queryConnectRequests, queryUserSuggestions } from '../../../lib/graphql/queries';
-import { User } from '../../../types/User';
+
+import { queryUserSuggestions } from '../../../lib/graphql/queries';
+import { TypeUser } from '../../../types/TypeUser';
 import { UserSuggestionItem } from './Item';
 
 type props={
@@ -15,7 +15,7 @@ export const UserSuggestions:React.FC<props> = () => {
 
   if(userSuggestionsLoading) return <>fetching data...</>
 
-  const userSuggestions = userSuggestionsData.UsersSuggestion as User[]
+  const userSuggestions = userSuggestionsData.UsersSuggestion as TypeUser[]
 
   return (
     <div id='userSuggestions'>

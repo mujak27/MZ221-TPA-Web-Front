@@ -6,12 +6,12 @@ import { toastPromise } from '../../../Elements/Toast/Toast';
 import { mutationSendActivation } from '../../../lib/graphql/mutations';
 import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 
 import '../style.sass'
 
 type props={
-  user : User
+  user : TypeUser
 };
 
 export const NotActive:React.FC<props> = ({user}) => {

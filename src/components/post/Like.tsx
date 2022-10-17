@@ -4,8 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import { mutationLikePost, mutationUnLikePost } from '../../lib/graphql/mutations';
 import { queryIsLikePost, queryPosts, queryUsersByName } from '../../lib/graphql/queries';
 import { useUserContext } from '../../Provider/UserProvider';
-import { Post } from '../../types/Post';
-import { User } from '../../types/User';
+import { TypePost } from '../../types/TypePost';
+import { TypeUser } from '../../types/TypeUser';
 import { Navbar } from '../Nav/Navbar';
 import Profile from '../User/Profile/Profile';
 import { SearchBar } from '../Nav/SearchBar';
@@ -14,7 +14,7 @@ import { Icon } from '../../styles/Icon/IconContext';
 import { IconSmall } from '../../styles/Icon/IconStyles';
 
 type props={
-  post : Post
+  post : TypePost
   postRefetch : (variables?: Partial<{id: String;}> | undefined) => Promise<ApolloQueryResult<any>>
 };
 

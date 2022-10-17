@@ -40,3 +40,7 @@ export const validateMessage = (text : string, currTheme : enumTypeTheme, file? 
   if(text.length == 0 && !file ) return toastError("message must not empty", currTheme)
   return true
 }
+
+export const isDatePassed = (timestamp : number) => {
+  return timestamp < Date.now()
+}

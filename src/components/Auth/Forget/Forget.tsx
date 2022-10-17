@@ -1,14 +1,15 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { validate } from "graphql";
-import React, { useState } from "react";
-import { Navigate, NavLink } from "react-router-dom";
-import { toastError, toastPromise } from "../../../Elements/Toast/Toast";
-import { mutationForgetPassword } from "../../../lib/graphql/mutations";
-import { qIsEmailValid, qIsEmailValidVars } from "../../../lib/graphql/queries";
-import { useThemeContext } from "../../../Provider/ThemeProvider";
-import { validateEmail } from "../../../utils/validation";
-import "../style.sass"
-import { UserMiddleware } from "../UserMiddleware";
+import '../style.sass';
+
+import { useLazyQuery, useMutation } from '@apollo/client';
+import React, { useState } from 'react';
+import { Navigate, NavLink } from 'react-router-dom';
+
+import { toastPromise } from '../../../Elements/Toast/Toast';
+import { mutationForgetPassword } from '../../../lib/graphql/mutations';
+import { qIsEmailValid } from '../../../lib/graphql/queries';
+import { useThemeContext } from '../../../Provider/ThemeProvider';
+import { validateEmail } from '../../../utils/validation';
+import { UserMiddleware } from '../UserMiddleware';
 
 type props={
 
@@ -51,7 +52,7 @@ export const Forget:React.FC<props> = () => {
       <div id="forgetWrapper">
         <img id="logo" src="logo.png" />
         <div id="forget">
-          <h1>Forget password</h1>
+          <h1>Forgot password?</h1>
           <input 
             type="email" 
             value={email}

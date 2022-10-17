@@ -1,23 +1,21 @@
 import { useMutation } from '@apollo/client';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
-import { InputFile } from '../../Elements/Inputs/file';
 
+import { InputFile } from '../../Elements/Inputs/file';
 import { Tiptap } from '../../Elements/Tiptap/TiptapEditor';
 import { toastError, toastPromise } from '../../Elements/Toast/Toast';
-import { checkFileExtension, checkLinkExtension, enumFileType, uploadFile } from '../../lib/firebase/storage';
+import { uploadFile } from '../../lib/firebase/storage';
 import { mutationCreatePost } from '../../lib/graphql/mutations';
 import { useThemeContext } from '../../Provider/ThemeProvider';
 import { useUserContext } from '../../Provider/UserProvider';
 import { Icon } from '../../styles/Icon/IconContext';
 import { IconSmall } from '../../styles/Icon/IconStyles';
-import { Post } from '../../types/Post';
+import { TypePost } from '../../types/TypePost';
 import { stringTagsStripper } from '../../utils/validation';
 
 type props={
-  onAddPost: (post: Post) => void
+  onAddPost: (post: TypePost) => void
 };
 
 export const PostCreate:React.FC<props> = ({onAddPost}) => {
@@ -27,7 +25,6 @@ export const PostCreate:React.FC<props> = ({onAddPost}) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const [text, setText] = useState('')
-  const [attachmentLink, setAttachmentLink] = useState("")
   const [attachmentFile, setAttachmentFile] = useState<File>();
 
   const [createPostFunc] = useMutation(mutationCreatePost)
@@ -38,7 +35,6 @@ export const PostCreate:React.FC<props> = ({onAddPost}) => {
     try{
       toastPromise((async ()=>{
         const url = attachmentFile != null ? await uploadFile(attachmentFile, user) : ""
-        setAttachmentLink(url)
         createPostFunc({
           variables:{
             "input": {
@@ -48,7 +44,7 @@ export const PostCreate:React.FC<props> = ({onAddPost}) => {
           }
         }).then((data)=>{
           setShowPopup(false)
-          onAddPost(data.data.CreatePost as Post)
+          onAddPost(data.data.CreatePost as TypePost)
         })
       })(), currTheme)
     }catch(error : any){

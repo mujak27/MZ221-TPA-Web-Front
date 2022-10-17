@@ -4,7 +4,7 @@ import { Navigate, NavLink, useParams } from 'react-router-dom';
 
 import { mutationActivate } from '../../../lib/graphql/mutations';
 import { queryActivation } from '../../../lib/graphql/queries';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 
 import '../style.sass'
 
@@ -61,7 +61,7 @@ export const Activation:React.FC<props> = () => {
     )
   }
 
-  const user = activationData.Activation.User as User;
+  const user = activationData.Activation.User as TypeUser;
 
   if(user.IsActive){
     return (

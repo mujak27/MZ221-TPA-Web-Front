@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { UserInfo } from '../../../Elements/User/UserInfo';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 import Connect from '../../User/Connect';
 
 type props={
-  user : User
+  user : TypeUser
 };
 
 export const UserSuggestionItem:React.FC<props> = ({user}) => {

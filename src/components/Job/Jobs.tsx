@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 import { queryJobs } from '../../lib/graphql/queries';
-import { Job } from '../../types/User';
+import { TypeJob } from '../../types/TypeUser';
 import { JobCreate } from './Create';
 import { JobItem } from './Item';
 
@@ -18,7 +18,7 @@ export const Jobs:React.FC<props> = () => {
 
   if(jobsLoading) return <>fetching data...</>
 
-  const jobs = jobsData.Jobs as Job[]
+  const jobs = jobsData.Jobs as TypeJob[]
   
   return (
     <div id='jobs'>

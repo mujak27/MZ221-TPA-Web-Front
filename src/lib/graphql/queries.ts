@@ -154,7 +154,6 @@ export const querySearch = gql`query querySearch($Keyword:String!, $Limit : Int!
     }
   }
 }
-
 `
 
 export const queryUsersByName = gql`
@@ -206,7 +205,7 @@ export const queryCheckReset = gql`
         FirstName
         MidName
         LastName
-        IsActive
+      IsActive
         Email
     }
   }
@@ -220,7 +219,10 @@ export const queryIsFollow = gql`
 
 export const queryIsConnect = gql`
   query queryIsConnect($id1 : ID!, $id2 : ID!){
-    IsConnect(id1: $id1, id2: $id2)
+    IsConnect(id1: $id1, id2: $id2){
+      connectionStatus
+      text
+    }
   }
 `
 
@@ -238,6 +240,7 @@ export const queryConnectedUsers=gql`
       FirstName
       MidName
       LastName
+      About
     }
   }
 `
@@ -245,12 +248,15 @@ export const queryConnectedUsers=gql`
 export const queryConnectRequests = gql`
   query queryConnectionRequest{
     ConnectionRequest{
-      ID
-      Email
-      FirstName
-      MidName
-      LastName
-      ProfilePhoto
+      User1{
+        ID
+        Email
+        FirstName
+        MidName
+        LastName
+        About
+      }
+      Text
     }
   }
 `
@@ -339,8 +345,8 @@ export const queryCountPost = gql`
 `
 
 export const queryPosts = gql`
-  query queryPosts($Limit : Int!, $Offset : Int!){
-    Posts(Limit: $Limit, Offset:$Offset){
+  query queryPosts($limit : Int!, $offset : Int!){
+    Posts(limit: $limit, offset:$offset){
       ID
       Text
       Sender{
@@ -365,6 +371,30 @@ export const queryPosts = gql`
     }
   }
 `
+export const queryPostsByKeyword = gql`
+  query queryPostsByKeyword($Keyword : String!, $Limit : Int!, $Offset : Int!){
+    PostsByKeyword(Keyword : $Keyword, Limit : $Limit, Offset : $Offset){
+        ID
+        Text
+        Sender{
+          ID
+          Email
+          FirstName
+          LastName
+          MidName
+          IsActive
+          ProfilePhoto
+          BackgroundPhoto
+          Headline
+          Pronoun
+          ProfileLink
+          About
+          Location
+        }
+      
+    }
+  }
+`
 
 export const queryPost = gql`
   query queryPost($id : ID!){
@@ -378,6 +408,7 @@ export const queryPost = gql`
           LastName
           ProfilePhoto
           ProfileLink
+          About
       }
       Comments{
         Text
@@ -413,6 +444,7 @@ export const queryComment = gql`
           LastName 
           MidName
           ProfilePhoto
+          About
         }
         Replies{
           ID
@@ -428,8 +460,8 @@ export const queryComment = gql`
 `
 
 export const queryComments = gql`
-  query queryComments($CommentId : ID, $PostId : ID!){
-    Comments(CommentId : $CommentId, PostId :$PostId){
+  query queryComments($CommentId : ID, $PostId : ID!, $Limit : Int!, $Offset : Int!){
+    Comments(CommentId : $CommentId, PostId :$PostId, Limit : $Limit, Offset:$Offset){
       ID
       Text
       Sender{

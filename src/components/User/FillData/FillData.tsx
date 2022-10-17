@@ -6,11 +6,11 @@ import { uploadFile } from "../../../lib/firebase/storage";
 import { mutationFirstUpdateProfile, mutationRegister } from "../../../lib/graphql/mutations";
 import { useThemeContext } from "../../../Provider/ThemeProvider";
 import { useUserContext } from "../../../Provider/UserProvider";
-import { User } from "../../../types/User";
+import { TypeUser } from "../../../types/TypeUser";
 import { strings } from "../../../utils/strings";
 
 type props={
-  user : User
+  user : TypeUser
 };
 
 

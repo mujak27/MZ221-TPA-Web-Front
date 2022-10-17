@@ -2,14 +2,14 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { queryPost, queryPosts, queryUsersByName } from '../../lib/graphql/queries';
-import { Post } from '../../types/Post';
-import { User } from '../../types/User';
+import { TypePost } from '../../types/TypePost';
+import { TypeUser } from '../../types/TypeUser';
 import parse from 'html-react-parser'
 import { concatUserName, fromUrl, getUserProfilePhoto } from '../../utils/User';
 import "./style.sass"
 
 type props={
-  user : User
+  user : TypeUser
 };
 
 export const UserProfilePhoto:React.FC<props> = ({user}) => {

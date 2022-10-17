@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { User } from '../../types/User';
+import { TypeUser } from '../../types/TypeUser';
 
 type props={
 };

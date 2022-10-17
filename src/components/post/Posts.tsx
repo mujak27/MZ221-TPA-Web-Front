@@ -1,71 +1,96 @@
-import { useLazyQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { queryPosts, queryUsersByName } from '../../lib/graphql/queries';
-import { Post } from '../../types/Post';
-import { User } from '../../types/User';
-import { Navbar } from '../Nav/Navbar';
-import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../Nav/SearchBar';
-import { PostItem } from './Item';
+import './style.sass';
+
+import { NetworkStatus, useLazyQuery, useQuery } from '@apollo/client';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import {uniqBy} from 'lodash'
+import { queryPosts } from '../../lib/graphql/queries';
+import { TypePost } from '../../types/TypePost';
 import { PostCreate } from './Create';
-import "./style.sass"
+import { PostItem } from './Item';
+import { useMiscContext } from '../../Provider/MiscProvider';
 
 type props={
 };
 
 export const Posts:React.FC<props> = ({}) => {
-  var limit = 2
+
+  const {setShowLoadingAnimation} = useMiscContext()
+
+  var limit = 4
   const [offset, setOffset] = useState(0)
   const [empty, setEmpty] = useState(false)
-  const [posts, setPosts] = useState<Array<Post>>([])
-  const [postsFunc, {loading:postsLoading, data:postsData, called:postsCalled, refetch:postsRefetch} ]= useLazyQuery(queryPosts)
+  const [posts, setPosts] = useState<Array<TypePost>>([])
+  const [loading, setLoading] = useState(false)
 
-  const onAddPost = (post : Post)=>{
+  const ref = useRef<HTMLDivElement>(null);
+  
+  const [queryPostsFunc, {loading:postsLoading, error: error}]= useLazyQuery(queryPosts)
+  
+  const onAddPost = (post : TypePost)=>{
     setPosts([post, ...posts])
     setOffset(offset + 1)
   }
 
   const onLoadMore = ()=>{
-    postsFunc({
+    if(loading || empty) return
+    setShowLoadingAnimation(true)
+    setLoading(true)
+    queryPostsFunc({
       variables:{
-        "Limit" : limit,
-        "Offset" : offset
-      }
+        "limit" : limit,
+        "offset" : offset
+      }, // 1-6
     }).then((data)=>{
-      const newPosts = data.data.Posts as Array<Post>
-      if(newPosts.length) setPosts([...posts, ...newPosts])
-      else setEmpty(true)
+      console.info(data)
+      var newPosts = data.data.Posts as TypePost[]
+      if(newPosts.length < limit) setEmpty(true)
+      var mergedPosts = [...posts, ...newPosts]
+      mergedPosts = uniqBy(mergedPosts, (e)=>{
+        return e.ID
+      })
+      if(!loading) setPosts(mergedPosts)
     })
-    setOffset(offset+limit);
+    setOffset(offset + limit)
+    setTimeout(()=>{
+      setLoading(false)
+    }, 500)
+    setTimeout(()=>{
+      setShowLoadingAnimation(false)
+    }, 300)
+    // setTimeout(()=>{
+    //   const check = window.innerHeight + window.scrollY
+    //   if(!loading && !postsLoading && !error && ref && (check >= (ref?.current?.offsetHeight as number))){
+    //     onLoadMore()
+    //   }
+    // }, 800)
+  }
+
+
+  window.onscroll = ()=>{
+    const check = window.innerHeight + window.scrollY
+    if(!loading && !postsLoading && !error && ref && (check >= (ref?.current?.offsetHeight as number))){
+      onLoadMore()
+    }
   }
 
   useEffect(()=>{
     onLoadMore()
   }, [])
 
-  return (
+  return useMemo(()=>(
     <div id="postsWrapper">
-      <div id="posts">
+      <div id="posts" ref={ref}>
         <PostCreate onAddPost={onAddPost}/>
+        {posts.map((post)=>{
+          return <PostItem showExtras={true} postId={post.ID} key={crypto.randomUUID()} />
+        })}
         <div>
-          {
-            posts.map((post)=>{
-              return <PostItem showExtras={true} postId={post.ID} key={crypto.randomUUID()} />
-            })
-          }
+          {/* {
+            loading && <div className='loader-element'></div>
+          } */}
         </div>
-        <div
-          onClick={onLoadMore}
-          >
-            {
-              !empty ? 
-                <button className='button2'>load more</button> :
-                null
-                // <button className='button3' disabled>that's all</button>
-            }
-          </div>
       </div>
     </div>
-  )
+  ), [posts])
 }
+

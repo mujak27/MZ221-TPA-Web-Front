@@ -7,12 +7,12 @@ import { queryComments, queryIsLikeComment } from '../../../lib/graphql/queries'
 import { useUserContext } from '../../../Provider/UserProvider';
 import { Icon } from '../../../styles/Icon/IconContext';
 import { IconSmall } from '../../../styles/Icon/IconStyles';
-import { Comment, Post } from '../../../types/Post';
+import { TypeComment, TypePost } from '../../../types/TypePost';
 import { Comments } from './Comments';
 
 
 type props={
-  comment : Comment
+  comment : TypeComment
   commentRefetch : (variables?: Partial<{
     id: string;
 }> | undefined) => Promise<ApolloQueryResult<any>>

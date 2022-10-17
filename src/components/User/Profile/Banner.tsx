@@ -2,13 +2,13 @@ import '../style.sass';
 
 import { useEffect, useState } from 'react';
 
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 import { fromUrl, getUserBackgroundPhoto, getUserProfilePhoto } from '../../../utils/User';
 import ProfileUpdate from './Update';
 
 
 type props={
-  user: User
+  user: TypeUser
   isMyProfile : boolean
 };
 

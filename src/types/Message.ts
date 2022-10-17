@@ -1,16 +1,17 @@
-import { User } from "./User"
+import { TypeUser } from "./TypeUser"
 
 
 export enum enumMessageType {
   text = "text",
 	videoCall = "videoCall",
   post = "post",
+  user = "user",
 }
 
 export type Message = {
   Text : string
-  User1 : User
-  User2 : User
+  User1 : TypeUser
+  User2 : TypeUser
   imageLink : string
   messageType : enumMessageType
 }

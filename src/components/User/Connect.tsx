@@ -1,10 +1,14 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { Popup } from '../../Elements/popup/popup';
+import { toastPromise } from '../../Elements/Toast/Toast';
 import { mutationAcceptConnectRequest, mutationDeleteConnectRequest, mutationFollow, mutationSendConnectRequest, mutationUnConnect, mutationUnFollow } from '../../lib/graphql/mutations';
 import { queryIsConnect, queryIsFollow, queryUser } from '../../lib/graphql/queries';
+import { useMiscContext } from '../../Provider/MiscProvider';
+import { useThemeContext } from '../../Provider/ThemeProvider';
 import { useUserContext } from '../../Provider/UserProvider';
-import { connectStatus } from '../../types/User';
+import { connectStatus, TypeConnection } from '../../types/TypeUser';
 
 
 type props={
@@ -14,6 +18,8 @@ type props={
 export const Connect:React.FC<props> = ({userId}) => {
 
   const {user : myUser} = useUserContext();
+  const {currTheme} = useThemeContext();
+  const {setShowPopup} = useMiscContext()
 
   const {loading : isConnectLoading, data : isConnectData, refetch: isConnectRefetch} = useQuery(queryIsConnect, {
     variables: {
@@ -21,6 +27,8 @@ export const Connect:React.FC<props> = ({userId}) => {
       id2: userId
     }
   });
+
+  const text = useRef<HTMLInputElement>(null)
 
   
   const [sendConnectRequest, {loading: sendConnectRequestLoading}] = useMutation(mutationSendConnectRequest)
@@ -31,13 +39,18 @@ export const Connect:React.FC<props> = ({userId}) => {
   
   const [unConnect, {loading: unConnectLoading}] = useMutation(mutationUnConnect)
 
+
   const onSendConnectRequest = ()=>{
-    sendConnectRequest({
-      variables:{
-        "id1": myUser.ID,
-        "id2": userId
-      }
-    })
+    setShowPopup(false)
+    toastPromise(
+      sendConnectRequest({
+        variables:{
+          "id": userId,
+          "text": text.current?.value ? text.current?.value : ""
+        }
+      }),
+      currTheme
+    )
   }
 
   const onDeleteConnectRequest = (id1 : string, id2 : string)=>{
@@ -75,8 +88,9 @@ export const Connect:React.FC<props> = ({userId}) => {
 
   if(isConnectLoading) return (<>fetching user data...</>)
 
-  const isConnect = isConnectData.IsConnect as connectStatus
-
+  
+  const isConnect = (isConnectData.IsConnect as TypeConnection).connectionStatus
+  
   if(userId == myUser.ID) return null;
 
 
@@ -87,7 +101,20 @@ export const Connect:React.FC<props> = ({userId}) => {
       </>)
     if(isConnect == connectStatus.NotConnected)
       return (<>
-        <button className='button2' onClick={onSendConnectRequest}>connect</button>
+        <Popup
+        body={<button className='button2'>connect</button>}
+        popup={
+          <div>
+            <h3> send connect request </h3>
+            <div className='gridInput'>
+              <label>connect message</label>
+              <input type={"text"}  ref={text} />
+              
+            </div>
+            <button className='button3' onClick={onSendConnectRequest}>send</button>
+          </div>
+        } />
+        
       </>)
     if(isConnect == connectStatus.SentByUser1)
       return (<>
@@ -100,9 +127,7 @@ export const Connect:React.FC<props> = ({userId}) => {
       </>)
   })()
 
-  return (
-    button
-  )
+  return <div className='connect'> {button}</div>
 }
 
 export default Connect

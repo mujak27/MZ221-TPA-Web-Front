@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
 import { useEffect } from 'react';
 
 import { mBlock, mUnBlock } from '../../lib/graphql/mutations';
@@ -7,9 +7,12 @@ import { qIsBlock } from '../../lib/graphql/queries';
 
 type props={
   userId : string
+  userRefetch: (variables?: Partial<{
+    link: string;
+  }> | undefined) => Promise<ApolloQueryResult<any>>
 };
 
-export const Block:React.FC<props> = ({userId}) => {
+export const Block:React.FC<props> = ({userId, userRefetch}) => {
   
   const {loading : isBlockLoading, data : isBlockData, refetch: isBlockRefetch, error : isBlockError} = useQuery(qIsBlock, {
     variables: {
@@ -27,6 +30,9 @@ export const Block:React.FC<props> = ({userId}) => {
       variables: {
         userId
       }
+    }).then(()=>{
+      console.info("done")
+      userRefetch()
     })
   }
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Experience } from '../../../types/User';
+import { TypeExperience } from '../../../types/TypeUser';
 import { ExperienceCreate } from './Create';
 import { ExperienceItem } from './Item';
 
 type props={
   myProfile : boolean
-  experiences : Experience[]
+  experiences : TypeExperience[]
 };
 
 export const Experiences:React.FC<props> = ({experiences, myProfile}) => {

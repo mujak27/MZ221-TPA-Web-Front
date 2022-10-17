@@ -1,20 +1,9 @@
-import { useLazyQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import { querySearch, queryUsersByName } from '../../lib/graphql/queries';
-import { useThemeContext } from '../../Provider/ThemeProvider';
-import { TypeSearch } from '../../types/Search';
-import { User } from '../../types/User';
-import { Navbar } from '../Nav/Navbar';
-import { PostCreate } from '../post/Create';
-import { Posts } from '../post/Posts';
-import Profile from '../User/Profile/Profile';
-import { SearchBar } from '../Nav/SearchBar';
-import "./style.sass"
-import { toastSuccess } from '../../Elements/Toast/Toast';
+import './style.sass';
 
-import { toast } from 'react-toastify';
-import { enumTypeTheme } from '../../theme/theme';
+import React, { useEffect, useState } from 'react';
+
+import { useThemeContext } from '../../Provider/ThemeProvider';
+import { Posts } from '../post/Posts';
 
 type props={
 

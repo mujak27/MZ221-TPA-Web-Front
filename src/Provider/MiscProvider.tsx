@@ -13,7 +13,10 @@ type typeContextProvider = {
   setShowTooltip: React.Dispatch<React.SetStateAction<boolean>>,
   popup : JSX.Element
   setPopup: React.Dispatch<React.SetStateAction<JSX.Element>>
-  setShowPopup: React.Dispatch<React.SetStateAction<boolean>>,}
+  setShowPopup: React.Dispatch<React.SetStateAction<boolean>>,
+  showLoadingAnimation: boolean,
+  setShowLoadingAnimation: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 let miscContext = createContext<typeContextProvider>({
   tooltip : <></>,
@@ -22,6 +25,8 @@ let miscContext = createContext<typeContextProvider>({
   popup : <></>,
   setPopup: '' as unknown as React.Dispatch<React.SetStateAction<JSX.Element>>,
   setShowPopup: '' as unknown as React.Dispatch<React.SetStateAction<boolean>>,
+  showLoadingAnimation: false,
+  setShowLoadingAnimation: '' as unknown as React.Dispatch<React.SetStateAction<boolean>>,
 })
 
 export const useMiscContext = () => useContext(miscContext);
@@ -30,6 +35,7 @@ export const MiscProvider : React.FC<props> = ({children}) => {
 
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltip, setTooltip] = useState(<></>)
+  const[showLoadingAnimation, setShowLoadingAnimation] = useState(false)
   
   const [showPopup, setShowPopup] = useState(false);
   const [popup, setPopup] = useState(<></>)
@@ -47,7 +53,12 @@ export const MiscProvider : React.FC<props> = ({children}) => {
       popup,
       setPopup,
       setShowPopup,
+      setShowLoadingAnimation,
+      showLoadingAnimation
     }} >
+      {
+        showLoadingAnimation && <div className='loader-container'></div>
+      }
       {
         children
       }

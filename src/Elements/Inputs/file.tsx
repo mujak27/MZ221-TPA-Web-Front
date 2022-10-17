@@ -45,7 +45,6 @@ export const InputFile:React.FC<props> = ({attachmentFile, setAttachmentFile, ac
               accept={accept}
               onChange={(e)=>setAttachmentFile((e.target.files as FileList)[0] as File)}
               placeholder={title}
-              disabled={attachmentFile ? true : false}
               />
             <Icon config={IconSmall} icon={<FaRegFileImage />} />
             <div>

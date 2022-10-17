@@ -6,7 +6,7 @@ import { UserInfo } from '../../../Elements/User/UserInfo';
 import { queryComment, queryComments } from '../../../lib/graphql/queries';
 import { Icon } from '../../../styles/Icon/IconContext';
 import { IconSmall } from '../../../styles/Icon/IconStyles';
-import { Comment } from '../../../types/Post';
+import { TypeComment } from '../../../types/TypePost';
 import { concatUserName } from '../../../utils/User';
 import { Comments } from './Comments';
 import { CommentCreate } from './Create';
@@ -21,16 +21,25 @@ type props={
 export const Commentitem:React.FC<props> = ({commentId, depth}) => {
   
   const [showComments, setShowComments] = useState(false)
+  const [commentCount, setCommentCount] = useState(0)
 
   const {loading : commentLoading, data : commentData, refetch : commentRefetch} = useQuery(queryComment, {
     variables: {
       "id" : commentId
-    }
+    },
+    onCompleted(data) {
+      console.info(data)
+      setCommentCount(data.Comment.Replies.length)
+    },
   })
+
+  const addCommentCount = ()=>{
+    setCommentCount(commentCount + 1)
+  }
 
   if(commentLoading) return <>loading...</>
 
-  const comment = commentData.Comment as Comment
+  const comment = commentData.Comment as TypeComment
 
   return (
     <div className='commentItem'>
@@ -41,7 +50,7 @@ export const Commentitem:React.FC<props> = ({commentId, depth}) => {
           <CommentLike comment={comment} commentRefetch={commentRefetch} />
           <button onClick={()=>setShowComments(!showComments)}>
             <Icon config={IconSmall} icon={<FaRegCommentDots />} />
-            {comment.Replies.length}
+            {commentCount}
           </button>
         </div>
       </div>
@@ -49,7 +58,7 @@ export const Commentitem:React.FC<props> = ({commentId, depth}) => {
         showComments && (
           <>
             {
-              <Comments postId={comment.Post.ID} commentId={comment.ID} depth={depth + 1} />
+              <Comments addCommentCount={addCommentCount} parentrefetch={commentRefetch} postId={comment.Post.ID} commentId={comment.ID} depth={depth + 1} />
             }
           </>
         )

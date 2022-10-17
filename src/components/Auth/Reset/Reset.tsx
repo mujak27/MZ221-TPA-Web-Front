@@ -8,7 +8,7 @@ import { ErrorPage } from '../../../Elements/Error/ErrorPage';
 import { mutationResetPassword } from '../../../lib/graphql/mutations';
 import { queryCheckReset } from '../../../lib/graphql/queries';
 import { useThemeContext } from '../../../Provider/ThemeProvider';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 import { concatUserName } from '../../../utils/User';
 import { validatePassword } from '../../../utils/validation';
 
@@ -64,7 +64,7 @@ export const Reset:React.FC<props> = () => {
     )
   }
 
-  const user = checkResetData.CheckReset as User;
+  const user = checkResetData.CheckReset as TypeUser;
 
 
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Education } from '../../../types/User';
+import { TypeEducation } from '../../../types/TypeUser';
 import { EducationCreate } from './Create';
 import { EducationItem } from './Item';
 
 type props={
   myProfile : boolean
-  educations : Education[]
+  educations : TypeEducation[]
 };
 
 export const Educations:React.FC<props> = ({educations, myProfile}) => {

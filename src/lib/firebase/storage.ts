@@ -1,7 +1,7 @@
 // import { initializeApp } from "firebase/app";
 // import { getStorage } from "firebase/storage";
 // import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { User } from "../../types/User";
+import { TypeUser } from "../../types/TypeUser";
 import { firebaseConfig } from "./config";
 import firebase from 'firebase/app';
 import 'firebase/storage'
@@ -13,7 +13,7 @@ export enum enumFileType {
 export const imageTypes = ['image/png', 'image/jpg', 'image/jpeg']
 export const imageExtensions = ['.png', '.jpg', '.jpeg']
 
-export const uploadFile = async (file : File, user : User)=>{
+export const uploadFile = async (file : File, user : TypeUser)=>{
   if (!firebase.apps.length) {
     console.info(firebase.initializeApp(firebaseConfig))
   }

@@ -7,15 +7,15 @@ import { useUserContext } from '../../../Provider/UserProvider';
 import { Icon } from '../../../styles/Icon/IconContext';
 import { IconSmall } from '../../../styles/Icon/IconStyles';
 import { enumMessageType } from '../../../types/Message';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 import { UserSearch } from '../../User/Search';
 import { toastPromise } from '../../../Elements/Toast/Toast';
 import { useThemeContext } from '../../../Provider/ThemeProvider';
 import { useMiscContext } from '../../../Provider/MiscProvider';
-import { Post } from '../../../types/Post';
+import { TypePost } from '../../../types/TypePost';
 
 type props={
-  post : Post
+  post : TypePost
 };
 
 export const PostShare:React.FC<props> = ({post}) => {
@@ -26,7 +26,7 @@ export const PostShare:React.FC<props> = ({post}) => {
 
   const [sendMessageFunc] = useMutation(mutationSendMessage)
 
-  const onSendMessage = async (user : User)=>{
+  const onSendMessage = async (user : TypeUser)=>{
     setShowPopup(false)
     toastPromise(
       sendMessageFunc({

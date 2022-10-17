@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { FaWindowClose } from 'react-icons/fa';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import { toastPromise } from '../../../Elements/Toast/Toast';
 import { uploadFile } from '../../../lib/firebase/storage';
@@ -21,7 +21,7 @@ export const ProfileUpdate:React.FC<props> = ({setShowUpdate}) => {
 
   const {user : myUser, userRefetch : myUserRefetch} = useUserContext();
   const {currTheme} = useThemeContext()
-  const [success, setSuccess] = useState(false)
+  const nav = useNavigate()
 
   const [updateProfileFunc] = useMutation(mutationUpdateProfile)
   const [mChangePasswordFunc] = useMutation(mChangePassword)
@@ -51,6 +51,7 @@ export const ProfileUpdate:React.FC<props> = ({setShowUpdate}) => {
           var _backgroundPhoto = backgroundPhoto
           if(profilePhotoFile != null){
             const url = await uploadFile(profilePhotoFile, myUser)
+            console.info(url)
             setProfilePhoto(url)
             _profilePhoto = url
           }
@@ -76,8 +77,8 @@ export const ProfileUpdate:React.FC<props> = ({setShowUpdate}) => {
             }
           }).then(()=>{
             setShowUpdate(false)
-            setSuccess(true)
             myUserRefetch()
+            nav(`/profile/${profileLink}`)
           }) 
         }
       )()
@@ -95,10 +96,6 @@ export const ProfileUpdate:React.FC<props> = ({setShowUpdate}) => {
       }),
       currTheme
     )
-  }
-
-  if(success){
-    return <Navigate to={`/profile/${profileLink}`} />
   }
 
   return (

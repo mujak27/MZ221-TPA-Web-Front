@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Media } from '../../../Elements/Media/Media';
+import { UserInfo } from '../../../Elements/User/UserInfo';
 import { useUserContext } from '../../../Provider/UserProvider';
 import { enumMessageType, Message } from '../../../types/Message';
 import { PostItem } from '../../post/Item';
@@ -19,6 +20,9 @@ export const MessageItem:React.FC<props> = ({message}) => {
         return <>{message.Text}</>
       case enumMessageType.post:
         return <PostItem postId={message.Text} showExtras={true} />
+      case enumMessageType.user:
+        return <UserInfo userId={message.Text} showDetail={true} showPopup={false}/> 
+        // return message.Text
     }
   })()
 

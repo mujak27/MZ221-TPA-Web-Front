@@ -2,11 +2,11 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { firestore } from '../../../lib/firebase/firestore';
-import { User } from '../../../types/User';
+import { TypeUser } from '../../../types/TypeUser';
 import { strings } from '../../../utils/strings';
 
 type props={
-  user : User
+  user : TypeUser
 };
 
 const servers = {

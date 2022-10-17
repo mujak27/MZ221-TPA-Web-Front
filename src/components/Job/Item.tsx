@@ -2,10 +2,10 @@ import parse from 'html-react-parser';
 import { useEffect, useState } from 'react';
 
 import { UserInfo } from '../../Elements/User/UserInfo';
-import { Job } from '../../types/User';
+import { TypeJob } from '../../types/TypeUser';
 
 type props={
-  job : Job
+  job : TypeJob
 };
 
 export const JobItem:React.FC<props> = ({job}) => {

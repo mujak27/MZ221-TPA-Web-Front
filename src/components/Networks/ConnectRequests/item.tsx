@@ -1,24 +1,23 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { queryConnectRequests } from '../../../lib/graphql/queries';
-import { User } from '../../../types/User';
+import { UserInfo } from '../../../Elements/User/UserInfo';
+
+import { TypeConnectionRequest } from '../../../types/TypeUser';
 import { concatUserName } from '../../../utils/User';
 import Connect from '../../User/Connect';
 
 type props={
-  user : User
+  connectionRequest : TypeConnectionRequest
 };
 
-export const ConnectRequestItem:React.FC<props> = ({user}) => {
+export const ConnectRequestItem:React.FC<props> = ({connectionRequest}) => {
 
   return (
-    <div className='connectRequestItem'>
+    <div className='connectRequestItem' style={{display: "flex", alignItems: "center"}}>
       {
-        concatUserName(user)
-      }
+        <UserInfo user={connectionRequest.User1} showDetail={true} />
+      } has requested connect {connectionRequest.Text}
       {
-        <Connect userId={user.ID} />
+        <Connect userId={connectionRequest.User1.ID} />
       }
     </div>
   )

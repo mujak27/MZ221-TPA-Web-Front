@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 
 import { mutationRemoveEducation } from '../../../lib/graphql/mutations';
 import { useUserContext } from '../../../Provider/UserProvider';
-import { Education } from '../../../types/User';
+import { TypeEducation } from '../../../types/TypeUser';
 import { EducationUpdate } from './Update';
 
 type props={
   myProfile : boolean
-  education : Education
+  education : TypeEducation
 };
 
 export const EducationItem:React.FC<props> = ({education, myProfile}) => {
