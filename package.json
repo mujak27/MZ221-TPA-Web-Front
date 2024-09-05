@@ -19,7 +19,7 @@
     "@tiptap/react": "^2.0.0-beta.114",
     "@tiptap/starter-kit": "^2.0.0-beta.191",
     "draft-js": "^0.11.7",
-    "firebase": "^8.2.10",
+    "firebase": "^10.2.0",
     "gapi-script": "^1.2.0",
     "graphql": "^16.6.0",
     "html-react-parser": "^3.0.4",
@@ -40,7 +40,7 @@
     "react-tooltip": "^4.2.21",
     "simple-peer": "^9.9.3",
     "socket.io-client": "^4.5.2",
-    "styled-components": "^5.3.5",
+    "styled-components": "^6.1.0",
     "tippy.js": "^6.3.7"
   },
   "devDependencies": {
