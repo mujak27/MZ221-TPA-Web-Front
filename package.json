@@ -39,7 +39,7 @@
     "react-toastify": "^9.0.8",
     "react-tooltip": "^4.2.21",
     "simple-peer": "^9.9.3",
-    "socket.io-client": "^4.5.2",
+    "socket.io-client": "^4.8.0",
     "styled-components": "^5.3.5",
     "tippy.js": "^6.3.7"
   },
